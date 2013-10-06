@@ -1,0 +1,228 @@
+ ------
+ Usage
+ ------
+ Yegor Bugayenko
+ ------
+ 2013-09-19
+ ------
+
+~~
+~~ #set($sign="$")
+~~ Copyright (c) 2012-2013, JCabi.com
+~~ All rights reserved.
+~~
+~~ Redistribution and use in source and binary forms, with or without
+~~ modification, are permitted provided that the following conditions
+~~ are met: 1) Redistributions of source code must retain the above
+~~ copyright notice, this list of conditions and the following
+~~ disclaimer. 2) Redistributions in binary form must reproduce the above
+~~ copyright notice, this list of conditions and the following
+~~ disclaimer in the documentation and/or other materials provided
+~~ with the distribution. 3) Neither the name of the jcabi.com nor
+~~ the names of its contributors may be used to endorse or promote
+~~ products derived from this software without specific prior written
+~~ permission.
+~~
+~~ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+~~ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+~~ NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+~~ FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+~~ THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+~~ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+~~ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+~~ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+~~ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+~~ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+~~ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+~~ OF THE POSSIBILITY OF SUCH DAMAGE.
+~~
+
+Usage of MySQL Maven Plugin for Integration Testing
+
+  First, add this supplementary plugin to your <<<pom.xml>>>:
+
++--
+<project>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>reserve-network-port</goal>
+            </goals>
+            <configuration>
+              <portNames>
+                <portName>mysql.port</portName>
+              </portNames>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  [...]
+</project>
++--
+
+  Then, define the location of MySQL <<<tgz>>> distribution for
+  all target platforms:
+
++--
+<project>
+  <profiles>
+    <profile>
+      <id>mysql-linux-x86</id>
+      <activation>
+        <os>
+          <family>unix</family>
+          <name>Linux</name>
+          <arch>x86</arch>
+        </os>
+      </activation>
+      <properties>
+        <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-linux-glibc2.5-i686.tar.gz</mysql.tgz>
+      </properties>
+    </profile>
+    <profile>
+      <id>linux-x64</id>
+      <activation>
+        <os>
+          <family>unix</family>
+          <name>Linux</name>
+          <arch>amd64</arch>
+        </os>
+      </activation>
+      <properties>
+        <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-linux-glibc2.5-x86_64.tar.gz</mysql.tgz>
+      </properties>
+    </profile>
+    <profile>
+      <id>windows-x86</id>
+      <activation>
+        <os>
+          <family>windows</family>
+          <arch>x86</arch>
+        </os>
+      </activation>
+      <properties>
+        <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-win32.zip</mysql.tgz>
+      </properties>
+    </profile>
+    <profile>
+      <id>windows-x64</id>
+      <activation>
+        <os>
+          <family>windows</family>
+          <arch>amd64</arch>
+        </os>
+      </activation>
+      <properties>
+        <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-winx64.zip</mysql.tgz>
+      </properties>
+    </profile>
+    <profile>
+      <id>mysql-osx</id>
+      <activation>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+      <properties>
+        <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-osx10.7-x86.tar.gz</mysql.tgz>
+      </properties>
+    </profile>
+  </profiles>
+</project>
++--
+
+  Then, configure <<<jcabi-mysql-maven-plugin>>>:
+
++--
+<project>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.jcabi</groupId>
+        <artifactId>jcabi-mysql-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <configuration>
+          <port>${sign}{mysql.port}</port>
+          <tgz>${sign}{mysql.tgz}</tgz>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>start</goal>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  [...]
+</project>
++--
+
+  Now you need to know this temporary port number in your integration tests:
+
++--
+<project>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <systemPropertyVariables>
+                <mysql.port>${sign}{mysql.port}</mysql.port>
+              </systemPropertyVariables>
+            </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  [...]
+</project>
++--
+
+  In your integration tests connect to this on-demand instance
+  of MySQL server:
+
++--
+public class FooITCase {
+  private static final String PORT = System.getProperty("mysql.port");
+  @Test
+  public void worksWithMysqlServer() {
+    // to be continued...
+  }
+}
++--
+
+* Cutting Edge Version
+
+  If you want to use current version of the product, you can do it with
+  this configuration in your <<<pom.xml>>>:
+
++--
+<pluginRepositories>
+  <pluginRepository>
+    <id>oss.sonatype.org</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+  </pluginRepository>
+</pluginRepositories>
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.jcabi</groupId>
+      <artifactId>jcabi-mysql-maven-plugin</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      [...]
+    </plugin>
+  </plugins>
+</build>
++--
