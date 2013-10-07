@@ -37,32 +37,6 @@
     <packaging>jar</packaging>
     <profiles>
         <profile>
-            <id>mysql-linux-x86</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                    <name>Linux</name>
-                    <arch>x86</arch>
-                </os>
-            </activation>
-            <properties>
-                <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-linux-glibc2.5-i686.tar.gz</mysql.tgz>
-            </properties>
-        </profile>
-        <profile>
-            <id>linux-x64</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                    <name>Linux</name>
-                    <arch>amd64</arch>
-                </os>
-            </activation>
-            <properties>
-                <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-linux-glibc2.5-x86_64.tar.gz</mysql.tgz>
-            </properties>
-        </profile>
-        <profile>
             <id>windows-x86</id>
             <activation>
                 <os>
@@ -84,17 +58,6 @@
             </activation>
             <properties>
                 <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-winx64.zip</mysql.tgz>
-            </properties>
-        </profile>
-        <profile>
-            <id>mysql-osx</id>
-            <activation>
-                <os>
-                    <family>mac</family>
-                </os>
-            </activation>
-            <properties>
-                <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-osx10.7-x86.tar.gz</mysql.tgz>
             </properties>
         </profile>
     </profiles>

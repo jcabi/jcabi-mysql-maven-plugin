@@ -49,7 +49,7 @@ import org.jfrog.maven.annomojo.annotations.MojoPhase;
 @ToString
 @EqualsAndHashCode(callSuper = false)
 @MojoGoal("classify")
-@MojoPhase("verify")
+@MojoPhase("initialize")
 public final class ClassifyMojo extends AbstractMojo {
 
     /**
@@ -79,7 +79,7 @@ public final class ClassifyMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoFailureException {
         final String[] words = System.getProperty("os.name").split(" ");
-        project.getProperties().setProperty(
+        this.project.getProperties().setProperty(
             this.classifier,
             String.format(
                 "%s-%s",

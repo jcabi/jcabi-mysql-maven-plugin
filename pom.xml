@@ -190,7 +190,6 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <!--
             <plugin>
                 <groupId>com.jcabi</groupId>
                 <artifactId>jcabi-mysql-maven-plugin</artifactId>
@@ -206,8 +205,6 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
-            <!--
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
@@ -231,7 +228,6 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <executions>

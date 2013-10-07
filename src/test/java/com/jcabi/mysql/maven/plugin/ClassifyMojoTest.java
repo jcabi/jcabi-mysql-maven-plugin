@@ -60,7 +60,7 @@ public final class ClassifyMojoTest {
         mojo.execute();
         Logger.info(this, "classifier: %s", props.getProperty(name));
         MatcherAssert.assertThat(
-            props.getProperty(name).matches("[a-z]+-[a-z0-9]+"),
+            props.getProperty(name).matches("[a-z]+-[a-z0-9_]+"),
             Matchers.is(true)
         );
     }
