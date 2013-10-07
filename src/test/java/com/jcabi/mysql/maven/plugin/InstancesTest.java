@@ -29,8 +29,13 @@
  */
 package com.jcabi.mysql.maven.plugin;
 
+import com.google.common.io.Files;
+import com.jcabi.jdbc.JdbcSession;
 import java.io.File;
 import java.net.ServerSocket;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 /**
@@ -54,9 +59,28 @@ public final class InstancesTest {
     public void startsAndStops() throws Exception {
         final int port = this.reserve();
         final Instances instances = new Instances();
-        instances.start(port, new File(InstancesTest.DIST));
+        instances.start(
+            port, new File(InstancesTest.DIST),
+            Files.createTempDir()
+        );
+        TimeUnit.MINUTES.sleep(1);
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
         try {
-            // do something with MySQL
+            final Connection conn = DriverManager.getConnection(
+                String.format(
+                    "jdbc:mysql://localhost:%d/test?user=root&password=root",
+                    port
+                )
+            );
+            new JdbcSession(conn)
+                .sql("CREATE TABLE foo (id INT)")
+                .execute()
+                .sql("INSERT INTO foo VALUES (1)")
+                .execute()
+                .sql("SELECT COUNT(*) FROM foo")
+                .execute()
+                .sql("DROP TABLE foo")
+                .execute();
         } finally {
             instances.stop(port);
         }

@@ -66,15 +66,32 @@ final class Instances {
      * @param dist Path to MySQL distribution
      * @throws IOException If fails to start
      */
-    public void start(final int port, @NotNull final File dist)
-        throws IOException {
-        final Process proc = new ProcessBuilder().command(
+    public void start(final int port, @NotNull final File dist,
+        @NotNull final File target) throws IOException {
+        new File(target, "data").mkdirs();
+        final ProcessBuilder builder = new ProcessBuilder().command(
             new String[] {
-                "bin/mysql",
-                "--port",
-                Integer.toString(port),
+                "bin/mysqld",
+                "--basedir=.",
+                "--lc-messages-dir=./share",
+                "--general_log",
+                "--innodb_use_native_aio=0",
+                "--innodb_buffer_pool_size=64M",
+                "--innodb_log_file_size=64M",
+                "--explicit_defaults_for_timestamp",
+                String.format("--general_log_file=%s/mysql.log", target),
+                String.format("--log_error=%s/mysql.log", target),
+                "--log_warnings",
+                "--binlog-ignore-db=data",
+                String.format("--datadir=%s/data", target),
+                String.format("--tmpdir=%s/temp", target),
+                String.format("--socket=%s/mysql.sock", target),
+                String.format("--pid-file=%s/mysql.pid", target),
+                String.format("--port=%d", port),
             }
-        ).directory(dist).redirectErrorStream(true).start();
+        ).directory(dist).redirectErrorStream(true);
+        builder.environment().put("MYSQL_HOME", dist.getAbsolutePath());
+        final Process proc = builder.start();
         final Thread thread = new Thread(
             new VerboseRunnable(
                 new Callable<Void>() {

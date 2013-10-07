@@ -55,7 +55,7 @@ public final class StartMojo extends AbstractMysqlMojo {
     @Override
     protected void run(final Instances instances) throws MojoFailureException {
         try {
-            instances.start(this.tcpPort(), this.dir());
+            instances.start(this.tcpPort(), this.distDir(), this.dataDir());
         } catch (IOException ex) {
             throw new MojoFailureException(
                 "failed to start MySQL", ex

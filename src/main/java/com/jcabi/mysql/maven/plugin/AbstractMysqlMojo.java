@@ -80,6 +80,16 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     private transient File dist;
 
     /**
+     * Location of MySQL data.
+     */
+    @MojoParameter(
+        expression = "${project.build.directory}/mysql-data",
+        required = true,
+        description = "MySQL data directory"
+    )
+    private transient File data;
+
+    /**
      * Directory for TGZ unpacking.
      */
     @MojoParameter(
@@ -123,13 +133,27 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      * @return Directory
      * @throws MojoFailureException If fails
      */
-    public File dir() throws MojoFailureException {
+    public File distDir() throws MojoFailureException {
         if (!this.dist.exists()) {
             throw new MojoFailureException(
                 String.format("file doesn't exist: %s", this.dist)
             );
         }
         return this.dist;
+    }
+
+    /**
+     * Get directory with MySQL data.
+     * @return Directory
+     * @throws MojoFailureException If fails
+     */
+    public File dataDir() throws MojoFailureException {
+        if (!this.data.exists()) {
+            throw new MojoFailureException(
+                String.format("file doesn't exist: %s", this.data)
+            );
+        }
+        return this.data;
     }
 
     /**
