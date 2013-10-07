@@ -40,11 +40,6 @@ import java.util.concurrent.ConcurrentMap;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.codehaus.plexus.util.FileUtils;
-import org.rauschig.jarchivelib.ArchiveFormat;
-import org.rauschig.jarchivelib.Archiver;
-import org.rauschig.jarchivelib.ArchiverFactory;
-import org.rauschig.jarchivelib.CompressionType;
 
 /**
  * Running instances of MySQL.
@@ -60,46 +55,26 @@ import org.rauschig.jarchivelib.CompressionType;
 final class Instances {
 
     /**
-     * Directory where to run.
-     */
-    private final transient File dir;
-
-    /**
      * Running processes.
      */
     private final transient ConcurrentMap<Integer, Process> processes =
         new ConcurrentHashMap<Integer, Process>(0);
 
     /**
-     * Public ctor.
-     * @param tgz Path to mysql.tar.gz
-     * @param temp Temp directory to unpack TGZ into
-     * @throws IOException If fails
-     */
-    protected Instances(@NotNull final File tgz,
-        @NotNull final File temp) throws IOException {
-        FileUtils.deleteDirectory(temp);
-        temp.mkdirs();
-        final Archiver archiver = ArchiverFactory.createArchiver(
-            ArchiveFormat.TAR, CompressionType.GZIP
-        );
-        archiver.extract(tgz, temp);
-        this.dir = temp.listFiles()[0];
-    }
-
-    /**
      * Start a new one at this port.
      * @param port The port to start at
+     * @param dist Path to MySQL distribution
      * @throws IOException If fails to start
      */
-    public void start(final int port) throws IOException {
+    public void start(final int port, @NotNull final File dist)
+        throws IOException {
         final Process proc = new ProcessBuilder().command(
             new String[] {
                 "bin/mysql",
                 "--port",
                 Integer.toString(port),
             }
-        ).directory(this.dir).redirectErrorStream(true).start();
+        ).directory(dist).redirectErrorStream(true).start();
         final Thread thread = new Thread(
             new VerboseRunnable(
                 new Callable<Void>() {

@@ -80,17 +80,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.rauschig</groupId>
-            <artifactId>jarchivelib</artifactId>
-            <version>0.3.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.commons</groupId>
-                    <artifactId>commons-compress</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-aspects</artifactId>
         </dependency>
@@ -178,69 +167,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <profiles>
-        <profile>
-            <id>mysql-linux-x86</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                    <name>Linux</name>
-                    <arch>x86</arch>
-                </os>
-            </activation>
-            <properties>
-                <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-linux-glibc2.5-i686.tar.gz</mysql.tgz>
-            </properties>
-        </profile>
-        <profile>
-            <id>linux-x64</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                    <name>Linux</name>
-                    <arch>amd64</arch>
-                </os>
-            </activation>
-            <properties>
-                <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-linux-glibc2.5-x86_64.tar.gz</mysql.tgz>
-            </properties>
-        </profile>
-        <profile>
-            <id>windows-x86</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                    <arch>x86</arch>
-                </os>
-            </activation>
-            <properties>
-                <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-win32.zip</mysql.tgz>
-            </properties>
-        </profile>
-        <profile>
-            <id>windows-x64</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                    <arch>amd64</arch>
-                </os>
-            </activation>
-            <properties>
-                <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-winx64.zip</mysql.tgz>
-            </properties>
-        </profile>
-        <profile>
-            <id>mysql-osx</id>
-            <activation>
-                <os>
-                    <family>mac</family>
-                </os>
-            </activation>
-            <properties>
-                <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-osx10.7-x86.tar.gz</mysql.tgz>
-            </properties>
-        </profile>
-    </profiles>
     <build>
         <pluginManagement>
             <plugins>
@@ -257,24 +183,55 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <configuration>
                         <systemPropertyVariables>
-                            <surefire.tgz>${mysql.tgz}</surefire.tgz>
-                            <surefire.temp>${project.build.directory}/mysql-local-temp</surefire.temp>
+                            <surefire.dist>${project.build.directory}/mysql-dist</surefire.dist>
                         </systemPropertyVariables>
                     </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
+            <!--
+            <plugin>
+                <groupId>com.jcabi</groupId>
+                <artifactId>jcabi-mysql-maven-plugin</artifactId>
+                <version>0.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>classify</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>mysql.classifier</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
+            <!--
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>properties</goal>
+                            <goal>unpack</goal>
                         </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.jcabi</groupId>
+                                    <artifactId>mysql-dist</artifactId>
+                                    <version>5.6.14</version>
+                                    <classifier>${mysql.classifier}</classifier>
+                                    <type>zip</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${project.build.directory}/mysql-dist</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
+            -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <executions>

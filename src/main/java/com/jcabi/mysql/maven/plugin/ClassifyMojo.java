@@ -29,18 +29,17 @@
  */
 package com.jcabi.mysql.maven.plugin;
 
-import com.jcabi.aspects.Cacheable;
-import com.jcabi.log.Logger;
-import java.io.File;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
+import org.jfrog.maven.annomojo.annotations.MojoGoal;
 import org.jfrog.maven.annomojo.annotations.MojoParameter;
-import org.slf4j.impl.StaticLoggerBinder;
+import org.jfrog.maven.annomojo.annotations.MojoPhase;
 
 /**
- * Abstract MOJO.
+ * Classify current platform.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
@@ -48,105 +47,102 @@ import org.slf4j.impl.StaticLoggerBinder;
  */
 @ToString
 @EqualsAndHashCode(callSuper = false)
-abstract class AbstractMysqlMojo extends AbstractMojo {
+@MojoGoal("classify")
+@MojoPhase("verify")
+public final class ClassifyMojo extends AbstractMojo {
 
     /**
-     * Shall we skip execution?
+     * Maven project.
      */
     @MojoParameter(
-        defaultValue = "false",
-        required = false,
-        description = "Skips execution"
+        expression = "${project}",
+        required = true,
+        readonly = true,
+        description = "Maven project"
     )
-    private transient boolean skip;
+    private transient MavenProject project;
 
     /**
-     * Port to use.
-     */
-    @MojoParameter(
-        defaultValue = "10101",
-        required = false,
-        description = "TCP port to start at"
-    )
-    private transient int port;
-
-    /**
-     * Location of MySQL distribution.
+     * Classifier to set.
      */
     @MojoParameter(
         required = true,
-        description = "MySQL distribution directory"
+        readonly = false,
+        description = "Maven property to set with platform classifier"
     )
-    private transient File dist;
-
-    /**
-     * Directory for TGZ unpacking.
-     */
-    @MojoParameter(
-        defaultValue = "${project.build.directory}/mysql-local",
-        required = true,
-        description = "Directory to unpack TGZ"
-    )
-    private transient File temp;
-
-    /**
-     * Set skip option.
-     * @param skp Shall we skip execution?
-     */
-    public void setSkip(final boolean skp) {
-        this.skip = skp;
-    }
+    private transient String classifier;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void execute() throws MojoFailureException {
-        StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
-        if (this.skip) {
-            Logger.info(this, "execution skipped because of 'skip' option");
-            return;
-        }
-        this.run(AbstractMysqlMojo.instances());
+        project.getProperties().setProperty(
+            this.classifier,
+            String.format(
+                "%s-%s",
+                this.name(System.getProperty("os.name")),
+                this.arch(System.getProperty("os.arch"))
+            )
+        );
     }
 
     /**
-     * Get TCP port we're on.
-     * @return Port number
+     * Set project.
+     * @param prj Project to set
      */
-    public int tcpPort() {
-        return this.port;
+    public void setProject(final MavenProject prj) {
+        this.project = prj;
     }
 
     /**
-     * Get directory with MySQL dist.
-     * @return Directory
+     * Set classifier.
+     * @param name Name of property
+     */
+    public void setClassifier(final String name) {
+        this.classifier = name;
+    }
+
+    /**
+     * OS name.
+     * @param txt Name as provided by JVM
      * @throws MojoFailureException If fails
      */
-    public File dir() throws MojoFailureException {
-        if (!this.dist.exists()) {
+    private String name(final String txt) throws MojoFailureException {
+        final String name;
+        if (txt.startsWith("Windows")) {
+            name = "win";
+        } else if (txt.startsWith("Mac ")) {
+            name = "osx";
+        } else if ("Linux".equals(txt)) {
+            name = "linux";
+        } else {
             throw new MojoFailureException(
-                String.format("file doesn't exist: %s", this.dist)
+                String.format("unsupported OS name '%s'", txt)
             );
         }
-        return this.dist;
+        return name;
     }
 
     /**
-     * Run custom functionality.
-     * @param instances Instances to work with
+     * OS arch.
+     * @param txt Name as provided by JVM
      * @throws MojoFailureException If fails
      */
-    protected abstract void run(final Instances instances)
-        throws MojoFailureException;
-
-    /**
-     * Get instances.
-     * @return Instances
-     */
-    @Cacheable(forever = true)
-    private static Instances instances() {
-        return new Instances();
+    private String arch(final String txt) throws MojoFailureException {
+        final String name;
+        if (txt.matches("x86.*")) {
+            name = "x86";
+        } else if (txt.contains("64")) {
+            name = "amd64";
+        } else if (txt.contains("386")) {
+            name = "i386";
+        } else {
+            throw new MojoFailureException(
+                String.format("unsupported OS architecture '%s'", txt)
+            );
+        }
+        return name;
     }
 
 }

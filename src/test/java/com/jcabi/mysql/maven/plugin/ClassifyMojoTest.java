@@ -29,51 +29,38 @@
  */
 package com.jcabi.mysql.maven.plugin;
 
-import java.io.File;
-import java.net.ServerSocket;
+import java.util.Properties;
+import org.apache.maven.project.MavenProject;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
- * Test case for {@link Instances}.
+ * Test case for {@link ClassifyMojo} (more detailed test is in maven invoker).
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
-public final class InstancesTest {
+public final class ClassifyMojoTest {
 
     /**
-     * Location of MySQL dist.
-     */
-    private static final String DIST = System.getProperty("surefire.dist");
-
-    /**
-     * Instances can start and stop.
+     * ClassifyMojo can detect current platform.
      * @throws Exception If something is wrong
      */
     @Test
-    public void startsAndStops() throws Exception {
-        final int port = this.reserve();
-        final Instances instances = new Instances();
-        instances.start(port, new File(InstancesTest.DIST));
-        try {
-            // do something with MySQL
-        } finally {
-            instances.stop(port);
-        }
-    }
-
-    /**
-     * Find and return the first available port.
-     * @return The port number
-     * @throws Exception If fails
-     */
-    private int reserve() throws Exception {
-        final ServerSocket socket = new ServerSocket(0);
-        try {
-            return socket.getLocalPort();
-        } finally {
-            socket.close();
-        }
+    public void detectsCurrentPlatform() throws Exception {
+        final Properties props = new Properties();
+        final MavenProject project = Mockito.mock(MavenProject.class);
+        Mockito.doReturn(props).when(project).getProperties();
+        final ClassifyMojo mojo = new ClassifyMojo();
+        mojo.setProject(project);
+        final String name = "test.test";
+        mojo.setClassifier(name);
+        mojo.execute();
+        MatcherAssert.assertThat(
+            props.getProperty(name).matches("[a-z]+-[a-z0-9]+"),
+            Matchers.is(true)
+        );
     }
 
 }
