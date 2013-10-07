@@ -29,6 +29,7 @@
  */
 package com.jcabi.mysql.maven.plugin;
 
+import com.jcabi.log.Logger;
 import java.util.Properties;
 import org.apache.maven.project.MavenProject;
 import org.hamcrest.MatcherAssert;
@@ -57,6 +58,7 @@ public final class ClassifyMojoTest {
         final String name = "test.test";
         mojo.setClassifier(name);
         mojo.execute();
+        Logger.info(this, "classifier: %s", props.getProperty(name));
         MatcherAssert.assertThat(
             props.getProperty(name).matches("[a-z]+-[a-z0-9]+"),
             Matchers.is(true)

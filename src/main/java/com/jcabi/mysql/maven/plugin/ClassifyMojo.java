@@ -29,6 +29,7 @@
  */
 package com.jcabi.mysql.maven.plugin;
 
+import java.util.Locale;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.maven.plugin.AbstractMojo;
@@ -77,12 +78,13 @@ public final class ClassifyMojo extends AbstractMojo {
      */
     @Override
     public void execute() throws MojoFailureException {
+        final String[] words = System.getProperty("os.name").split(" ");
         project.getProperties().setProperty(
             this.classifier,
             String.format(
                 "%s-%s",
-                this.name(System.getProperty("os.name")),
-                this.arch(System.getProperty("os.arch"))
+                words[0].toLowerCase(Locale.ENGLISH),
+                System.getProperty("os.arch").toLowerCase(Locale.ENGLISH)
             )
         );
     }
@@ -101,48 +103,6 @@ public final class ClassifyMojo extends AbstractMojo {
      */
     public void setClassifier(final String name) {
         this.classifier = name;
-    }
-
-    /**
-     * OS name.
-     * @param txt Name as provided by JVM
-     * @throws MojoFailureException If fails
-     */
-    private String name(final String txt) throws MojoFailureException {
-        final String name;
-        if (txt.startsWith("Windows")) {
-            name = "win";
-        } else if (txt.startsWith("Mac ")) {
-            name = "osx";
-        } else if ("Linux".equals(txt)) {
-            name = "linux";
-        } else {
-            throw new MojoFailureException(
-                String.format("unsupported OS name '%s'", txt)
-            );
-        }
-        return name;
-    }
-
-    /**
-     * OS arch.
-     * @param txt Name as provided by JVM
-     * @throws MojoFailureException If fails
-     */
-    private String arch(final String txt) throws MojoFailureException {
-        final String name;
-        if (txt.matches("x86.*")) {
-            name = "x86";
-        } else if (txt.contains("64")) {
-            name = "amd64";
-        } else if (txt.contains("386")) {
-            name = "i386";
-        } else {
-            throw new MojoFailureException(
-                String.format("unsupported OS architecture '%s'", txt)
-            );
-        }
-        return name;
     }
 
 }
