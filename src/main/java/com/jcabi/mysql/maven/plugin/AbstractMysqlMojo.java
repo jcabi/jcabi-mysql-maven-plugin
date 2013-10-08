@@ -145,14 +145,8 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     /**
      * Get directory with MySQL data.
      * @return Directory
-     * @throws MojoFailureException If fails
      */
-    public File dataDir() throws MojoFailureException {
-        if (!this.data.exists()) {
-            throw new MojoFailureException(
-                String.format("file doesn't exist: %s", this.data)
-            );
-        }
+    public File dataDir() {
         return this.data;
     }
 

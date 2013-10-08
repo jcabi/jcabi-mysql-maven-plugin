@@ -29,6 +29,7 @@
  */
 package com.jcabi.mysql.maven.plugin;
 
+import com.jcabi.log.Logger;
 import java.util.Locale;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -79,14 +80,13 @@ public final class ClassifyMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoFailureException {
         final String[] words = System.getProperty("os.name").split(" ");
-        this.project.getProperties().setProperty(
-            this.classifier,
-            String.format(
-                "%s-%s",
-                words[0].toLowerCase(Locale.ENGLISH),
-                System.getProperty("os.arch").toLowerCase(Locale.ENGLISH)
-            )
+        final String value = String.format(
+            "%s-%s",
+            words[0].toLowerCase(Locale.ENGLISH),
+            System.getProperty("os.arch").toLowerCase(Locale.ENGLISH)
         );
+        this.project.getProperties().setProperty(this.classifier, value);
+        Logger.info(this, "${%s} set to \"%s\"", this.classifier, value);
     }
 
     /**

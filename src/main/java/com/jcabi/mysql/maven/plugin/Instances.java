@@ -35,6 +35,8 @@ import com.jcabi.log.VerboseProcess;
 import com.jcabi.log.VerboseRunnable;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -42,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -57,6 +60,21 @@ import org.codehaus.plexus.util.FileUtils;
 @Loggable(Loggable.INFO)
 @SuppressWarnings("PMD.DoNotUseThreads")
 final class Instances {
+
+    /**
+     * User.
+     */
+    private static final String USER = "root";
+
+    /**
+     * Password.
+     */
+    private static final String PASSWORD = "root";
+
+    /**
+     * Database name.
+     */
+    private static final String DBNAME = "root";
 
     /**
      * Running processes.
@@ -109,7 +127,7 @@ final class Instances {
         thread.setDaemon(true);
         thread.start();
         this.processes.put(port, proc);
-        this.waitFor(socket);
+        this.configure(dist, port, this.waitFor(socket));
     }
 
     /**
@@ -159,9 +177,10 @@ final class Instances {
     /**
      * Wait for this file to become available.
      * @param socket The file to wait for
+     * @return The same socket, but ready for usage
      * @throws IOException If fails
      */
-    private void waitFor(final File socket) throws IOException {
+    private File waitFor(final File socket) throws IOException {
         final long start = System.currentTimeMillis();
         long age = 0;
         while (!socket.exists()) {
@@ -185,6 +204,44 @@ final class Instances {
             "socket %s is available after %[ms]s of waiting, MySQL is running",
             socket, age
         );
+        return socket;
+    }
+
+    /**
+     * Configure the running MySQL server.
+     * @param port The port it's running on
+     * @param socket Socket of it
+     * @throws IOException If fails
+     */
+    private void configure(final File dist, final int port, final File socket)
+        throws IOException {
+        new VerboseProcess(
+            this.builder(
+                "bin/mysqladmin",
+                String.format("--port=%d", port),
+                String.format("--user=%s", Instances.USER),
+                String.format("--socket=%s", socket),
+                "password",
+                Instances.PASSWORD
+            ).directory(dist)
+        ).stdout();
+        final Process process = this.builder(
+            "bin/mysql",
+            String.format("--port=%d", port),
+            String.format("--user=%s", Instances.USER),
+            String.format("--password=%s", Instances.PASSWORD),
+            String.format("--socket=%s", socket)
+        ).directory(dist).start();
+        final PrintWriter writer = new PrintWriter(
+            new OutputStreamWriter(
+                process.getOutputStream(), CharEncoding.UTF_8
+            )
+        );
+        writer.print("CREATE DATABASE ");
+        writer.print(Instances.DBNAME);
+        writer.println(";");
+        writer.close();
+        new VerboseProcess(process).stdout();
     }
 
     /**

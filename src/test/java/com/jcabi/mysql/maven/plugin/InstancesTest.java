@@ -66,11 +66,12 @@ public final class InstancesTest {
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
-                    "jdbc:mysql://localhost:%d/test?user=root&password=root",
+                    "jdbc:mysql://localhost:%d/root?user=root&password=root",
                     port
                 )
             );
             new JdbcSession(conn)
+                .autocommit(false)
                 .sql("CREATE TABLE foo (id INT)")
                 .execute()
                 .sql("INSERT INTO foo VALUES (1)")
