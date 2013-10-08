@@ -43,6 +43,7 @@ import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Running instances of MySQL.
@@ -67,14 +68,14 @@ final class Instances {
      * Start a new one at this port.
      * @param port The port to start at
      * @param dist Path to MySQL distribution
+     * @param target Where to keep temp data
      * @throws IOException If fails to start
      */
     public void start(final int port, @NotNull final File dist,
         @NotNull final File target) throws IOException {
-        new File(target, "data").mkdirs();
         new File(target, "temp").mkdirs();
         final File socket = new File(target, "mysql.sock");
-        final String[] cmds = new String[] {
+        final ProcessBuilder builder = this.builder(
             "bin/mysqld",
             "--basedir=.",
             "--lc-messages-dir=./share",
@@ -86,17 +87,12 @@ final class Instances {
             "--explicit_defaults_for_timestamp",
             "--log_warnings",
             "--binlog-ignore-db=data",
-            String.format("--datadir=%s/data", target),
+            String.format("--datadir=%s", this.data(dist, target)),
             String.format("--tmpdir=%s/temp", target),
             String.format("--socket=%s", socket),
             String.format("--pid-file=%s/mysql.pid", target),
-            String.format("--port=%d", port),
-        };
-        Logger.info(this, "$ %s", StringUtils.join(cmds, " "));
-        final ProcessBuilder builder = new ProcessBuilder()
-            .command(cmds)
-            .directory(dist)
-            .redirectErrorStream(true);
+            String.format("--port=%d", port)
+        ).directory(dist).redirectErrorStream(true);
         builder.environment().put("MYSQL_HOME", dist.getAbsolutePath());
         final Process proc = builder.start();
         final Thread thread = new Thread(
@@ -133,6 +129,34 @@ final class Instances {
     }
 
     /**
+     * Prepare and return data directory.
+     * @param dist Path to MySQL distribution
+     * @param target Where to create it
+     * @return Directory created
+     * @throws IOException If fails
+     */
+    private File data(final File dist, final File target) throws IOException {
+        final File dir = new File(target, "data");
+        if (dir.exists()) {
+            FileUtils.deleteDirectory(dir);
+            Logger.info(this, "deleted %s directory", dir);
+        }
+        if (dir.mkdirs()) {
+            Logger.info(this, "created %s directory", dir);
+        }
+        new VerboseProcess(
+            this.builder(
+                "scripts/mysql_install_db",
+                "--no-defaults",
+                "--basedir=.",
+                "--explicit_defaults_for_timestamp",
+                String.format("--datadir=%s", dir)
+            ).directory(dist)
+        ).stdout();
+        return dir;
+    }
+
+    /**
      * Wait for this file to become available.
      * @param socket The file to wait for
      * @throws IOException If fails
@@ -161,6 +185,16 @@ final class Instances {
             "socket %s is available after %[ms]s of waiting, MySQL is running",
             socket, age
         );
+    }
+
+    /**
+     * Make process builder with this commands.
+     * @param cmds Commands
+     * @return Process builder
+     */
+    private ProcessBuilder builder(final String... cmds) {
+        Logger.info(this, "$ %s", StringUtils.join(cmds, " "));
+        return new ProcessBuilder().command(cmds);
     }
 
 }
