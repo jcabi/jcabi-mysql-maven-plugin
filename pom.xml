@@ -176,7 +176,6 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -233,6 +232,7 @@
                                     <classifier>${mysql.classifier}</classifier>
                                     <type>zip</type>
                                     <outputDirectory>${project.build.directory}/mysql-dist</outputDirectory>
+                                    <overWrite>false</overWrite>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>

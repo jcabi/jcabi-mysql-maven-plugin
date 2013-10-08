@@ -68,6 +68,7 @@ public final class ClassifyMojo extends AbstractMojo {
      * Classifier to set.
      */
     @MojoParameter(
+        defaultValue = "mysql.classifier",
         required = true,
         readonly = false,
         description = "Maven property to set with platform classifier"

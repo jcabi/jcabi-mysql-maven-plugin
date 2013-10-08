@@ -74,6 +74,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      * Location of MySQL distribution.
      */
     @MojoParameter(
+        expression = "${project.build.directory}/mysql-dist",
         required = true,
         description = "MySQL distribution directory"
     )

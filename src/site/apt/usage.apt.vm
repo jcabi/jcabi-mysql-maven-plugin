@@ -39,7 +39,7 @@
 
 Usage of MySQL Maven Plugin for Integration Testing
 
-  First, add this supplementary plugin to your <<<pom.xml>>>:
+  First, add these two supplementary plugins to your <<<pom.xml>>>:
 
 +--
 <project>
@@ -62,80 +62,33 @@ Usage of MySQL Maven Plugin for Integration Testing
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.8</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.jcabi</groupId>
+                  <artifactId>mysql-dist</artifactId>
+                  <version>5.6.14</version>
+                  <classifier>${mysql.classifier}</classifier>
+                  <type>zip</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${project.build.directory}/mysql-dist</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   [...]
-</project>
-+--
-
-  Then, define the location of MySQL <<<tgz>>> distribution for
-  all target platforms:
-
-+--
-<project>
-  <profiles>
-    <profile>
-      <id>mysql-linux-x86</id>
-      <activation>
-        <os>
-          <family>unix</family>
-          <name>Linux</name>
-          <arch>x86</arch>
-        </os>
-      </activation>
-      <properties>
-        <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-linux-glibc2.5-i686.tar.gz</mysql.tgz>
-      </properties>
-    </profile>
-    <profile>
-      <id>linux-x64</id>
-      <activation>
-        <os>
-          <family>unix</family>
-          <name>Linux</name>
-          <arch>amd64</arch>
-        </os>
-      </activation>
-      <properties>
-        <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-linux-glibc2.5-x86_64.tar.gz</mysql.tgz>
-      </properties>
-    </profile>
-    <profile>
-      <id>windows-x86</id>
-      <activation>
-        <os>
-          <family>windows</family>
-          <arch>x86</arch>
-        </os>
-      </activation>
-      <properties>
-        <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-win32.zip</mysql.tgz>
-      </properties>
-    </profile>
-    <profile>
-      <id>windows-x64</id>
-      <activation>
-        <os>
-          <family>windows</family>
-          <arch>amd64</arch>
-        </os>
-      </activation>
-      <properties>
-        <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-winx64.zip</mysql.tgz>
-      </properties>
-    </profile>
-    <profile>
-      <id>mysql-osx</id>
-      <activation>
-        <os>
-          <family>mac</family>
-        </os>
-      </activation>
-      <properties>
-        <mysql.tgz>http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14-osx10.7-x86.tar.gz</mysql.tgz>
-      </properties>
-    </profile>
-  </profiles>
 </project>
 +--
 
@@ -151,11 +104,11 @@ Usage of MySQL Maven Plugin for Integration Testing
         <version>${project.version}</version>
         <configuration>
           <port>${sign}{mysql.port}</port>
-          <tgz>${sign}{mysql.tgz}</tgz>
         </configuration>
         <executions>
           <execution>
             <goals>
+              <goal>classify</goal>
               <goal>start</goal>
               <goal>stop</goal>
             </goals>
@@ -198,7 +151,9 @@ public class FooITCase {
   private static final String PORT = System.getProperty("mysql.port");
   @Test
   public void worksWithMysqlServer() {
-    // to be continued...
+    // make a connection to
+    // jdbc:mysql:localhost:XXX/root?user=root&password=root
+    // where XXX is the port number
   }
 }
 +--

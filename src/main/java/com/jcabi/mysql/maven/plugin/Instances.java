@@ -37,6 +37,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -44,9 +48,10 @@ import java.util.concurrent.TimeUnit;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.plexus.util.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 /**
  * Running instances of MySQL.
@@ -96,8 +101,8 @@ final class Instances {
         new File(target, "temp").mkdirs();
         final File socket = new File(target, "mysql.sock");
         final ProcessBuilder builder = this.builder(
+            dist,
             "bin/mysqld",
-            "--basedir=.",
             "--lc-messages-dir=./share",
             "--general_log",
             "--console",
@@ -112,7 +117,7 @@ final class Instances {
             String.format("--socket=%s", socket),
             String.format("--pid-file=%s/mysql.pid", target),
             String.format("--port=%d", port)
-        ).directory(dist).redirectErrorStream(true);
+        ).redirectErrorStream(true);
         builder.environment().put("MYSQL_HOME", dist.getAbsolutePath());
         final Process proc = builder.start();
         final Thread thread = new Thread(
@@ -129,7 +134,7 @@ final class Instances {
         thread.setDaemon(true);
         thread.start();
         this.processes.put(port, proc);
-        this.configure(dist, port, this.waitFor(socket));
+        this.configure(dist, port, this.waitFor(socket, port));
     }
 
     /**
@@ -164,14 +169,21 @@ final class Instances {
         if (dir.mkdirs()) {
             Logger.info(this, "created %s directory", dir);
         }
+        if (SystemUtils.IS_OS_WINDOWS) {
+            FileUtils.copyFile(
+                new File(dist, "my-default.ini"),
+                new File(dist, "support-files/my-default.cnf")
+            );
+        }
         new VerboseProcess(
             this.builder(
+                dist,
                 "scripts/mysql_install_db",
                 "--no-defaults",
-                "--basedir=.",
+                "--force",
                 "--explicit_defaults_for_timestamp",
                 String.format("--datadir=%s", dir)
-            ).directory(dist)
+            )
         ).stdout();
         return dir;
     }
@@ -179,13 +191,33 @@ final class Instances {
     /**
      * Wait for this file to become available.
      * @param socket The file to wait for
+     * @param port Port to wait for
      * @return The same socket, but ready for usage
      * @throws IOException If fails
      */
-    private File waitFor(final File socket) throws IOException {
+    private File waitFor(final File socket, final int port) throws IOException {
         final long start = System.currentTimeMillis();
         long age = 0;
-        while (!socket.exists()) {
+        while (true) {
+            if (socket.exists()) {
+                Logger.info(
+                    this,
+                    "socket %s is available after %[ms]s of waiting",
+                    socket, age
+                );
+                break;
+            }
+            try {
+                new Socket("127.0.0.1", port);
+                Logger.info(
+                    this,
+                    "port %s is available after %[ms]s of waiting",
+                    port, age
+                );
+                break;
+            } catch (IOException ex) {
+                assert ex != null;
+            }
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException ex) {
@@ -202,10 +234,6 @@ final class Instances {
                 );
             }
         }
-        Logger.format(
-            "socket %s is available after %[ms]s of waiting, MySQL is running",
-            socket, age
-        );
         return socket;
     }
 
@@ -220,21 +248,24 @@ final class Instances {
         throws IOException {
         new VerboseProcess(
             this.builder(
+                dist,
                 "bin/mysqladmin",
                 String.format("--port=%d", port),
                 String.format("--user=%s", Instances.USER),
                 String.format("--socket=%s", socket),
+                "--host=127.0.0.1",
                 "password",
                 Instances.PASSWORD
-            ).directory(dist)
+            )
         ).stdout();
         final Process process = this.builder(
+            dist,
             "bin/mysql",
             String.format("--port=%d", port),
             String.format("--user=%s", Instances.USER),
             String.format("--password=%s", Instances.PASSWORD),
             String.format("--socket=%s", socket)
-        ).directory(dist).start();
+        ).start();
         final PrintWriter writer = new PrintWriter(
             new OutputStreamWriter(
                 process.getOutputStream(), CharEncoding.UTF_8
@@ -249,12 +280,28 @@ final class Instances {
 
     /**
      * Make process builder with this commands.
+     * @param dist Distribution directory
+     * @param name Name of the cmd to run
      * @param cmds Commands
      * @return Process builder
      */
-    private ProcessBuilder builder(final String... cmds) {
-        Logger.info(this, "$ %s", StringUtils.join(cmds, " "));
-        return new ProcessBuilder().command(cmds);
+    private ProcessBuilder builder(final File dist, final String name,
+        final String... cmds) {
+        String label = name;
+        final Collection<String> commands = new LinkedList<String>();
+        if (!new File(dist, label).exists()) {
+            label = String.format("%s.exe", name);
+            if (!new File(dist, label).exists()) {
+                label = String.format("%s.pl", name);
+                commands.add("perl");
+            }
+        }
+        commands.add(new File(dist, label).getAbsolutePath());
+        commands.addAll(Arrays.asList(cmds));
+        Logger.info(this, "$ %s", StringUtils.join(commands, " "));
+        return new ProcessBuilder()
+            .command(commands.toArray(new String[commands.size()]))
+            .directory(dist);
     }
 
 }
