@@ -30,6 +30,7 @@
 package com.jcabi.mysql.maven.plugin;
 
 import com.jcabi.aspects.Loggable;
+import com.jcabi.log.Logger;
 import com.jcabi.log.VerboseProcess;
 import com.jcabi.log.VerboseRunnable;
 import java.io.File;
@@ -37,9 +38,11 @@ import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Running instances of MySQL.
@@ -69,27 +72,31 @@ final class Instances {
     public void start(final int port, @NotNull final File dist,
         @NotNull final File target) throws IOException {
         new File(target, "data").mkdirs();
-        final ProcessBuilder builder = new ProcessBuilder().command(
-            new String[] {
-                "bin/mysqld",
-                "--basedir=.",
-                "--lc-messages-dir=./share",
-                "--general_log",
-                "--innodb_use_native_aio=0",
-                "--innodb_buffer_pool_size=64M",
-                "--innodb_log_file_size=64M",
-                "--explicit_defaults_for_timestamp",
-                String.format("--general_log_file=%s/mysql.log", target),
-                String.format("--log_error=%s/mysql.log", target),
-                "--log_warnings",
-                "--binlog-ignore-db=data",
-                String.format("--datadir=%s/data", target),
-                String.format("--tmpdir=%s/temp", target),
-                String.format("--socket=%s/mysql.sock", target),
-                String.format("--pid-file=%s/mysql.pid", target),
-                String.format("--port=%d", port),
-            }
-        ).directory(dist).redirectErrorStream(true);
+        new File(target, "temp").mkdirs();
+        final File socket = new File(target, "mysql.sock");
+        final String[] cmds = new String[] {
+            "bin/mysqld",
+            "--basedir=.",
+            "--lc-messages-dir=./share",
+            "--general_log",
+            "--console",
+            "--innodb_use_native_aio=0",
+            "--innodb_buffer_pool_size=64M",
+            "--innodb_log_file_size=64M",
+            "--explicit_defaults_for_timestamp",
+            "--log_warnings",
+            "--binlog-ignore-db=data",
+            String.format("--datadir=%s/data", target),
+            String.format("--tmpdir=%s/temp", target),
+            String.format("--socket=%s", socket),
+            String.format("--pid-file=%s/mysql.pid", target),
+            String.format("--port=%d", port),
+        };
+        Logger.info(this, "$ %s", StringUtils.join(cmds, " "));
+        final ProcessBuilder builder = new ProcessBuilder()
+            .command(cmds)
+            .directory(dist)
+            .redirectErrorStream(true);
         builder.environment().put("MYSQL_HOME", dist.getAbsolutePath());
         final Process proc = builder.start();
         final Thread thread = new Thread(
@@ -106,6 +113,7 @@ final class Instances {
         thread.setDaemon(true);
         thread.start();
         this.processes.put(port, proc);
+        this.waitFor(socket);
     }
 
     /**
@@ -122,6 +130,37 @@ final class Instances {
             );
         }
         proc.destroy();
+    }
+
+    /**
+     * Wait for this file to become available.
+     * @param socket The file to wait for
+     * @throws IOException If fails
+     */
+    private void waitFor(final File socket) throws IOException {
+        final long start = System.currentTimeMillis();
+        long age = 0;
+        while (!socket.exists()) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException(ex);
+            }
+            age = System.currentTimeMillis() - start;
+            if (age > TimeUnit.MINUTES.toMillis(1)) {
+                throw new IOException(
+                    Logger.format(
+                        "socket %s is not available after %[ms]s of waiting",
+                        socket, age
+                    )
+                );
+            }
+        }
+        Logger.format(
+            "socket %s is available after %[ms]s of waiting, MySQL is running",
+            socket, age
+        );
     }
 
 }

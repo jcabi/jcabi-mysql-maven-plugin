@@ -35,7 +35,6 @@ import java.io.File;
 import java.net.ServerSocket;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 /**
@@ -63,7 +62,6 @@ public final class InstancesTest {
             port, new File(InstancesTest.DIST),
             Files.createTempDir()
         );
-        TimeUnit.MINUTES.sleep(1);
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
