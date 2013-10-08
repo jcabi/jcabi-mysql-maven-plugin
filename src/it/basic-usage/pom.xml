@@ -35,6 +35,20 @@
     <name>test</name>
     <version>1.0</version>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.26</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-jdbc</artifactId>
+            <version>0.10</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
@@ -94,6 +108,22 @@
                             <goal>start</goal>
                             <goal>stop</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <failsafe.mysql.port>${mysql.port}</failsafe.mysql.port>
+                            </systemPropertyVariables>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
