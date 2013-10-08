@@ -29,5 +29,5 @@
  */
 
 def log = new File(basedir, 'build.log')
-assert log.text.contains('start (jcabi-mysql-local) @ jcabi-test')
-assert log.text.contains('stop (jcabi-mysql-local) @ jcabi-test')
+assert log.text.contains('Installing MySQL system tables...')
+assert log.text.contains('InnoDB: Completed initialization of buffer pool')

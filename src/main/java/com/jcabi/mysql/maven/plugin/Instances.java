@@ -54,6 +54,8 @@ import org.codehaus.plexus.util.FileUtils;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.1
+ * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * @checkstyle MultipleStringLiterals (500 lines)
  */
 @ToString
 @EqualsAndHashCode(of = "processes")
@@ -209,6 +211,7 @@ final class Instances {
 
     /**
      * Configure the running MySQL server.
+     * @param dist Directory with MySQL distribution
      * @param port The port it's running on
      * @param socket Socket of it
      * @throws IOException If fails
