@@ -143,6 +143,16 @@ final class Instances {
         thread.start();
         this.processes.put(port, proc);
         this.configure(dist, port, this.waitFor(socket, port));
+        Runtime.getRuntime().addShutdownHook(
+            new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Instances.this.stop(port);
+                    }
+                }
+            )
+        );
     }
 
     /**
