@@ -56,6 +56,8 @@ import org.apache.commons.lang3.SystemUtils;
 /**
  * Running instances of MySQL.
  *
+ * <p>The class is thread-safe.
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.1
@@ -98,6 +100,51 @@ final class Instances {
      */
     public void start(final int port, @NotNull final File dist,
         @NotNull final File target) throws IOException {
+        synchronized (this.processes) {
+            if (this.processes.containsKey(port)) {
+                throw new IllegalArgumentException(
+                    String.format("port %d is already busy", port)
+                );
+            }
+            final Process proc = this.process(port, dist, target);
+            this.processes.put(port, proc);
+            Runtime.getRuntime().addShutdownHook(
+                new Thread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            Instances.this.stop(port);
+                        }
+                    }
+                )
+            );
+        }
+    }
+
+    /**
+     * Stop a running one at this port.
+     * @param port The port to stop at
+     */
+    public void stop(final int port) {
+        synchronized (this.processes) {
+            final Process proc = this.processes.get(port);
+            if (proc != null) {
+                proc.destroy();
+                this.processes.remove(proc);
+            }
+        }
+    }
+
+    /**
+     * Start a new process.
+     * @param port The port to start at
+     * @param dist Path to MySQL distribution
+     * @param target Where to keep temp data
+     * @return Process started
+     * @throws IOException If fails to start
+     */
+    private Process process(final int port, final File dist, final File target)
+        throws IOException {
         if (target.exists()) {
             FileUtils.deleteDirectory(target);
             Logger.info(this, "deleted %s directory", target);
@@ -140,34 +187,8 @@ final class Instances {
         );
         thread.setDaemon(true);
         thread.start();
-        this.processes.put(port, proc);
         this.configure(dist, port, this.waitFor(socket, port));
-        Runtime.getRuntime().addShutdownHook(
-            new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        Instances.this.stop(port);
-                    }
-                }
-            )
-        );
-    }
-
-    /**
-     * Stop a running one at this port.
-     * @param port The port to stop at
-     */
-    public void stop(final int port) {
-        final Process proc = this.processes.get(port);
-        if (proc == null) {
-            throw new IllegalArgumentException(
-                String.format(
-                    "No MySQL instances running on port %d", port
-                )
-            );
-        }
-        proc.destroy();
+        return proc;
     }
 
     /**

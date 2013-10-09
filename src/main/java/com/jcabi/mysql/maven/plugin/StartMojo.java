@@ -35,6 +35,7 @@ import lombok.ToString;
 import org.apache.maven.plugin.MojoFailureException;
 import org.jfrog.maven.annomojo.annotations.MojoGoal;
 import org.jfrog.maven.annomojo.annotations.MojoPhase;
+import org.jfrog.maven.annomojo.annotations.MojoThreadSafe;
 
 /**
  * Starts MySQL.
@@ -45,6 +46,7 @@ import org.jfrog.maven.annomojo.annotations.MojoPhase;
  */
 @ToString
 @EqualsAndHashCode(callSuper = false)
+@MojoThreadSafe
 @MojoGoal("start")
 @MojoPhase("pre-integration-test")
 public final class StartMojo extends AbstractMysqlMojo {

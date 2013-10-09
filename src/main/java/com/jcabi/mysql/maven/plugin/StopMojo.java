@@ -34,6 +34,7 @@ import lombok.ToString;
 import org.apache.maven.plugin.MojoFailureException;
 import org.jfrog.maven.annomojo.annotations.MojoGoal;
 import org.jfrog.maven.annomojo.annotations.MojoPhase;
+import org.jfrog.maven.annomojo.annotations.MojoThreadSafe;
 
 /**
  * Stops MySQL.
@@ -44,6 +45,7 @@ import org.jfrog.maven.annomojo.annotations.MojoPhase;
  */
 @ToString
 @EqualsAndHashCode(callSuper = false)
+@MojoThreadSafe
 @MojoGoal("stop")
 @MojoPhase("post-integration-test")
 public final class StopMojo extends AbstractMysqlMojo {

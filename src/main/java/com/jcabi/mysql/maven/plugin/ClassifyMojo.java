@@ -39,6 +39,7 @@ import org.apache.maven.project.MavenProject;
 import org.jfrog.maven.annomojo.annotations.MojoGoal;
 import org.jfrog.maven.annomojo.annotations.MojoParameter;
 import org.jfrog.maven.annomojo.annotations.MojoPhase;
+import org.jfrog.maven.annomojo.annotations.MojoThreadSafe;
 
 /**
  * Classify current platform.
@@ -49,6 +50,7 @@ import org.jfrog.maven.annomojo.annotations.MojoPhase;
  */
 @ToString
 @EqualsAndHashCode(callSuper = false)
+@MojoThreadSafe
 @MojoGoal("classify")
 @MojoPhase("initialize")
 public final class ClassifyMojo extends AbstractMojo {
