@@ -161,7 +161,6 @@ final class Instances {
             "--console",
             "--innodb_buffer_pool_size=64M",
             "--innodb_log_file_size=64M",
-            "--explicit_defaults_for_timestamp",
             "--log_warnings",
             String.format("--binlog-ignore-db=%s", Instances.DBNAME),
             String.format("--basedir=%s", dist),
@@ -212,7 +211,6 @@ final class Instances {
                 "scripts/mysql_install_db",
                 "--no-defaults",
                 "--force",
-                "--explicit_defaults_for_timestamp",
                 String.format("--datadir=%s", dir)
             )
         ).stdout();

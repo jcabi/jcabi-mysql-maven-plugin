@@ -162,6 +162,10 @@ public class FooITCase {
 
   User name, database name and password are always <<<"root">>>.
 
+  See the
+  {{{http://repo.jcabi.com/releases/com/jcabi/mysql-dist/}list of MySQL distributions}}
+  supported out-of-the-box.
+
 * Cutting Edge Version
 
   If you want to use current version of the product, you can do it with
