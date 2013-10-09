@@ -68,7 +68,8 @@
                         </goals>
                         <configuration>
                             <portNames>
-                                <portName>mysql.port</portName>
+                                <portName>mysql.first</portName>
+                                <portName>mysql.second</portName>
                             </portNames>
                         </configuration>
                     </execution>
@@ -109,11 +110,32 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <id>classify-platform</id>
                         <goals>
                             <goal>classify</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>start-stop-first</id>
+                        <goals>
                             <goal>start</goal>
                             <goal>stop</goal>
                         </goals>
+                        <configuration>
+                            <port>${mysql.first}</port>
+                            <data>${project.build.directory}/mysql-data-first</data>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>start-stop-second</id>
+                        <goals>
+                            <goal>start</goal>
+                            <goal>stop</goal>
+                        </goals>
+                        <configuration>
+                            <port>${mysql.second}</port>
+                            <data>${project.build.directory}/mysql-data-second</data>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -136,7 +158,8 @@
                         </goals>
                         <configuration>
                             <systemPropertyVariables>
-                                <failsafe.mysql.port>${mysql.port}</failsafe.mysql.port>
+                                <failsafe.mysql.first>${mysql.first}</failsafe.mysql.first>
+                                <failsafe.mysql.second>${mysql.second}</failsafe.mysql.second>
                             </systemPropertyVariables>
                         </configuration>
                     </execution>

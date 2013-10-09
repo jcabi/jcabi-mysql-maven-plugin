@@ -80,6 +80,15 @@ public final class ClassifyMojo extends AbstractMojo {
      */
     @Override
     public void execute() throws MojoFailureException {
+        if (this.project.getProperties().getProperty(this.classifier) != null) {
+            throw new MojoFailureException(
+                String.format(
+                    "Maven property ${%s} already set to \"%s\"",
+                    this.classifier,
+                    this.project.getProperties().getProperty(this.classifier)
+                )
+            );
+        }
         final String[] words = System.getProperty("os.name").split(" ");
         final String value = String.format(
             "%s-%s",
