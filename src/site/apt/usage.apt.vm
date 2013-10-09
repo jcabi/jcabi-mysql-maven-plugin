@@ -102,16 +102,18 @@ Usage of MySQL Maven Plugin for Integration Testing
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi-mysql-maven-plugin</artifactId>
         <version>${project.version}</version>
-        <configuration>
-          <port>${sign}{mysql.port}</port>
-        </configuration>
         <executions>
           <execution>
+            <id>mysql-test</id>
             <goals>
               <goal>classify</goal>
               <goal>start</goal>
               <goal>stop</goal>
             </goals>
+            <configuration>
+              <port>${sign}{mysql.port}</port>
+              <data>${sign}{project.build.directory}/mysql-data</data>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -157,6 +159,8 @@ public class FooITCase {
   }
 }
 +--
+
+  User name, database name and password are always <<<"root">>>.
 
 * Cutting Edge Version
 
