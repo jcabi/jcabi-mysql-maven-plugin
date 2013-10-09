@@ -98,6 +98,13 @@ final class Instances {
      */
     public void start(final int port, @NotNull final File dist,
         @NotNull final File target) throws IOException {
+        if (target.exists()) {
+            FileUtils.deleteDirectory(target);
+            Logger.info(this, "deleted %s directory", target);
+        }
+        if (target.mkdirs()) {
+            Logger.info(this, "created %s directory", target);
+        }
         new File(target, "temp").mkdirs();
         final File socket = new File(target, "mysql.sock");
         final ProcessBuilder builder = this.builder(
@@ -163,13 +170,6 @@ final class Instances {
      */
     private File data(final File dist, final File target) throws IOException {
         final File dir = new File(target, "data");
-        if (dir.exists()) {
-            FileUtils.deleteDirectory(dir);
-            Logger.info(this, "deleted %s directory", dir);
-        }
-        if (dir.mkdirs()) {
-            Logger.info(this, "created %s directory", dir);
-        }
         if (SystemUtils.IS_OS_WINDOWS) {
             FileUtils.copyFile(
                 new File(dist, "my-default.ini"),
