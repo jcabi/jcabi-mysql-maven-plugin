@@ -110,20 +110,19 @@ final class Instances {
         final ProcessBuilder builder = this.builder(
             dist,
             "bin/mysqld",
-            "--lc-messages-dir=./share",
             "--general_log",
             "--console",
-            "--innodb_use_native_aio=0",
             "--innodb_buffer_pool_size=64M",
             "--innodb_log_file_size=64M",
             "--explicit_defaults_for_timestamp",
             "--log_warnings",
-            "--binlog-ignore-db=data",
+            String.format("--binlog-ignore-db=%s", Instances.DBNAME),
             String.format("--basedir=%s", dist),
+            String.format("--lc-messages-dir=%s", new File(dist, "share")),
             String.format("--datadir=%s", this.data(dist, target)),
-            String.format("--tmpdir=%s/temp", target),
+            String.format("--tmpdir=%s", new File(target, "temp")),
             String.format("--socket=%s", socket),
-            String.format("--pid-file=%s/mysql.pid", target),
+            String.format("--pid-file=%s", new File(target, "mysql.pid")),
             String.format("--port=%d", port)
         ).redirectErrorStream(true);
         builder.environment().put("MYSQL_HOME", dist.getAbsolutePath());
