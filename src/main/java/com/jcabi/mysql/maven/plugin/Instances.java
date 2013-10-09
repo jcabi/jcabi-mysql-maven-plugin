@@ -199,11 +199,13 @@ final class Instances {
      */
     private File data(final File dist, final File target) throws IOException {
         final File dir = new File(target, "data");
+        final File cnf = new File(dist, "support-files/my-default.cnf");
         if (SystemUtils.IS_OS_WINDOWS) {
-            FileUtils.copyFile(
-                new File(dist, "my-default.ini"),
-                new File(dist, "support-files/my-default.cnf")
-            );
+            if (new File(dist, "my-huge.ini").exists()) {
+                FileUtils.copyFile(new File(dist, "my-small.ini"), cnf);
+            } else {
+                FileUtils.copyFile(new File(dist, "my-default.ini"), cnf);
+            }
         }
         new VerboseProcess(
             this.builder(
