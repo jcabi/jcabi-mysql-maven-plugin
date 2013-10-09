@@ -112,6 +112,7 @@ final class Instances {
             "--explicit_defaults_for_timestamp",
             "--log_warnings",
             "--binlog-ignore-db=data",
+            String.format("--basedir=%s", dist),
             String.format("--datadir=%s", this.data(dist, target)),
             String.format("--tmpdir=%s/temp", target),
             String.format("--socket=%s", socket),
@@ -207,16 +208,13 @@ final class Instances {
                 );
                 break;
             }
-            try {
-                new Socket("127.0.0.1", port);
+            if (Instances.isOpen(port)) {
                 Logger.info(
                     this,
                     "port %s is available after %[ms]s of waiting",
                     port, age
                 );
                 break;
-            } catch (IOException ex) {
-                assert ex != null;
             }
             try {
                 TimeUnit.SECONDS.sleep(1);
@@ -302,6 +300,22 @@ final class Instances {
         return new ProcessBuilder()
             .command(commands.toArray(new String[commands.size()]))
             .directory(dist);
+    }
+
+    /**
+     * Port is open.
+     * @param port The port to check
+     * @return TRUE if it's open
+     */
+    private static boolean isOpen(final int port) {
+        boolean open;
+        try {
+            new Socket((String) null, port);
+            open = true;
+        } catch (IOException ex) {
+            open = false;
+        }
+        return open;
     }
 
 }

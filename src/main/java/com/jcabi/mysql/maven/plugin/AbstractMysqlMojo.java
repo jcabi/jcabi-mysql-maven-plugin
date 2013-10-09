@@ -91,16 +91,6 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     private transient File data;
 
     /**
-     * Directory for TGZ unpacking.
-     */
-    @MojoParameter(
-        defaultValue = "${project.build.directory}/mysql-local",
-        required = true,
-        description = "Directory to unpack TGZ"
-    )
-    private transient File temp;
-
-    /**
      * Set skip option.
      * @param skp Shall we skip execution?
      */

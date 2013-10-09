@@ -70,16 +70,20 @@ public final class InstancesTest {
                     port
                 )
             );
-            new JdbcSession(conn)
-                .autocommit(false)
-                .sql("CREATE TABLE foo (id INT)")
-                .execute()
-                .sql("INSERT INTO foo VALUES (1)")
-                .execute()
-                .sql("SELECT COUNT(*) FROM foo")
-                .execute()
-                .sql("DROP TABLE foo")
-                .execute();
+            try {
+                new JdbcSession(conn)
+                    .autocommit(false)
+                    .sql("CREATE TABLE foo (id INT)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES (1)")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .execute()
+                    .sql("DROP TABLE foo")
+                    .execute();
+            } finally {
+                conn.close();
+            }
         } finally {
             instances.stop(port);
         }
