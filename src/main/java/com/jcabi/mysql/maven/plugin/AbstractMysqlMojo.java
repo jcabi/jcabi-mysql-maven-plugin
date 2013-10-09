@@ -64,7 +64,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      * Port to use.
      */
     @MojoParameter(
-        defaultValue = "10101",
+        defaultValue = "3306",
         required = false,
         description = "TCP port to start at"
     )
@@ -127,7 +127,9 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     public File distDir() throws MojoFailureException {
         if (!this.dist.exists()) {
             throw new MojoFailureException(
-                String.format("file doesn't exist: %s", this.dist)
+                String.format(
+                    "MySQL distribution directory doesn't exist: %s", this.dist
+                )
             );
         }
         return this.dist;
