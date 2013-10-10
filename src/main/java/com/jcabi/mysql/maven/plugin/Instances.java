@@ -162,6 +162,7 @@ final class Instances {
             "--innodb_buffer_pool_size=64M",
             "--innodb_log_file_size=64M",
             "--log_warnings",
+            "--innodb_use_native_aio=0",
             String.format("--binlog-ignore-db=%s", Instances.DBNAME),
             String.format("--basedir=%s", dist),
             String.format("--lc-messages-dir=%s", new File(dist, "share")),
@@ -213,6 +214,7 @@ final class Instances {
                 "scripts/mysql_install_db",
                 "--no-defaults",
                 "--force",
+                "--innodb_use_native_aio=0",
                 String.format("--datadir=%s", dir)
             )
         ).stdout();

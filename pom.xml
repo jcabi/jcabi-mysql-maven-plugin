@@ -214,15 +214,12 @@
             <plugin>
                 <groupId>com.jcabi</groupId>
                 <artifactId>jcabi-mysql-maven-plugin</artifactId>
-                <version>0.1</version>
+                <version>0.2</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>classify</goal>
                         </goals>
-                        <configuration>
-                            <classifier>mysql.classifier</classifier>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

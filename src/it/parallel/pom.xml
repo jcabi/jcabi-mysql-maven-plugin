@@ -118,7 +118,6 @@
                 <artifactId>jcabi-mysql-maven-plugin</artifactId>
                 <version>@project.version@</version>
                 <configuration>
-                    <classifier>mysql.classifier</classifier>
                     <port>${mysql.port}</port>
                     <dist>${project.build.directory}/mysql-dist</dist>
                 </configuration>
