@@ -91,7 +91,12 @@ public final class ClassifyMojo extends AbstractMojo {
         if (existing == null) {
             this.project.getProperties().setProperty(this.classifier, value);
             Logger.info(this, "${%s} set to \"%s\"", this.classifier, value);
-        } else if (!existing.equals(value)) {
+        } else if (existing.equals(value)) {
+            Logger.info(
+                this, "${%s} already set to \"%s\"",
+                this.classifier, value
+            );
+        } else {
             throw new MojoFailureException(
                 String.format(
                     // @checkstyle LineLength (1 line)
