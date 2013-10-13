@@ -39,17 +39,10 @@
 
 Usage of MySQL Maven Plugin for Integration Testing
 
-  First, add these two supplementary plugins to your <<<pom.xml>>>
-  and a Sonatype repository:
+  First, add these two supplementary plugins to your <<<pom.xml>>>:
 
 +--
 <project>
-  <repositories>
-    <repository>
-      <id>oss.sonatype.org</id>
-      <url>https://oss.sonatype.org/content/groups/public</url>
-    </repository>
-  </repositories>
   <build>
     <plugins>
       <plugin>
@@ -170,7 +163,7 @@ public class FooITCase {
   User name, database name and password are always <<<"root">>>.
 
   See the
-  {{{https://oss.sonatype.org/content/groups/public/com/jcabi/mysql-dist/}list of MySQL distributions}}
+  {{{http://repo1.maven.org/maven2/com/jcabi/mysql-dist/}list of MySQL distributions}}
   supported out-of-the-box.
 
 * Cutting Edge Version
