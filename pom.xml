@@ -72,7 +72,6 @@
         <dependency>
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-jdbc</artifactId>
-            <version>0.10</version>
             <scope>test</scope>
         </dependency>
         <dependency>
