@@ -204,6 +204,9 @@
                         <goals>
                             <goal>classify</goal>
                         </goals>
+                        <configuration>
+                            <classifier>mysql.classifier</classifier>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
