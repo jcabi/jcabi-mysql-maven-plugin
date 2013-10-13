@@ -35,11 +35,10 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.jfrog.maven.annomojo.annotations.MojoGoal;
-import org.jfrog.maven.annomojo.annotations.MojoParameter;
-import org.jfrog.maven.annomojo.annotations.MojoPhase;
-import org.jfrog.maven.annomojo.annotations.MojoThreadSafe;
 
 /**
  * Classify current platform.
@@ -50,30 +49,29 @@ import org.jfrog.maven.annomojo.annotations.MojoThreadSafe;
  */
 @ToString
 @EqualsAndHashCode(callSuper = false)
-@MojoThreadSafe
-@MojoGoal("classify")
-@MojoPhase("initialize")
+@Mojo(
+    threadSafe = true, name = "classify",
+    defaultPhase = LifecyclePhase.INITIALIZE
+)
 public final class ClassifyMojo extends AbstractMojo {
 
     /**
      * Maven project.
      */
-    @MojoParameter(
-        expression = "${project}",
+    @Parameter(
+        defaultValue = "${project}",
         required = true,
-        readonly = true,
-        description = "Maven project"
+        readonly = true
     )
     private transient MavenProject project;
 
     /**
      * Classifier to set.
      */
-    @MojoParameter(
+    @Parameter(
         defaultValue = "mysql.classifier",
         required = true,
-        readonly = false,
-        description = "Maven property to set with platform classifier"
+        readonly = false
     )
     private transient String classifier;
 

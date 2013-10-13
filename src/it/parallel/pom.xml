@@ -36,8 +36,8 @@
     <version>1.0-SNAPSHOT</version>
     <repositories>
         <repository>
-            <id>jcabi-mysql-maven-plugin</id>
-            <url>http://repo.jcabi.com/releases</url>
+            <id>oss.sonatype.org</id>
+            <url>https://oss.sonatype.org/content/groups/public</url>
         </repository>
     </repositories>
     <dependencies>

@@ -36,7 +36,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
-import org.jfrog.maven.annomojo.annotations.MojoParameter;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.slf4j.impl.StaticLoggerBinder;
 
 /**
@@ -53,40 +53,36 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     /**
      * Shall we skip execution?
      */
-    @MojoParameter(
+    @Parameter(
         defaultValue = "false",
-        required = false,
-        description = "Skips execution"
+        required = false
     )
     private transient boolean skip;
 
     /**
      * Port to use.
      */
-    @MojoParameter(
+    @Parameter(
         defaultValue = "3306",
-        required = false,
-        description = "TCP port to start at"
+        required = false
     )
     private transient int port;
 
     /**
      * Location of MySQL distribution.
      */
-    @MojoParameter(
-        expression = "${project.build.directory}/mysql-dist",
-        required = true,
-        description = "MySQL distribution directory"
+    @Parameter(
+        defaultValue = "${project.build.directory}/mysql-dist",
+        required = true
     )
     private transient File dist;
 
     /**
      * Location of MySQL data.
      */
-    @MojoParameter(
-        expression = "${project.build.directory}/mysql-data",
-        required = true,
-        description = "MySQL data directory"
+    @Parameter(
+        defaultValue = "${project.build.directory}/mysql-data",
+        required = true
     )
     private transient File data;
 
