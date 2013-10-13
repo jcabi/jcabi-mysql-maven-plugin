@@ -80,21 +80,23 @@ public final class ClassifyMojo extends AbstractMojo {
      */
     @Override
     public void execute() throws MojoFailureException {
-        if (this.project.getProperties().getProperty(this.classifier) != null) {
-            throw new MojoFailureException(
-                String.format(
-                    "Maven property ${%s} already set to \"%s\"",
-                    this.classifier,
-                    this.project.getProperties().getProperty(this.classifier)
-                )
-            );
-        }
         final String[] words = System.getProperty("os.name").split(" ");
         final String value = String.format(
             "%s-%s",
             words[0].toLowerCase(Locale.ENGLISH),
             System.getProperty("os.arch").toLowerCase(Locale.ENGLISH)
         );
+        final String existing = this.project.getProperties()
+            .getProperty(this.classifier);
+        if (existing != null && !existing.equals(value)) {
+            throw new MojoFailureException(
+                String.format(
+                    // @checkstyle LineLength (1 line)
+                    "Maven property ${%s} already set to \"%s\", can't change to \"%s\"",
+                    this.classifier, existing, value
+                )
+            );
+        }
         this.project.getProperties().setProperty(this.classifier, value);
         Logger.info(this, "${%s} set to \"%s\"", this.classifier, value);
     }

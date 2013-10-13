@@ -198,7 +198,7 @@
             <plugin>
                 <groupId>com.jcabi</groupId>
                 <artifactId>jcabi-mysql-maven-plugin</artifactId>
-                <version>0.2</version>
+                <version>0.1</version>
                 <executions>
                     <execution>
                         <goals>
