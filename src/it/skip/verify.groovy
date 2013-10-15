@@ -27,63 +27,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jcabi;
 
-import com.jcabi.jdbc.JdbcSession;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-
-/**
- * Test case for {@link Foo}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
- */
-public final class FooITCase {
-
-    /**
-     * MySQL port.
-     */
-    private static final String PORT =
-        System.getProperty("failsafe.mysql.port");
-
-    /**
-     * It is not a default MySQL port.
-     * @throws Exception If something is wrong
-     */
-    @Test
-    public void itIsCustomMySqlPort() throws Exception {
-        MatcherAssert.assertThat(
-            FooITCase.PORT,
-            Matchers.not(Matchers.equalTo("3306"))
-        );
-    }
-
-    /**
-     * MySQL works.
-     * @throws Exception If something is wrong
-     */
-    @Test
-    public void basicMySqlManipulations() throws Exception {
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        final Connection conn = DriverManager.getConnection(
-            String.format(
-                "jdbc:mysql://localhost:%s/root?user=root&password=root",
-                FooITCase.PORT
-            )
-        );
-        new JdbcSession(conn)
-            .autocommit(false)
-            .sql("CREATE TABLE foo (id INT)")
-            .execute()
-            .sql("INSERT INTO foo VALUES (1)")
-            .execute()
-            .sql("SELECT COUNT(*) FROM foo")
-            .execute()
-            .sql("DROP TABLE foo")
-            .execute();
-    }
-
-}
+def log = new File(basedir, 'build.log')
+assert log.text.contains('execution skipped')

@@ -1,4 +1,5 @@
-/**
+<?xml version="1.0"?>
+<!--
  * Copyright (c) 2012-2013, JCabi.com
  * All rights reserved.
  *
@@ -26,64 +27,38 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-package com.jcabi;
-
-import com.jcabi.jdbc.JdbcSession;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-
-/**
- * Test case for {@link Foo}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
- */
-public final class FooITCase {
-
-    /**
-     * MySQL port.
-     */
-    private static final String PORT =
-        System.getProperty("failsafe.mysql.port");
-
-    /**
-     * It is not a default MySQL port.
-     * @throws Exception If something is wrong
-     */
-    @Test
-    public void itIsCustomMySqlPort() throws Exception {
-        MatcherAssert.assertThat(
-            FooITCase.PORT,
-            Matchers.not(Matchers.equalTo("3306"))
-        );
-    }
-
-    /**
-     * MySQL works.
-     * @throws Exception If something is wrong
-     */
-    @Test
-    public void basicMySqlManipulations() throws Exception {
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        final Connection conn = DriverManager.getConnection(
-            String.format(
-                "jdbc:mysql://localhost:%s/root?user=root&password=root",
-                FooITCase.PORT
-            )
-        );
-        new JdbcSession(conn)
-            .autocommit(false)
-            .sql("CREATE TABLE foo (id INT)")
-            .execute()
-            .sql("INSERT INTO foo VALUES (1)")
-            .execute()
-            .sql("SELECT COUNT(*) FROM foo")
-            .execute()
-            .sql("DROP TABLE foo")
-            .execute();
-    }
-
-}
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.jcabi</groupId>
+    <artifactId>skip</artifactId>
+    <name>skip</name>
+    <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.26</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.jcabi</groupId>
+                <artifactId>jcabi-mysql-maven-plugin</artifactId>
+                <version>@project.version@</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
