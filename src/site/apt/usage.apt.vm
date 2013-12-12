@@ -1,5 +1,5 @@
  ------
- Usage
+ Usage of MySQL Maven Plugin for Integration Testing
  ------
  Yegor Bugayenko
  ------
@@ -122,6 +122,10 @@ Usage of MySQL Maven Plugin for Integration Testing
   [...]
 </project>
 +--
+
+  Make sure that you have <<<perl>>> installed on your build machine. It is
+  required by MySQL scripts, which pre-configure an empty database
+  before it can be used.
 
   Now you need to know this temporary port number in your integration tests:
 
