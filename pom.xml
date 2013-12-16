@@ -55,8 +55,8 @@
     </scm>
     <distributionManagement>
         <site>
-            <id>www.jcabi.com</id>
-            <url>s3://www.jcabi.com/jcabi-mysql-maven-plugin</url>
+            <id>mysql.jcabi.com</id>
+            <url>http://mysql.jcabi.com/</url>
         </site>
     </distributionManagement>
     <properties>

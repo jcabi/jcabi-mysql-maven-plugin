@@ -170,6 +170,13 @@ public class FooITCase {
   {{{http://repo1.maven.org/maven2/com/jcabi/mysql-dist/}list of MySQL distributions}}
   supported out-of-the-box.
 
+  Since version 0.4 you can start MySQL and keep it running in
+  foreground, until Ctrl-C is hit:
+
++--
+$ mvn jcabi-mysql:run
++--
+
 * Cutting Edge Version
 
   If you want to use current version of the product, you can do it with

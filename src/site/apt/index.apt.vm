@@ -44,8 +44,8 @@ MySQL Maven Plugin for Integration Testing
   on <<<post-integration-test>>>.
 
   The plugin can work with any
-  version of MySQL (including MariaDB). All you need to do in order to
-  point it to another version is to provide a custom Maven dependency
+  version of MySQL (including MariaDB). All you need to do, in order to
+  point it to another version, is to provide a custom Maven dependency
   as a ZIP archive.
 
   {{{./usage.html}Usage}} page explains how to get it up and running.
