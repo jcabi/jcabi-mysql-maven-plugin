@@ -107,6 +107,16 @@ final class Instances {
             }
             final Process proc = this.process(port, dist, target);
             this.processes.put(port, proc);
+            Runtime.getRuntime().addShutdownHook(
+                new Thread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            Instances.this.stop(port);
+                        }
+                    }
+                )
+            );
         }
     }
 

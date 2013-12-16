@@ -31,6 +31,7 @@ package com.jcabi.mysql.maven.plugin;
 
 import com.jcabi.log.Logger;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.maven.plugin.MojoFailureException;
@@ -69,6 +70,13 @@ public final class RunMojo extends AbstractMysqlMojo {
             Instances.USER, Instances.PASSWORD
         );
         Logger.info(this, "Press Ctrl-C to stop...");
+        while (true) {
+            try {
+                TimeUnit.MINUTES.sleep(1L);
+            } catch (InterruptedException ex) {
+                throw new MojoFailureException("MySQL terminated", ex);
+            }
+        }
     }
 
 }
