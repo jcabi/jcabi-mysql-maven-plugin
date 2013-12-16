@@ -1,6 +1,6 @@
 <img src="http://img.jcabi.com/logo.png" width="200px" height="48px" />
 
-More details are here: [www.jcabi.com/jcabi-mysql-maven-plugin](http://www.jcabi.com/jcabi-mysql-maven-plugin/index.html)
+More details are here: [mysql.jcabi.com](http://mysql.jcabi.com/index.html)
 
 ## Questions?
 
