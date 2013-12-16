@@ -29,6 +29,8 @@
  */
 package com.jcabi.mysql.maven.plugin;
 
+import com.jcabi.log.Logger;
+import java.io.IOException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.maven.plugin.MojoFailureException;
@@ -36,23 +38,37 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 
 /**
- * Stops MySQL.
+ * Run MySQL in background and don't stop it when Maven is finished.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 0.1
+ * @since 0.4
  */
 @ToString
 @EqualsAndHashCode(callSuper = false)
 @Mojo(
-    threadSafe = true, name = "stop",
-    defaultPhase = LifecyclePhase.POST_INTEGRATION_TEST
+    threadSafe = true, name = "run",
+    defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST
 )
-public final class StopMojo extends AbstractMysqlMojo {
+public final class RunMojo extends AbstractMysqlMojo {
 
     @Override
     protected void run(final Instances instances) throws MojoFailureException {
-        instances.stop(this.tcpPort());
+        final int port = this.tcpPort();
+        try {
+            instances.start(port, this.distDir(), this.dataDir());
+        } catch (IOException ex) {
+            throw new MojoFailureException(
+                "failed to start MySQL server", ex
+            );
+        }
+        Logger.info(this, "MySQL is up and running on port %d", port);
+        Logger.info(
+            this,
+            "User: %s, password: %s",
+            Instances.USER, Instances.PASSWORD
+        );
+        Logger.info(this, "Press Ctrl-C to stop...");
     }
 
 }

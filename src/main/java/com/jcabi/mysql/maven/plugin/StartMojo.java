@@ -51,18 +51,27 @@ import org.apache.maven.plugins.annotations.Mojo;
 )
 public final class StartMojo extends AbstractMysqlMojo {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
+    @SuppressWarnings("PMD.DoNotUseThreads")
     protected void run(final Instances instances) throws MojoFailureException {
+        final int port = this.tcpPort();
         try {
-            instances.start(this.tcpPort(), this.distDir(), this.dataDir());
+            instances.start(port, this.distDir(), this.dataDir());
         } catch (IOException ex) {
             throw new MojoFailureException(
                 "failed to start MySQL server", ex
             );
         }
+        Runtime.getRuntime().addShutdownHook(
+            new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        instances.stop(port);
+                    }
+                }
+            )
+        );
     }
 
 }

@@ -75,9 +75,6 @@ public final class ClassifyMojo extends AbstractMojo {
     )
     private transient String classifier;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void execute() throws MojoFailureException {
         final String[] words = System.getProperty("os.name").split(" ");

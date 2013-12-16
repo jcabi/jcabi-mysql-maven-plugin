@@ -72,17 +72,17 @@ final class Instances {
     /**
      * User.
      */
-    private static final String USER = "root";
+    public static final String USER = "root";
 
     /**
      * Password.
      */
-    private static final String PASSWORD = "root";
+    public static final String PASSWORD = "root";
 
     /**
      * Database name.
      */
-    private static final String DBNAME = "root";
+    public static final String DBNAME = "root";
 
     /**
      * Running processes.
@@ -107,16 +107,6 @@ final class Instances {
             }
             final Process proc = this.process(port, dist, target);
             this.processes.put(port, proc);
-            Runtime.getRuntime().addShutdownHook(
-                new Thread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            Instances.this.stop(port);
-                        }
-                    }
-                )
-            );
         }
     }
 
@@ -225,7 +215,7 @@ final class Instances {
      */
     private File waitFor(final File socket, final int port) throws IOException {
         final long start = System.currentTimeMillis();
-        long age = 0;
+        long age = 0L;
         while (true) {
             if (socket.exists()) {
                 Logger.info(
@@ -244,13 +234,13 @@ final class Instances {
                 break;
             }
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(1L);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
                 throw new IllegalStateException(ex);
             }
             age = System.currentTimeMillis() - start;
-            if (age > TimeUnit.MINUTES.toMillis(1)) {
+            if (age > TimeUnit.MINUTES.toMillis(1L)) {
                 throw new IOException(
                     Logger.format(
                         "socket %s is not available after %[ms]s of waiting",

@@ -94,9 +94,6 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
         this.skip = skp;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
