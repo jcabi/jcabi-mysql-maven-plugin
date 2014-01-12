@@ -85,6 +85,11 @@ final class Instances {
     public static final String DBNAME = "root";
 
     /**
+     * No defaults.
+     */
+    private static final String NO_DEFAULTS = "--no-defaults";
+
+    /**
      * Running processes.
      */
     private final transient ConcurrentMap<Integer, Process> processes =
@@ -156,7 +161,7 @@ final class Instances {
         final ProcessBuilder builder = this.builder(
             dist,
             "bin/mysqld",
-            "--no-defaults",
+            Instances.NO_DEFAULTS,
             "--general_log",
             "--console",
             "--innodb_buffer_pool_size=64M",
@@ -208,7 +213,7 @@ final class Instances {
             this.builder(
                 dist,
                 "scripts/mysql_install_db",
-                "--no-defaults",
+                Instances.NO_DEFAULTS,
                 "--force",
                 "--innodb_use_native_aio=0",
                 String.format("--datadir=%s", dir)
@@ -276,7 +281,7 @@ final class Instances {
             this.builder(
                 dist,
                 "bin/mysqladmin",
-                "--no-defaults",
+                Instances.NO_DEFAULTS,
                 String.format("--port=%d", port),
                 String.format("--user=%s", Instances.USER),
                 String.format("--socket=%s", socket),
@@ -288,7 +293,7 @@ final class Instances {
         final Process process = this.builder(
             dist,
             "bin/mysql",
-            "--no-defaults",
+            Instances.NO_DEFAULTS,
             String.format("--port=%d", port),
             String.format("--user=%s", Instances.USER),
             String.format("--password=%s", Instances.PASSWORD),
