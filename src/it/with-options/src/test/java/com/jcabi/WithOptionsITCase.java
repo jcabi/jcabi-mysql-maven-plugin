@@ -27,61 +27,49 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jcabi.mysql.maven.plugin;
+package com.jcabi;
 
-import com.jcabi.log.Logger;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.concurrent.TimeUnit;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
+import com.jcabi.jdbc.JdbcSession;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import org.junit.Test;
 
 /**
- * Run MySQL in background and don't stop it when Maven is finished.
+ * Test case for {@link Foo}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 0.4
  */
-@ToString
-@EqualsAndHashCode(callSuper = false)
-@Mojo(
-    threadSafe = true, name = "run",
-    defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST
-)
-public final class RunMojo extends AbstractMysqlMojo {
+public final class WithOptionsITCase {
 
-    @Override
-    protected void run(final Instances instances) throws MojoFailureException {
-        final int port = this.tcpPort();
-        try {
-            instances.start(
-                port,
-                this.distDir(),
-                this.dataDir(),
-                this.getOptions()
-            );
-        } catch (IOException ex) {
-            throw new MojoFailureException(
-                "failed to start MySQL server", ex
-            );
-        }
-        Logger.info(this, "MySQL is up and running on port %d", port);
-        Logger.info(
-            this,
-            "User: %s, password: %s",
-            Instances.USER, Instances.PASSWORD
+    /**
+     * MySQL port.
+     */
+    private static final String PORT =
+        System.getProperty("failsafe.mysql.port");
+
+    /**
+     * Can use configuration options.
+     * @throws Exception If something is wrong
+     */
+    @Test
+    public void canReceiveConfigurationOptions() throws Exception {
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        final Connection conn = DriverManager.getConnection(
+            String.format(
+                "jdbc:mysql://localhost:%s/root?user=root&password=root",
+                WithOptionsITCase.PORT
+            )
         );
-        Logger.info(this, "Press Ctrl-C to stop...");
-        while (true) {
-            try {
-                TimeUnit.MINUTES.sleep(1L);
-            } catch (InterruptedException ex) {
-                throw new MojoFailureException("MySQL terminated", ex);
-            }
-        }
+        new JdbcSession(conn)
+            .autocommit(false)
+            .sql("CREATE TABLE foo (id INT)")
+            .execute()
+            .sql("INSERT INTO foo VALUES (1)")
+            .execute()
+            .sql("SELECT COUNT(*) FROM FOO")
+            .execute()
+            .sql("DROP TABLE foo")
+            .execute();
     }
 
 }

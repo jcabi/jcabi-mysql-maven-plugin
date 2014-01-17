@@ -32,6 +32,8 @@ package com.jcabi.mysql.maven.plugin;
 import com.jcabi.aspects.Cacheable;
 import com.jcabi.log.Logger;
 import java.io.File;
+import java.util.Collections;
+import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.maven.plugin.AbstractMojo;
@@ -41,7 +43,6 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * Abstract MOJO.
- *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.1
@@ -85,6 +86,15 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
         required = true
     )
     private transient File data;
+
+    /**
+     * Configuration options.
+     */
+    @Parameter(
+        defaultValue = "",
+        required = false
+    )
+    private transient String options;
 
     /**
      * Set skip option.
@@ -134,6 +144,14 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      */
     public File dataDir() {
         return this.data;
+    }
+
+    /**
+     * Get configuration options.
+     * @return Options
+     */
+    public String getOptions() {
+        return this.options;
     }
 
     /**

@@ -35,6 +35,8 @@ import java.io.File;
 import java.net.ServerSocket;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Collections;
+import java.util.List;
 import org.junit.Test;
 
 /**
@@ -42,6 +44,7 @@ import org.junit.Test;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * @checkstyle MultipleStringLiterals (500 lines)
  */
 public final class InstancesTest {
 
@@ -59,8 +62,10 @@ public final class InstancesTest {
         final int port = this.reserve();
         final Instances instances = new Instances();
         instances.start(
-            port, new File(InstancesTest.DIST),
-            Files.createTempDir()
+            port,
+            new File(InstancesTest.DIST),
+            Files.createTempDir(),
+            ""
         );
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         try {
@@ -78,6 +83,49 @@ public final class InstancesTest {
                     .sql("INSERT INTO foo VALUES (1)")
                     .execute()
                     .sql("SELECT COUNT(*) FROM foo")
+                    .execute()
+                    .sql("DROP TABLE foo")
+                    .execute();
+            } finally {
+                conn.close();
+            }
+        } finally {
+            instances.stop(port);
+        }
+    }
+
+    /**
+     * Instances can use `lower_case_table_names` option.
+     * Test creates table in lower case and use it's name in select
+     * statement in upper case
+     * @throws Exception If something is wrong
+     */
+    @Test
+    public void useOptions() throws Exception {
+        final int port = this.reserve();
+        final Instances instances = new Instances();
+        instances.start(
+            port,
+            new File(InstancesTest.DIST),
+            Files.createTempDir(),
+            "--lower_case_table_names=1"
+        );
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        try {
+            final Connection conn = DriverManager.getConnection(
+                String.format(
+                    "jdbc:mysql://localhost:%d/root?user=root&password=root",
+                    port
+                )
+            );
+            try {
+                new JdbcSession(conn)
+                    .autocommit(false)
+                    .sql("CREATE TABLE foo (id INT)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES (1)")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM FOO")
                     .execute()
                     .sql("DROP TABLE foo")
                     .execute();

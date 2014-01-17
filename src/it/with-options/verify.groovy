@@ -27,44 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jcabi.mysql.maven.plugin;
 
-import java.io.IOException;
-import java.util.Collections;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-
-/**
- * Starts MySQL.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
- * @since 0.1
- */
-@ToString
-@EqualsAndHashCode(callSuper = false)
-@Mojo(
-    threadSafe = true, name = "start",
-    defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST
-)
-public final class StartMojo extends AbstractMysqlMojo {
-
-    @Override
-    protected void run(final Instances instances) throws MojoFailureException {
-        try {
-            instances.start(
-                this.tcpPort(),
-                this.distDir(),
-                this.dataDir(),
-                this.getOptions()
-            );
-        } catch (IOException ex) {
-            throw new MojoFailureException(
-                "failed to start MySQL server", ex
-            );
-        }
-    }
-
-}
+def log = new File(basedir, 'build.log')
+assert log.text.contains('Installing MySQL system tables...')
+assert log.text.contains('InnoDB: Completed initialization of buffer pool')
