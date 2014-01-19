@@ -91,10 +91,9 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      * Configuration options.
      */
     @Parameter(
-        defaultValue = "",
         required = false
     )
-    private transient String options;
+    private transient List<String> options;
 
     /**
      * Set skip option.
@@ -150,8 +149,11 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      * Get configuration options.
      * @return Options
      */
-    public String getOptions() {
-        return this.options;
+    public List<String> getOptions() {
+        if (this.options == null) {
+            this.options = Collections.emptyList();
+        }
+        return Collections.unmodifiableList(this.options);
     }
 
     /**

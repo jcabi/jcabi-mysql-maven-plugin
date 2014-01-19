@@ -30,7 +30,6 @@
 package com.jcabi.mysql.maven.plugin;
 
 import java.io.IOException;
-import java.util.Collections;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.maven.plugin.MojoFailureException;

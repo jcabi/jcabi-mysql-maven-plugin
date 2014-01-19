@@ -31,7 +31,6 @@ package com.jcabi.mysql.maven.plugin;
 
 import com.jcabi.log.Logger;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

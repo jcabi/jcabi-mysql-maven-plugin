@@ -62,11 +62,11 @@ public final class WithOptionsITCase {
         );
         new JdbcSession(conn)
             .autocommit(false)
-            .sql("CREATE TABLE foo (id INT)")
+            .sql("CREATE TABLE foo (date DATE)")
             .execute()
-            .sql("INSERT INTO foo VALUES (1)")
+            .sql("INSERT INTO foo VALUES ('2004-04-31')")
             .execute()
-            .sql("SELECT COUNT(*) FROM FOO")
+            .sql("SELECT * FROM foo")
             .execute()
             .sql("DROP TABLE foo")
             .execute();

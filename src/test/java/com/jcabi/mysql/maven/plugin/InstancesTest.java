@@ -36,7 +36,6 @@ import java.net.ServerSocket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Collections;
-import java.util.List;
 import org.junit.Test;
 
 /**
@@ -65,7 +64,7 @@ public final class InstancesTest {
             port,
             new File(InstancesTest.DIST),
             Files.createTempDir(),
-            ""
+            Collections.<String>emptyList()
         );
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         try {
@@ -109,7 +108,7 @@ public final class InstancesTest {
             port,
             new File(InstancesTest.DIST),
             Files.createTempDir(),
-            "--sql-mode=ALLOW_INVALID_DATES"
+            Collections.singletonList("sql-mode=ALLOW_INVALID_DATES")
         );
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         try {

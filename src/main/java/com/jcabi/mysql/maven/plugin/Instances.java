@@ -106,7 +106,7 @@ final class Instances {
      */
     public void start(final int port, @NotNull final File dist,
         @NotNull final File target,
-        final String options) throws IOException {
+        final List<String> options) throws IOException {
         synchronized (this.processes) {
             if (this.processes.containsKey(port)) {
                 throw new IllegalArgumentException(
@@ -153,7 +153,7 @@ final class Instances {
      * @checkstyle ParameterNumberCheck (10 lines)
      */
     private Process process(final int port, final File dist,
-        final File target, final String options)
+        final File target, final List<String> options)
         throws IOException {
         if (target.exists()) {
             FileUtils.deleteDirectory(target);
@@ -184,8 +184,10 @@ final class Instances {
             String.format("--port=%d", port)
         ).redirectErrorStream(true);
         builder.environment().put("MYSQL_HOME", dist.getAbsolutePath());
-        if (!StringUtils.isBlank(options)) {
-            builder.command().add(options);
+        for (final String option : options) {
+            if (!StringUtils.isBlank(option)) {
+                builder.command().add(String.format("--%s", option));
+            }
         }
         final Process proc = builder.start();
         final Thread thread = new Thread(

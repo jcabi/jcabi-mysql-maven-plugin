@@ -116,9 +116,8 @@
                 <configuration>
                     <port>${mysql.port}</port>
                     <options>
-                        <![CDATA[
-                            --lower_case_table_names=1
-                        ]]>
+                        <option>lower_case_table_names=1</option>
+                        <option>sql-mode=ALLOW_INVALID_DATES</option>
                     </options>
                 </configuration>
                 <executions>
