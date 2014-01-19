@@ -95,9 +95,10 @@ public final class InstancesTest {
     }
 
     /**
-     * Instances can use `lower_case_table_names` option.
-     * Test creates table in lower case and use it's name in select
-     * statement in upper case
+     * Instances can use option.
+     * Test creates and inserts incorrect date in it
+     * Without option "--sql-mode=ALLOW_INVALID_DATES" it produces
+     * invalid date error.
      * @throws Exception If something is wrong
      */
     @Test
@@ -108,7 +109,7 @@ public final class InstancesTest {
             port,
             new File(InstancesTest.DIST),
             Files.createTempDir(),
-            "--lower_case_table_names=1"
+            "--sql-mode=ALLOW_INVALID_DATES"
         );
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         try {
@@ -121,11 +122,11 @@ public final class InstancesTest {
             try {
                 new JdbcSession(conn)
                     .autocommit(false)
-                    .sql("CREATE TABLE foo (id INT)")
+                    .sql("CREATE TABLE foo (date DATE)")
                     .execute()
-                    .sql("INSERT INTO foo VALUES (1)")
+                    .sql("INSERT INTO foo VALUES ('2004-04-31')")
                     .execute()
-                    .sql("SELECT COUNT(*) FROM FOO")
+                    .sql("SELECT * FROM foo")
                     .execute()
                     .sql("DROP TABLE foo")
                     .execute();
