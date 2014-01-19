@@ -41,6 +41,7 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -56,12 +57,11 @@ import org.apache.commons.lang3.StringUtils;
  * Running instances of MySQL.
  *
  * <p>The class is thread-safe.
- *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 0.1
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle MultipleStringLiterals (500 lines)
+ * @since 0.1
  */
 @ToString
 @EqualsAndHashCode(of = "processes")
@@ -100,17 +100,20 @@ final class Instances {
      * @param port The port to start at
      * @param dist Path to MySQL distribution
      * @param target Where to keep temp data
+     * @param options Configuration options
      * @throws IOException If fails to start
+     * @checkstyle ParameterNumberCheck (10 lines)
      */
     public void start(final int port, @NotNull final File dist,
-        @NotNull final File target) throws IOException {
+        @NotNull final File target,
+        final List<String> options) throws IOException {
         synchronized (this.processes) {
             if (this.processes.containsKey(port)) {
                 throw new IllegalArgumentException(
                     String.format("port %d is already busy", port)
                 );
             }
-            final Process proc = this.process(port, dist, target);
+            final Process proc = this.process(port, dist, target, options);
             this.processes.put(port, proc);
             Runtime.getRuntime().addShutdownHook(
                 new Thread(
@@ -144,10 +147,13 @@ final class Instances {
      * @param port The port to start at
      * @param dist Path to MySQL distribution
      * @param target Where to keep temp data
+     * @param options Configuration options
      * @return Process started
      * @throws IOException If fails to start
+     * @checkstyle ParameterNumberCheck (10 lines)
      */
-    private Process process(final int port, final File dist, final File target)
+    private Process process(final int port, final File dist,
+        final File target, final List<String> options)
         throws IOException {
         if (target.exists()) {
             FileUtils.deleteDirectory(target);
@@ -178,6 +184,11 @@ final class Instances {
             String.format("--port=%d", port)
         ).redirectErrorStream(true);
         builder.environment().put("MYSQL_HOME", dist.getAbsolutePath());
+        for (final String option : options) {
+            if (!StringUtils.isBlank(option)) {
+                builder.command().add(String.format("--%s", option));
+            }
+        }
         final Process proc = builder.start();
         final Thread thread = new Thread(
             new VerboseRunnable(
