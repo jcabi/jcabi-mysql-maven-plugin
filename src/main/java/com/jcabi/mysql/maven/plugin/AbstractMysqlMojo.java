@@ -79,6 +79,33 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     private transient File dist;
 
     /**
+     * Username to use.
+     */
+    @Parameter(
+        defaultValue = "root",
+        required = false
+    )
+    private transient String user;
+
+    /**
+     * Password to use.
+     */
+    @Parameter(
+        defaultValue = "root",
+        required = false
+    )
+    private transient String password;
+
+    /**
+     * Database name to use.
+     */
+    @Parameter(
+        defaultValue = "root",
+        required = false
+    )
+    private transient String dbname;
+
+    /**
      * Location of MySQL data.
      */
     @Parameter(
@@ -114,14 +141,6 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     }
 
     /**
-     * Get TCP port we're on.
-     * @return Port number
-     */
-    public int tcpPort() {
-        return this.port;
-    }
-
-    /**
      * Get directory with MySQL dist.
      * @return Directory
      * @throws MojoFailureException If fails
@@ -146,14 +165,16 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     }
 
     /**
-     * Get configuration options.
-     * @return Options
+     * Get configuration.
+     * @return Configuration
      */
-    public List<String> getOptions() {
+    public Config config() {
         if (this.options == null) {
             this.options = Collections.emptyList();
         }
-        return Collections.unmodifiableList(this.options);
+        return new Config(this.port, this.user, this.password, this.dbname,
+            this.options
+        );
     }
 
     /**

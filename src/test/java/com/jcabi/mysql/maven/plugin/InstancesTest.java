@@ -36,6 +36,7 @@ import java.net.ServerSocket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Collections;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -46,6 +47,21 @@ import org.junit.Test;
  * @checkstyle MultipleStringLiterals (500 lines)
  */
 public final class InstancesTest {
+
+    /**
+     * User.
+     */
+    public static final String USER = "root";
+
+    /**
+     * Password.
+     */
+    public static final String PASSWORD = "root";
+
+    /**
+     * Database name.
+     */
+    public static final String DBNAME = "root";
 
     /**
      * Location of MySQL dist.
@@ -61,17 +77,25 @@ public final class InstancesTest {
         final int port = this.reserve();
         final Instances instances = new Instances();
         instances.start(
-            port,
+            new Config(
+                port,
+                InstancesTest.USER,
+                InstancesTest.PASSWORD,
+                InstancesTest.DBNAME,
+                Collections.<String>emptyList()
+            ),
             new File(InstancesTest.DIST),
-            Files.createTempDir(),
-            Collections.<String>emptyList()
+            Files.createTempDir()
         );
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
-                    "jdbc:mysql://localhost:%d/root?user=root&password=root",
-                    port
+                    "jdbc:mysql://localhost:%d/%s?user=%s&password=%s",
+                    port,
+                    InstancesTest.USER,
+                    InstancesTest.PASSWORD,
+                    InstancesTest.DBNAME
                 )
             );
             try {
@@ -105,17 +129,25 @@ public final class InstancesTest {
         final int port = this.reserve();
         final Instances instances = new Instances();
         instances.start(
-            port,
+            new Config(
+                port,
+                InstancesTest.USER,
+                InstancesTest.PASSWORD,
+                InstancesTest.DBNAME,
+                Collections.singletonList("sql-mode=ALLOW_INVALID_DATES")
+            ),
             new File(InstancesTest.DIST),
-            Files.createTempDir(),
-            Collections.singletonList("sql-mode=ALLOW_INVALID_DATES")
+            Files.createTempDir()
         );
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
-                    "jdbc:mysql://localhost:%d/root?user=root&password=root",
-                    port
+                    "jdbc:mysql://localhost:%d/%s?user=%s&password=%s",
+                    port,
+                    InstancesTest.DBNAME,
+                    InstancesTest.USER,
+                    InstancesTest.PASSWORD
                 )
             );
             try {
@@ -126,6 +158,166 @@ public final class InstancesTest {
                     .sql("INSERT INTO foo VALUES ('2004-04-31')")
                     .execute()
                     .sql("SELECT * FROM foo")
+                    .execute()
+                    .sql("DROP TABLE foo")
+                    .execute();
+            } finally {
+                conn.close();
+            }
+        } finally {
+            instances.stop(port);
+        }
+    }
+
+    /**
+     * Instances can use custom db user name.
+     * @throws Exception If something is wrong
+     * @todo #8 User should be created in DB.
+     *  Client can specify aly user in configuration, but only user with root
+     *  privileges can do this. That's why root should create other user with
+     *  name specified in configuration and full rights.
+     *  Uncomment this test when done
+     * @todo #8 Create integration tests for Config.
+     *  Integration tests 'WithConfigITCase' should be created to test
+     *  that user name, password and dbname are set properly.
+     *  This issue should be done after non root user name is set properly
+     */
+    @Test
+    @Ignore
+    public void canUseCustomDbUserName() throws Exception {
+        final int port = this.reserve();
+        final String user = "notRoot";
+        final Instances instances = new Instances();
+        instances.start(
+            new Config(
+                port,
+                user,
+                InstancesTest.PASSWORD,
+                InstancesTest.DBNAME,
+                Collections.<String>emptyList()
+            ),
+            new File(InstancesTest.DIST),
+            Files.createTempDir()
+        );
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        try {
+            final Connection conn = DriverManager.getConnection(
+                String.format(
+                    "jdbc:mysql://localhost:%d/%s?user=%s&password=%s",
+                    port,
+                    InstancesTest.DBNAME,
+                    user,
+                    InstancesTest.PASSWORD
+                )
+            );
+            try {
+                new JdbcSession(conn)
+                    .autocommit(false)
+                    .sql("CREATE TABLE foo (id INT)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES (1)")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .execute()
+                    .sql("DROP TABLE foo")
+                    .execute();
+            } finally {
+                conn.close();
+            }
+        } finally {
+            instances.stop(port);
+        }
+    }
+
+    /**
+     * Instances can use custom db password.
+     * @throws Exception If something is wrong
+     */
+    @Test
+    public void canUseCustomDbPassword() throws Exception {
+        final int port = this.reserve();
+        final String password = "notRoot";
+        final Instances instances = new Instances();
+        instances.start(
+            new Config(
+                port,
+                InstancesTest.USER,
+                password,
+                InstancesTest.DBNAME,
+                Collections.<String>emptyList()
+            ),
+            new File(InstancesTest.DIST),
+            Files.createTempDir()
+        );
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        try {
+            final Connection conn = DriverManager.getConnection(
+                String.format(
+                    "jdbc:mysql://localhost:%d/%s?user=%s&password=%s",
+                    port,
+                    InstancesTest.DBNAME,
+                    InstancesTest.USER,
+                    password
+                )
+            );
+            try {
+                new JdbcSession(conn)
+                    .autocommit(false)
+                    .sql("CREATE TABLE foo (id INT)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES (1)")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .execute()
+                    .sql("DROP TABLE foo")
+                    .execute();
+            } finally {
+                conn.close();
+            }
+        } finally {
+            instances.stop(port);
+        }
+    }
+
+    /**
+     * Instances can use custom db name.
+     * @throws Exception If something is wrong
+     */
+    @Test
+    public void canUseCustomDbDbName() throws Exception {
+        final int port = this.reserve();
+        final String dbname = "notRoot";
+        final Instances instances = new Instances();
+        instances.start(
+            new Config(
+                port,
+                InstancesTest.USER,
+                InstancesTest.PASSWORD,
+                dbname,
+                Collections.<String>emptyList()
+            ),
+            new File(InstancesTest.DIST),
+            Files.createTempDir()
+        );
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        try {
+            final Connection conn = DriverManager.getConnection(
+                String.format(
+                    "jdbc:mysql://localhost:%d/%s?user=%s&password=%s",
+                    port,
+                    dbname,
+                    InstancesTest.USER,
+                    InstancesTest.PASSWORD
+                )
+            );
+            try {
+                new JdbcSession(conn)
+                    .autocommit(false)
+                    .sql("CREATE TABLE foo (id INT)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES (1)")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM foo")
                     .execute()
                     .sql("DROP TABLE foo")
                     .execute();
@@ -150,5 +342,4 @@ public final class InstancesTest {
             socket.close();
         }
     }
-
 }
