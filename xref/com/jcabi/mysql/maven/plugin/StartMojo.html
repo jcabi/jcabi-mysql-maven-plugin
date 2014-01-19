@@ -48,31 +48,35 @@
 <a class="jxr_linenumber" name="38" href="#38">38</a>  
 <a class="jxr_linenumber" name="39" href="#39">39</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="40" href="#40">40</a>  <em class="jxr_javadoccomment"> * Starts MySQL.</em>
-<a class="jxr_linenumber" name="41" href="#41">41</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="42" href="#42">42</a>  <em class="jxr_javadoccomment"> * @author Yegor Bugayenko (yegor@tpc2.com)</em>
-<a class="jxr_linenumber" name="43" href="#43">43</a>  <em class="jxr_javadoccomment"> * @version $Id$</em>
-<a class="jxr_linenumber" name="44" href="#44">44</a>  <em class="jxr_javadoccomment"> * @since 0.1</em>
-<a class="jxr_linenumber" name="45" href="#45">45</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="46" href="#46">46</a>  @ToString
-<a class="jxr_linenumber" name="47" href="#47">47</a>  @EqualsAndHashCode(callSuper = false)
-<a class="jxr_linenumber" name="48" href="#48">48</a>  @Mojo(
-<a class="jxr_linenumber" name="49" href="#49">49</a>      threadSafe = <strong class="jxr_keyword">true</strong>, name = <span class="jxr_string">"start"</span>,
-<a class="jxr_linenumber" name="50" href="#50">50</a>      defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST
-<a class="jxr_linenumber" name="51" href="#51">51</a>  )
-<a class="jxr_linenumber" name="52" href="#52">52</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../com/jcabi/mysql/maven/plugin/StartMojo.html">StartMojo</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../com/jcabi/mysql/maven/plugin/AbstractMysqlMojo.html">AbstractMysqlMojo</a> {
-<a class="jxr_linenumber" name="53" href="#53">53</a>  
-<a class="jxr_linenumber" name="54" href="#54">54</a>      @Override
-<a class="jxr_linenumber" name="55" href="#55">55</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> run(<strong class="jxr_keyword">final</strong> <a href="../../../../../com/jcabi/mysql/maven/plugin/Instances.html">Instances</a> instances) <strong class="jxr_keyword">throws</strong> MojoFailureException {
-<a class="jxr_linenumber" name="56" href="#56">56</a>          <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="57" href="#57">57</a>              instances.start(<strong class="jxr_keyword">this</strong>.tcpPort(), <strong class="jxr_keyword">this</strong>.distDir(), <strong class="jxr_keyword">this</strong>.dataDir());
-<a class="jxr_linenumber" name="58" href="#58">58</a>          } <strong class="jxr_keyword">catch</strong> (IOException ex) {
-<a class="jxr_linenumber" name="59" href="#59">59</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoFailureException(
-<a class="jxr_linenumber" name="60" href="#60">60</a>                  <span class="jxr_string">"failed to start MySQL server"</span>, ex
+<a class="jxr_linenumber" name="41" href="#41">41</a>  <em class="jxr_javadoccomment"> * @author Yegor Bugayenko (yegor@tpc2.com)</em>
+<a class="jxr_linenumber" name="42" href="#42">42</a>  <em class="jxr_javadoccomment"> * @version $Id$</em>
+<a class="jxr_linenumber" name="43" href="#43">43</a>  <em class="jxr_javadoccomment"> * @since 0.1</em>
+<a class="jxr_linenumber" name="44" href="#44">44</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="45" href="#45">45</a>  @ToString
+<a class="jxr_linenumber" name="46" href="#46">46</a>  @EqualsAndHashCode(callSuper = false)
+<a class="jxr_linenumber" name="47" href="#47">47</a>  @Mojo(
+<a class="jxr_linenumber" name="48" href="#48">48</a>      threadSafe = <strong class="jxr_keyword">true</strong>, name = <span class="jxr_string">"start"</span>,
+<a class="jxr_linenumber" name="49" href="#49">49</a>      defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST
+<a class="jxr_linenumber" name="50" href="#50">50</a>  )
+<a class="jxr_linenumber" name="51" href="#51">51</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../com/jcabi/mysql/maven/plugin/StartMojo.html">StartMojo</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../com/jcabi/mysql/maven/plugin/AbstractMysqlMojo.html">AbstractMysqlMojo</a> {
+<a class="jxr_linenumber" name="52" href="#52">52</a>  
+<a class="jxr_linenumber" name="53" href="#53">53</a>      @Override
+<a class="jxr_linenumber" name="54" href="#54">54</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> run(<strong class="jxr_keyword">final</strong> <a href="../../../../../com/jcabi/mysql/maven/plugin/Instances.html">Instances</a> instances) <strong class="jxr_keyword">throws</strong> MojoFailureException {
+<a class="jxr_linenumber" name="55" href="#55">55</a>          <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="56" href="#56">56</a>              instances.start(
+<a class="jxr_linenumber" name="57" href="#57">57</a>                  <strong class="jxr_keyword">this</strong>.tcpPort(),
+<a class="jxr_linenumber" name="58" href="#58">58</a>                  <strong class="jxr_keyword">this</strong>.distDir(),
+<a class="jxr_linenumber" name="59" href="#59">59</a>                  <strong class="jxr_keyword">this</strong>.dataDir(),
+<a class="jxr_linenumber" name="60" href="#60">60</a>                  <strong class="jxr_keyword">this</strong>.getOptions()
 <a class="jxr_linenumber" name="61" href="#61">61</a>              );
-<a class="jxr_linenumber" name="62" href="#62">62</a>          }
-<a class="jxr_linenumber" name="63" href="#63">63</a>      }
-<a class="jxr_linenumber" name="64" href="#64">64</a>  
-<a class="jxr_linenumber" name="65" href="#65">65</a>  }
+<a class="jxr_linenumber" name="62" href="#62">62</a>          } <strong class="jxr_keyword">catch</strong> (IOException ex) {
+<a class="jxr_linenumber" name="63" href="#63">63</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoFailureException(
+<a class="jxr_linenumber" name="64" href="#64">64</a>                  <span class="jxr_string">"failed to start MySQL server"</span>, ex
+<a class="jxr_linenumber" name="65" href="#65">65</a>              );
+<a class="jxr_linenumber" name="66" href="#66">66</a>          }
+<a class="jxr_linenumber" name="67" href="#67">67</a>      }
+<a class="jxr_linenumber" name="68" href="#68">68</a>  
+<a class="jxr_linenumber" name="69" href="#69">69</a>  }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
