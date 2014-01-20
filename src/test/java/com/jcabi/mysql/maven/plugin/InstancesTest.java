@@ -46,6 +46,7 @@ import org.junit.Test;
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle MultipleStringLiterals (500 lines)
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public final class InstancesTest {
 
     /**
@@ -69,6 +70,17 @@ public final class InstancesTest {
     private static final String DIST = System.getProperty("surefire.dist");
 
     /**
+     * MySQL driver name.
+     */
+    private static final String DRIVER = "com.mysql.jdbc.Driver";
+
+    /**
+     * MySQL connection string format.
+     */
+    private static final String CONNECTION_STRING =
+        "jdbc:mysql://localhost:%d/%s?user=%s&password=%s";
+
+    /**
      * Instances can start and stop.
      * @throws Exception If something is wrong
      */
@@ -87,11 +99,11 @@ public final class InstancesTest {
             new File(InstancesTest.DIST),
             Files.createTempDir()
         );
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        Class.forName(InstancesTest.DRIVER).newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
-                    "jdbc:mysql://localhost:%d/%s?user=%s&password=%s",
+                    InstancesTest.CONNECTION_STRING,
                     port,
                     InstancesTest.USER,
                     InstancesTest.PASSWORD,
@@ -139,11 +151,11 @@ public final class InstancesTest {
             new File(InstancesTest.DIST),
             Files.createTempDir()
         );
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        Class.forName(InstancesTest.DRIVER).newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
-                    "jdbc:mysql://localhost:%d/%s?user=%s&password=%s",
+                    InstancesTest.CONNECTION_STRING,
                     port,
                     InstancesTest.DBNAME,
                     InstancesTest.USER,
@@ -199,11 +211,11 @@ public final class InstancesTest {
             new File(InstancesTest.DIST),
             Files.createTempDir()
         );
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        Class.forName(InstancesTest.DRIVER).newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
-                    "jdbc:mysql://localhost:%d/%s?user=%s&password=%s",
+                    InstancesTest.CONNECTION_STRING,
                     port,
                     InstancesTest.DBNAME,
                     user,
@@ -249,11 +261,11 @@ public final class InstancesTest {
             new File(InstancesTest.DIST),
             Files.createTempDir()
         );
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        Class.forName(InstancesTest.DRIVER).newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
-                    "jdbc:mysql://localhost:%d/%s?user=%s&password=%s",
+                    InstancesTest.CONNECTION_STRING,
                     port,
                     InstancesTest.DBNAME,
                     InstancesTest.USER,
@@ -299,11 +311,11 @@ public final class InstancesTest {
             new File(InstancesTest.DIST),
             Files.createTempDir()
         );
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        Class.forName(InstancesTest.DRIVER).newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
-                    "jdbc:mysql://localhost:%d/%s?user=%s&password=%s",
+                    InstancesTest.CONNECTION_STRING,
                     port,
                     dbname,
                     InstancesTest.USER,

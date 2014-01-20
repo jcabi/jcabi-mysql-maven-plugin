@@ -45,55 +45,56 @@ import lombok.ToString;
  */
 @ToString
 @EqualsAndHashCode(
-    of = { "tcpport", "dbuser", "dbpassword", "dbname", "options" }
+    of = { "tcpport", "dbuser", "dbpassword", "name", "dbopts" }
 )
-public final class Config {
+final class Config {
 
     /**
      * TCP port.
      */
-    private final int tcpport;
+    private final transient int tcpport;
 
     /**
      * Db user name.
      */
-    private final String dbuser;
+    private final transient String dbuser;
 
     /**
      * Db password.
      */
-    private final String dbpassword;
+    private final transient String dbpassword;
 
     /**
      * Db name.
      */
-    private final String dbname;
+    private final transient String name;
 
     /**
      * Configuration options.
      */
-    private final List<String> options;
+    private final transient List<String> dbopts;
 
     /**
      * Creates new configuration.
      * @param port TCP port
-     * @param user Db user name
+     * @param usr Db user name
      * @param password Db password
      * @param dbn Db name
      * @param opts Configuration options
+     * @checkstyle ParameterNumberCheck (15 lines)
      */
     public Config(
         final int port,
-        @NotNull final String user,
+        @NotNull final String usr,
         @NotNull final String password,
         @NotNull final String dbn,
         @NotNull final List<String> opts
     ) {
         this.tcpport = port;
-        this.dbuser = user;
+        this.dbuser = usr;
         this.dbpassword = password;
-        this.dbname = dbn;
-        this.options = Collections.unmodifiableList(opts);
+        this.name = dbn;
+        this.dbopts = Collections.unmodifiableList(opts);
     }
 
     /**
@@ -125,7 +126,7 @@ public final class Config {
      * @return Database name
      */
     public String dbname() {
-        return this.dbname;
+        return this.name;
     }
 
     /**
@@ -133,6 +134,6 @@ public final class Config {
      * @return Options
      */
     public List<String> options() {
-        return this.options;
+        return this.dbopts;
     }
 }

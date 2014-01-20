@@ -172,8 +172,9 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
         if (this.options == null) {
             this.options = Collections.emptyList();
         }
-        return new Config(this.port, this.user, this.password, this.dbname,
-            this.options
+        return new Config(
+            this.port, this.user, this.password, this.dbname,
+            Collections.unmodifiableList(this.options)
         );
     }
 
