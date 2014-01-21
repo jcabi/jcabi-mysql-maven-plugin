@@ -41,7 +41,6 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -70,21 +69,6 @@ import org.apache.commons.lang3.StringUtils;
 final class Instances {
 
     /**
-     * User.
-     */
-    public static final String USER = "root";
-
-    /**
-     * Password.
-     */
-    public static final String PASSWORD = "root";
-
-    /**
-     * Database name.
-     */
-    public static final String DBNAME = "root";
-
-    /**
      * No defaults.
      */
     private static final String NO_DEFAULTS = "--no-defaults";
@@ -97,30 +81,28 @@ final class Instances {
 
     /**
      * Start a new one at this port.
-     * @param port The port to start at
+     * @param config Instance configuration
      * @param dist Path to MySQL distribution
      * @param target Where to keep temp data
-     * @param options Configuration options
      * @throws IOException If fails to start
      * @checkstyle ParameterNumberCheck (10 lines)
      */
-    public void start(final int port, @NotNull final File dist,
-        @NotNull final File target,
-        final List<String> options) throws IOException {
+    public void start(@NotNull final Config config, @NotNull final File dist,
+        @NotNull final File target) throws IOException {
         synchronized (this.processes) {
-            if (this.processes.containsKey(port)) {
+            if (this.processes.containsKey(config.port())) {
                 throw new IllegalArgumentException(
-                    String.format("port %d is already busy", port)
+                    String.format("port %d is already busy", config.port())
                 );
             }
-            final Process proc = this.process(port, dist, target, options);
-            this.processes.put(port, proc);
+            final Process proc = this.process(config, dist, target);
+            this.processes.put(config.port(), proc);
             Runtime.getRuntime().addShutdownHook(
                 new Thread(
                     new Runnable() {
                         @Override
                         public void run() {
-                            Instances.this.stop(port);
+                            Instances.this.stop(config.port());
                         }
                     }
                 )
@@ -144,16 +126,15 @@ final class Instances {
 
     /**
      * Start a new process.
-     * @param port The port to start at
+     * @param config Instance configuration
      * @param dist Path to MySQL distribution
      * @param target Where to keep temp data
-     * @param options Configuration options
      * @return Process started
      * @throws IOException If fails to start
      * @checkstyle ParameterNumberCheck (10 lines)
      */
-    private Process process(final int port, final File dist,
-        final File target, final List<String> options)
+    private Process process(@NotNull final Config config,
+        final File dist, final File target)
         throws IOException {
         if (target.exists()) {
             FileUtils.deleteDirectory(target);
@@ -174,17 +155,17 @@ final class Instances {
             "--innodb_log_file_size=64M",
             "--log_warnings",
             "--innodb_use_native_aio=0",
-            String.format("--binlog-ignore-db=%s", Instances.DBNAME),
+            String.format("--binlog-ignore-db=%s", config.dbname()),
             String.format("--basedir=%s", dist),
             String.format("--lc-messages-dir=%s", new File(dist, "share")),
             String.format("--datadir=%s", this.data(dist, target)),
             String.format("--tmpdir=%s", new File(target, "temp")),
             String.format("--socket=%s", socket),
             String.format("--pid-file=%s", new File(target, "mysql.pid")),
-            String.format("--port=%d", port)
+            String.format("--port=%d", config.port())
         ).redirectErrorStream(true);
         builder.environment().put("MYSQL_HOME", dist.getAbsolutePath());
-        for (final String option : options) {
+        for (final String option : config.options()) {
             if (!StringUtils.isBlank(option)) {
                 builder.command().add(String.format("--%s", option));
             }
@@ -203,7 +184,7 @@ final class Instances {
         );
         thread.setDaemon(true);
         thread.start();
-        this.configure(dist, port, this.waitFor(socket, port));
+        this.configure(config, dist, this.waitFor(socket, config.port()));
         return proc;
     }
 
@@ -281,33 +262,34 @@ final class Instances {
 
     /**
      * Configure the running MySQL server.
+     * @param config Instance configuration
      * @param dist Directory with MySQL distribution
-     * @param port The port it's running on
      * @param socket Socket of it
      * @throws IOException If fails
      */
-    private void configure(final File dist, final int port, final File socket)
+    private void configure(@NotNull final Config config,
+        final File dist, final File socket)
         throws IOException {
         new VerboseProcess(
             this.builder(
                 dist,
                 "bin/mysqladmin",
                 Instances.NO_DEFAULTS,
-                String.format("--port=%d", port),
-                String.format("--user=%s", Instances.USER),
+                String.format("--port=%d", config.port()),
+                String.format("--user=%s", config.user()),
                 String.format("--socket=%s", socket),
                 "--host=127.0.0.1",
                 "password",
-                Instances.PASSWORD
+                config.password()
             )
         ).stdout();
         final Process process = this.builder(
             dist,
             "bin/mysql",
             Instances.NO_DEFAULTS,
-            String.format("--port=%d", port),
-            String.format("--user=%s", Instances.USER),
-            String.format("--password=%s", Instances.PASSWORD),
+            String.format("--port=%d", config.port()),
+            String.format("--user=%s", config.user()),
+            String.format("--password=%s", config.password()),
             String.format("--socket=%s", socket)
         ).start();
         final PrintWriter writer = new PrintWriter(
@@ -316,7 +298,7 @@ final class Instances {
             )
         );
         writer.print("CREATE DATABASE ");
-        writer.print(Instances.DBNAME);
+        writer.print(config.dbname());
         writer.println(";");
         writer.close();
         new VerboseProcess(process).stdout();

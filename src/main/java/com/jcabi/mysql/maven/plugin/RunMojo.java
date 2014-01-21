@@ -54,24 +54,23 @@ public final class RunMojo extends AbstractMysqlMojo {
 
     @Override
     protected void run(final Instances instances) throws MojoFailureException {
-        final int port = this.tcpPort();
+        final Config config = this.config();
         try {
             instances.start(
-                port,
+                config,
                 this.distDir(),
-                this.dataDir(),
-                this.getOptions()
+                this.dataDir()
             );
         } catch (IOException ex) {
             throw new MojoFailureException(
                 "failed to start MySQL server", ex
             );
         }
-        Logger.info(this, "MySQL is up and running on port %d", port);
+        Logger.info(this, "MySQL is up and running on port %d", config.port());
         Logger.info(
             this,
             "User: %s, password: %s",
-            Instances.USER, Instances.PASSWORD
+            config.user(), config.password()
         );
         Logger.info(this, "Press Ctrl-C to stop...");
         while (true) {

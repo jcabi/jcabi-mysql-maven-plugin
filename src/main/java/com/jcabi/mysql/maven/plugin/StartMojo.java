@@ -54,10 +54,9 @@ public final class StartMojo extends AbstractMysqlMojo {
     protected void run(final Instances instances) throws MojoFailureException {
         try {
             instances.start(
-                this.tcpPort(),
+                this.config(),
                 this.distDir(),
-                this.dataDir(),
-                this.getOptions()
+                this.dataDir()
             );
         } catch (IOException ex) {
             throw new MojoFailureException(

@@ -52,7 +52,7 @@ public final class StopMojo extends AbstractMysqlMojo {
 
     @Override
     protected void run(final Instances instances) throws MojoFailureException {
-        instances.stop(this.tcpPort());
+        instances.stop(this.config().port());
     }
 
 }
