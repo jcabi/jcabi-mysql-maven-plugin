@@ -94,6 +94,11 @@
                                                                                                                         <ul>
                                                     </ul>
                                     </li>
+                                                                                        <li>
+                                                                    <a href="example-credentials.html" title="Custom credentials">Custom credentials</a>
+                                                                                                                        <ul>
+                                                    </ul>
+                                    </li>
                                                                 </ul>
                                     </li>
                             <li>
@@ -123,8 +128,8 @@
             </a>
                         <p>
                 
-                19-Jan-2014
-                0.5
+                23-Jan-2014
+                0.6
             </p>
             <article>
                 
@@ -134,7 +139,7 @@
       
 <p><b>Full name</b>:</p>
       
-<p>com.jcabi:jcabi-mysql-maven-plugin:0.5:start</p>
+<p>com.jcabi:jcabi-mysql-maven-plugin:0.6:start</p>
       
 <p><b>Description</b>:</p>
       
@@ -211,6 +216,17 @@
           
 <tr class="b">
             
+<td><b><a href="#dbname">dbname</a></b></td>
+            
+<td><tt>String</tt></td>
+            
+<td><tt>0.1</tt></td>
+            
+<td>Database name to use.<br /><b>Default value is</b>: <tt>root</tt>.<br /></td>
+          </tr>
+          
+<tr class="a">
+            
 <td><b><a href="#options">options</a></b></td>
             
 <td><tt>List</tt></td>
@@ -218,6 +234,17 @@
 <td><tt>0.1</tt></td>
             
 <td>Configuration options.<br /></td>
+          </tr>
+          
+<tr class="b">
+            
+<td><b><a href="#password">password</a></b></td>
+            
+<td><tt>String</tt></td>
+            
+<td><tt>0.1</tt></td>
+            
+<td>Password to use.<br /><b>Default value is</b>: <tt>root</tt>.<br /></td>
           </tr>
           
 <tr class="a">
@@ -241,6 +268,17 @@
             
 <td>Shall we skip execution?<br /><b>Default value is</b>: <tt>false</tt>.<br /></td>
           </tr>
+          
+<tr class="a">
+            
+<td><b><a href="#user">user</a></b></td>
+            
+<td><tt>String</tt></td>
+            
+<td><tt>0.1</tt></td>
+            
+<td>Username to use.<br /><b>Default value is</b>: <tt>root</tt>.<br /></td>
+          </tr>
         </table>
       </div>
       
@@ -260,6 +298,20 @@
 <li><b>Required</b>: <tt>Yes</tt></li>
           
 <li><b>Default</b>: <tt>${project.build.directory}/mysql-data</tt></li>
+        </ul><hr />
+<p><b><a name="dbname">dbname</a>:</b></p>
+        
+<div>Database name to use.</div>
+        
+<ul>
+          
+<li><b>Type</b>: <tt>java.lang.String</tt></li>
+          
+<li><b>Since</b>: <tt>0.1</tt></li>
+          
+<li><b>Required</b>: <tt>No</tt></li>
+          
+<li><b>Default</b>: <tt>root</tt></li>
         </ul><hr />
 <p><b><a name="dist">dist</a>:</b></p>
         
@@ -286,6 +338,20 @@
 <li><b>Since</b>: <tt>0.1</tt></li>
           
 <li><b>Required</b>: <tt>No</tt></li>
+        </ul><hr />
+<p><b><a name="password">password</a>:</b></p>
+        
+<div>Password to use.</div>
+        
+<ul>
+          
+<li><b>Type</b>: <tt>java.lang.String</tt></li>
+          
+<li><b>Since</b>: <tt>0.1</tt></li>
+          
+<li><b>Required</b>: <tt>No</tt></li>
+          
+<li><b>Default</b>: <tt>root</tt></li>
         </ul><hr />
 <p><b><a name="port">port</a>:</b></p>
         
@@ -314,6 +380,20 @@
 <li><b>Required</b>: <tt>No</tt></li>
           
 <li><b>Default</b>: <tt>false</tt></li>
+        </ul><hr />
+<p><b><a name="user">user</a>:</b></p>
+        
+<div>Username to use.</div>
+        
+<ul>
+          
+<li><b>Type</b>: <tt>java.lang.String</tt></li>
+          
+<li><b>Since</b>: <tt>0.1</tt></li>
+          
+<li><b>Required</b>: <tt>No</tt></li>
+          
+<li><b>Default</b>: <tt>root</tt></li>
         </ul>
       </div>
     </div>
