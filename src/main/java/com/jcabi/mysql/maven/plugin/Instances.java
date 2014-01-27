@@ -248,7 +248,7 @@ final class Instances {
                 throw new IllegalStateException(ex);
             }
             age = System.currentTimeMillis() - start;
-            if (age > TimeUnit.MINUTES.toMillis(1L)) {
+            if (age > TimeUnit.MINUTES.toMillis(2L)) {
                 throw new IOException(
                     Logger.format(
                         "socket %s is not available after %[ms]s of waiting",
