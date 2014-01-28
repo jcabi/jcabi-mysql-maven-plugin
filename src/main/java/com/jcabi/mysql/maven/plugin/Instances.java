@@ -74,6 +74,22 @@ final class Instances {
     private static final String NO_DEFAULTS = "--no-defaults";
 
     /**
+     * Default user.
+     */
+    private static final String DEFAULT_USER = "root";
+
+    /**
+     * Default password.
+     */
+    private static final String DEFAULT_PASSWORD = "root";
+
+    /**
+     * Default host.
+     */
+    @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
+    private static final String DEFAULT_HOST = "127.0.0.1";
+
+    /**
      * Running processes.
      */
     private final transient ConcurrentMap<Integer, Process> processes =
@@ -276,22 +292,22 @@ final class Instances {
                 "bin/mysqladmin",
                 Instances.NO_DEFAULTS,
                 String.format("--port=%d", config.port()),
-                String.format("--user=%s", config.user()),
+                String.format("--user=%s", Instances.DEFAULT_USER),
                 String.format("--socket=%s", socket),
-                "--host=127.0.0.1",
+                String.format("--host=%s", Instances.DEFAULT_HOST),
                 "password",
-                config.password()
+                Instances.DEFAULT_PASSWORD
             )
         ).stdout();
-        final Process process = this.builder(
-            dist,
-            "bin/mysql",
-            Instances.NO_DEFAULTS,
-            String.format("--port=%d", config.port()),
-            String.format("--user=%s", config.user()),
-            String.format("--password=%s", config.password()),
-            String.format("--socket=%s", socket)
-        ).start();
+        final Process process =
+            this.builder(
+                dist,
+                "bin/mysql",
+                String.format("--port=%d", config.port()),
+                String.format("--user=%s", Instances.DEFAULT_USER),
+                String.format("--password=%s", Instances.DEFAULT_PASSWORD),
+                String.format("--socket=%s", socket)
+            ).start();
         final PrintWriter writer = new PrintWriter(
             new OutputStreamWriter(
                 process.getOutputStream(), CharEncoding.UTF_8
@@ -300,6 +316,24 @@ final class Instances {
         writer.print("CREATE DATABASE ");
         writer.print(config.dbname());
         writer.println(";");
+        if (!Instances.DEFAULT_USER.equals(config.user())) {
+            writer.println(
+                String.format(
+                    "CREATE USER '%s'@'%s' IDENTIFIED BY '%s';",
+                    config.user(),
+                    Instances.DEFAULT_HOST,
+                    config.password()
+                )
+            );
+            writer.println(
+                String.format(
+                    "GRANT ALL ON %s.* TO '%s'@'%s';",
+                    config.dbname(),
+                    config.user(),
+                    Instances.DEFAULT_HOST
+                )
+            );
+        }
         writer.close();
         new VerboseProcess(process).stdout();
     }

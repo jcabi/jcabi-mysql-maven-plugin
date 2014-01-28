@@ -36,7 +36,6 @@ import java.net.ServerSocket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Collections;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -184,18 +183,12 @@ public final class InstancesTest {
     /**
      * Instances can use custom db user name.
      * @throws Exception If something is wrong
-     * @todo #8 User should be created in DB.
-     *  Client can specify aly user in configuration, but only user with root
-     *  privileges can do this. That's why root should create other user with
-     *  name specified in configuration and full rights.
-     *  Uncomment this test when done
      * @todo #8 Create integration tests for Config.
      *  Integration tests 'WithConfigITCase' should be created to test
      *  that user name, password and dbname are set properly.
      *  This issue should be done after non root user name is set properly
      */
     @Test
-    @Ignore
     public void canUseCustomDbUserName() throws Exception {
         final int port = this.reserve();
         final String user = "notRoot";
@@ -243,17 +236,20 @@ public final class InstancesTest {
 
     /**
      * Instances can use custom db password.
+     * Password changed with username, because we don't support
+     * changing password for existing user
      * @throws Exception If something is wrong
      */
     @Test
     public void canUseCustomDbPassword() throws Exception {
         final int port = this.reserve();
+        final String user = "notRoot";
         final String password = "notRoot";
         final Instances instances = new Instances();
         instances.start(
             new Config(
                 port,
-                InstancesTest.USER,
+                user,
                 password,
                 InstancesTest.DBNAME,
                 Collections.<String>emptyList()
@@ -268,7 +264,7 @@ public final class InstancesTest {
                     InstancesTest.CONNECTION_STRING,
                     port,
                     InstancesTest.DBNAME,
-                    InstancesTest.USER,
+                    user,
                     password
                 )
             );
