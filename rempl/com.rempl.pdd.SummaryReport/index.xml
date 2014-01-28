@@ -4,18 +4,9 @@
       <ticket>8</ticket>
       <file>src/test/java/com/jcabi/mysql/maven/plugin/InstancesTest.java</file>
       <prefix>     * </prefix>
-      <body>User should be created in DB. Client can specify aly user in configuration, but only user with root privileges can do this. That's why root should create other user with name specified in configuration and full rights. Uncomment this test when done</body>
-      <estimate>0</estimate>
-      <lines>187-187</lines>
-      <owner>someone</owner>
-   </puzzle>
-   <puzzle>
-      <ticket>8</ticket>
-      <file>src/test/java/com/jcabi/mysql/maven/plugin/InstancesTest.java</file>
-      <prefix>     * </prefix>
       <body>Create integration tests for Config. Integration tests 'WithConfigITCase' should be created to test that user name, password and dbname are set properly. This issue should be done after non root user name is set properly</body>
       <estimate>0</estimate>
-      <lines>192-195</lines>
+      <lines>186-189</lines>
       <owner>someone</owner>
    </puzzle>
 </puzzles>
