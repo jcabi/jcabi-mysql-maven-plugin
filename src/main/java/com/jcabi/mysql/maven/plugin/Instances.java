@@ -192,7 +192,7 @@ final class Instances {
                 new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
-                        new VerboseProcess(proc).stdout();
+                        new VerboseProcess(proc).stdoutQuietly();
                         return null;
                     }
                 }
@@ -226,7 +226,7 @@ final class Instances {
                 "--innodb_use_native_aio=0",
                 String.format("--datadir=%s", dir)
             )
-        ).stdout();
+        ).stdoutQuietly();
         return dir;
     }
 
@@ -298,7 +298,7 @@ final class Instances {
                 "password",
                 Instances.DEFAULT_PASSWORD
             )
-        ).stdout();
+        ).stdoutQuietly();
         final Process process =
             this.builder(
                 dist,
@@ -335,7 +335,7 @@ final class Instances {
             );
         }
         writer.close();
-        new VerboseProcess(process).stdout();
+        new VerboseProcess(process).stdoutQuietly();
     }
 
     /**
