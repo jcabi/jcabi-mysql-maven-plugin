@@ -351,17 +351,17 @@ final class Instances {
         String label = name;
         final Collection<String> commands = new LinkedList<String>();
         final File exec = new File(dist, label);
-        if (!exec.exists()) {
-            label = String.format("%s.exe", name);
-            if (!new File(dist, label).exists()) {
-                label = String.format("%s.pl", name);
-                commands.add("perl");
-            }
-        } else {
+        if (exec.exists()) {
             try {
                 exec.setExecutable(true);
             } catch (SecurityException sex) {
                 throw new IllegalStateException(sex);
+            }
+        } else {
+            label = String.format("%s.exe", name);
+            if (!new File(dist, label).exists()) {
+                label = String.format("%s.pl", name);
+                commands.add("perl");
             }
         }
         commands.add(new File(dist, label).getAbsolutePath());
