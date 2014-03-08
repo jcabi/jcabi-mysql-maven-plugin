@@ -225,7 +225,7 @@ final class Instances {
                 "--force",
                 "--innodb_use_native_aio=0",
                 String.format("--datadir=%s", dir),
-                String.format("--basedir=%s", dist) 
+                String.format("--basedir=%s", dist)
             )
         ).stdoutQuietly();
         return dir;
@@ -350,7 +350,7 @@ final class Instances {
         final String... cmds) {
         String label = name;
         final Collection<String> commands = new LinkedList<String>();
-        File exec = new File(dist, label);
+        final File exec = new File(dist, label);
         if (!exec.exists()) {
             label = String.format("%s.exe", name);
             if (!new File(dist, label).exists()) {
@@ -358,12 +358,11 @@ final class Instances {
                 commands.add("perl");
             }
         } else {
-          try {
-            // After extraction on linux systems `scripts\mysql_install_db` is not executable.
-            exec.setExecutable(true);
-          } catch (SecurityException se) {
-            Logger.warn(this, se.getMessage(), se);
-          }
+            try {
+                exec.setExecutable(true);
+            } catch (SecurityException sex) {
+                Logger.warn(this, sex.getMessage(), sex);
+            }
         }
         commands.add(new File(dist, label).getAbsolutePath());
         commands.addAll(Arrays.asList(cmds));
