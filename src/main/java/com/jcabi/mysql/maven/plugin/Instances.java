@@ -224,7 +224,8 @@ final class Instances {
                 Instances.NO_DEFAULTS,
                 "--force",
                 "--innodb_use_native_aio=0",
-                String.format("--datadir=%s", dir)
+                String.format("--datadir=%s", dir),
+                String.format("--basedir=%s", dist) 
             )
         ).stdoutQuietly();
         return dir;
@@ -352,7 +353,7 @@ final class Instances {
         File exec = new File(dist, label);
         if (!exec.exists()) {
             label = String.format("%s.exe", name);
-            if (!(new File(dist, label).exists()) {
+            if (!new File(dist, label).exists()) {
                 label = String.format("%s.pl", name);
                 commands.add("perl");
             }
