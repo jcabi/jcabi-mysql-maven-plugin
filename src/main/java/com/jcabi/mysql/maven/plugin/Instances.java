@@ -361,7 +361,7 @@ final class Instances {
             try {
                 exec.setExecutable(true);
             } catch (SecurityException sex) {
-                Logger.warn(this, sex.getMessage(), sex);
+                throw new IllegalStateException(sex);
             }
         }
         commands.add(new File(dist, label).getAbsolutePath());
