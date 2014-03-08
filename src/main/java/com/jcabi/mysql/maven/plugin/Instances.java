@@ -349,12 +349,20 @@ final class Instances {
         final String... cmds) {
         String label = name;
         final Collection<String> commands = new LinkedList<String>();
-        if (!new File(dist, label).exists()) {
+        File exec = new File(dist, label);
+        if (!exec.exists()) {
             label = String.format("%s.exe", name);
-            if (!new File(dist, label).exists()) {
+            if (!(new File(dist, label).exists()) {
                 label = String.format("%s.pl", name);
                 commands.add("perl");
             }
+        } else {
+          try {
+            // After extraction on linux systems `scripts\mysql_install_db` is not executable.
+            exec.setExecutable(true);
+          } catch (SecurityException se) {
+            Logger.warn(this, se.getMessage(), se);
+          }
         }
         commands.add(new File(dist, label).getAbsolutePath());
         commands.addAll(Arrays.asList(cmds));
