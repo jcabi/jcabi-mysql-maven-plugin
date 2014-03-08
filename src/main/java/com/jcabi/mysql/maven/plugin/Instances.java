@@ -224,7 +224,8 @@ final class Instances {
                 Instances.NO_DEFAULTS,
                 "--force",
                 "--innodb_use_native_aio=0",
-                String.format("--datadir=%s", dir)
+                String.format("--datadir=%s", dir),
+                String.format("--basedir=%s", dist)
             )
         ).stdoutQuietly();
         return dir;
@@ -349,7 +350,14 @@ final class Instances {
         final String... cmds) {
         String label = name;
         final Collection<String> commands = new LinkedList<String>();
-        if (!new File(dist, label).exists()) {
+        final File exec = new File(dist, label);
+        if (exec.exists()) {
+            try {
+                exec.setExecutable(true);
+            } catch (SecurityException sex) {
+                throw new IllegalStateException(sex);
+            }
+        } else {
             label = String.format("%s.exe", name);
             if (!new File(dist, label).exists()) {
                 label = String.format("%s.pl", name);
