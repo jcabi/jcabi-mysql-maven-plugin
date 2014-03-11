@@ -58,7 +58,7 @@ public final class StartMojo extends AbstractMysqlMojo {
                 this.distDir(),
                 this.dataDir()
             );
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new MojoFailureException(
                 "failed to start MySQL server", ex
             );
