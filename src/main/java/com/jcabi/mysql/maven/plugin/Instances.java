@@ -159,7 +159,7 @@ final class Instances {
         if (target.mkdirs()) {
             Logger.info(this, "created %s directory", target);
         }
-        if (new File(target, "temp").mkdirs()) {
+        if (!new File(target, "temp").mkdirs()) {
             throw new IllegalStateException(
                 "Error during temporary folder creation"
             );

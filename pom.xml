@@ -60,7 +60,7 @@
         </site>
     </distributionManagement>
     <properties>
-        <maven.version>3.0.5</maven.version>
+        <maven.version>3.2.1</maven.version>
     </properties>
     <dependencies>
         <dependency>
@@ -157,18 +157,18 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.sonatype.sisu</groupId>
-            <artifactId>sisu-guava</artifactId>
-            <version>0.9.9</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>16.0.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <build>
@@ -283,9 +283,28 @@
                 <version>0.5.1</version>
                 <configuration>
                     <excludes>
-                        <exclude>findbugs:/src/main/java/.*</exclude>
+                        <exclude>findbugs:.*</exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.ning.maven.plugins</groupId>
+                <artifactId>maven-duplicate-finder-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>jcabi-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <ignoredResources>
+                                <ignoredResource>META-INF/.*</ignoredResource>
+                                <ignoredResource>about.html</ignoredResource>
+                            </ignoredResources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
