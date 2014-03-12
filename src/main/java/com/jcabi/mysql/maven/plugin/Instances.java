@@ -159,7 +159,11 @@ final class Instances {
         if (target.mkdirs()) {
             Logger.info(this, "created %s directory", target);
         }
-        new File(target, "temp").mkdirs();
+        if (!new File(target, "temp").mkdirs()) {
+            throw new IllegalStateException(
+                "Error during temporary folder creation"
+            );
+        }
         final File socket = new File(target, "mysql.sock");
         final ProcessBuilder builder = this.builder(
             dist,
@@ -260,7 +264,7 @@ final class Instances {
             }
             try {
                 TimeUnit.SECONDS.sleep(1L);
-            } catch (InterruptedException ex) {
+            } catch (final InterruptedException ex) {
                 Thread.currentThread().interrupt();
                 throw new IllegalStateException(ex);
             }
@@ -354,7 +358,7 @@ final class Instances {
         if (exec.exists()) {
             try {
                 exec.setExecutable(true);
-            } catch (SecurityException sex) {
+            } catch (final SecurityException sex) {
                 throw new IllegalStateException(sex);
             }
         } else {
@@ -382,7 +386,7 @@ final class Instances {
         try {
             new Socket((String) null, port);
             open = true;
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             open = false;
         }
         return open;
