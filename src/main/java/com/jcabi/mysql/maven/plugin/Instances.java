@@ -159,7 +159,11 @@ final class Instances {
         if (target.mkdirs()) {
             Logger.info(this, "created %s directory", target);
         }
-        new File(target, "temp").mkdirs();
+        if (!new File(target, "temp").mkdirs()) {
+            throw new IllegalStateException(
+                "Error during temporary folder creation"
+            );
+        }
         final File socket = new File(target, "mysql.sock");
         final ProcessBuilder builder = this.builder(
             dist,
@@ -192,7 +196,7 @@ final class Instances {
                 new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
-                        new VerboseProcess(proc).stdout();
+                        new VerboseProcess(proc).stdoutQuietly();
                         return null;
                     }
                 }
@@ -224,9 +228,10 @@ final class Instances {
                 Instances.NO_DEFAULTS,
                 "--force",
                 "--innodb_use_native_aio=0",
-                String.format("--datadir=%s", dir)
+                String.format("--datadir=%s", dir),
+                String.format("--basedir=%s", dist)
             )
-        ).stdout();
+        ).stdoutQuietly();
         return dir;
     }
 
@@ -259,7 +264,7 @@ final class Instances {
             }
             try {
                 TimeUnit.SECONDS.sleep(1L);
-            } catch (InterruptedException ex) {
+            } catch (final InterruptedException ex) {
                 Thread.currentThread().interrupt();
                 throw new IllegalStateException(ex);
             }
@@ -298,7 +303,7 @@ final class Instances {
                 "password",
                 Instances.DEFAULT_PASSWORD
             )
-        ).stdout();
+        ).stdoutQuietly();
         final Process process =
             this.builder(
                 dist,
@@ -335,7 +340,7 @@ final class Instances {
             );
         }
         writer.close();
-        new VerboseProcess(process).stdout();
+        new VerboseProcess(process).stdoutQuietly();
     }
 
     /**
@@ -349,7 +354,14 @@ final class Instances {
         final String... cmds) {
         String label = name;
         final Collection<String> commands = new LinkedList<String>();
-        if (!new File(dist, label).exists()) {
+        final File exec = new File(dist, label);
+        if (exec.exists()) {
+            try {
+                exec.setExecutable(true);
+            } catch (final SecurityException sex) {
+                throw new IllegalStateException(sex);
+            }
+        } else {
             label = String.format("%s.exe", name);
             if (!new File(dist, label).exists()) {
                 label = String.format("%s.pl", name);
@@ -374,7 +386,7 @@ final class Instances {
         try {
             new Socket((String) null, port);
             open = true;
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             open = false;
         }
         return open;

@@ -61,7 +61,7 @@ public final class RunMojo extends AbstractMysqlMojo {
                 this.distDir(),
                 this.dataDir()
             );
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new MojoFailureException(
                 "failed to start MySQL server", ex
             );
@@ -76,7 +76,7 @@ public final class RunMojo extends AbstractMysqlMojo {
         while (true) {
             try {
                 TimeUnit.MINUTES.sleep(1L);
-            } catch (InterruptedException ex) {
+            } catch (final InterruptedException ex) {
                 throw new MojoFailureException("MySQL terminated", ex);
             }
         }
