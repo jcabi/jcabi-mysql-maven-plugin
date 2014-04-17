@@ -1,2 +1,4 @@
 language: java
+install:
+  - sudo apt-get install libaio1
 script: mvn clean install -Pqulice
