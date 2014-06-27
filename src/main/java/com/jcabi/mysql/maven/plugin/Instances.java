@@ -132,10 +132,9 @@ final class Instances {
      */
     public void stop(final int port) {
         synchronized (this.processes) {
-            final Process proc = this.processes.get(port);
+            final Process proc = this.processes.remove(port);
             if (proc != null) {
                 proc.destroy();
-                this.processes.remove(proc);
             }
         }
     }
