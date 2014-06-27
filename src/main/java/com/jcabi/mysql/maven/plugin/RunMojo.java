@@ -53,7 +53,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 public final class RunMojo extends AbstractMysqlMojo {
 
     @Override
-    protected void run(final Instances instances) throws MojoFailureException {
+    public void run(final Instances instances) throws MojoFailureException {
         final Config config = this.config();
         try {
             instances.start(

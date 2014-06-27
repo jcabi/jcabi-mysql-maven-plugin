@@ -33,7 +33,7 @@
     <parent>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi</artifactId>
-        <version>1.5</version>
+        <version>1.13</version>
     </parent>
     <artifactId>jcabi-mysql-maven-plugin</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -282,27 +282,11 @@
                 <configuration>
                     <excludes>
                         <exclude>findbugs:.*</exclude>
+                        <exclude>duplicatefinder:.*</exclude>
+                        <exclude>pmd:/src/it/.*</exclude>
+                        <exclude>xml:/src/it/settings.xml</exclude>
                     </excludes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.ning.maven.plugins</groupId>
-                <artifactId>maven-duplicate-finder-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>jcabi-check</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <ignoredResources>
-                                <ignoredResource>META-INF/.*</ignoredResource>
-                                <ignoredResource>about.html</ignoredResource>
-                            </ignoredResources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
