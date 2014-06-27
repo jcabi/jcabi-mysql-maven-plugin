@@ -66,7 +66,7 @@ import org.apache.commons.lang3.StringUtils;
 @EqualsAndHashCode(of = "processes")
 @Loggable(Loggable.INFO)
 @SuppressWarnings("PMD.DoNotUseThreads")
-final class Instances {
+public final class Instances {
 
     /**
      * No defaults.

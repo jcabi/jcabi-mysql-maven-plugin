@@ -47,7 +47,7 @@ import lombok.ToString;
 @EqualsAndHashCode(
     of = { "tcpport", "dbuser", "dbpassword", "name", "dbopts" }
 )
-final class Config {
+public final class Config {
 
     /**
      * TCP port.
