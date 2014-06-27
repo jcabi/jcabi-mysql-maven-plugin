@@ -39,6 +39,9 @@
 
 MySQL Maven Plugin for Integration Testing
 
+  Check {{{http://www.yegor256.com/2014/05/21/mysql-maven-plugin.html}this blog post}}
+  for a more detailed explanation.
+
   This plugin starts a local MySQL server on
   <<<pre-integration-test>>> phase and shuts it down
   on <<<post-integration-test>>>.
