@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type='text/xsl' href='puzzles.xsl'?><puzzles>
-   <puzzle>
-      <ticket>8</ticket>
-      <file>src/test/java/com/jcabi/mysql/maven/plugin/InstancesTest.java</file>
-      <prefix>     * </prefix>
-      <body>Create integration tests for Config. Integration tests 'WithConfigITCase' should be created to test that user name, password and dbname are set properly. This issue should be done after non root user name is set properly</body>
-      <estimate>0</estimate>
-      <lines>186-189</lines>
-      <owner>someone</owner>
-   </puzzle>
+<puzzle>
+<ticket>8</ticket>
+<file>src/test/java/com/jcabi/mysql/maven/plugin/InstancesTest.java</file>
+<body>Create integration tests for Config. Integration tests 'WithConfigITCase' should be created to test that user name, password and dbname are set properly. This issue should be done after non root user name is set properly</body>
+<role>IMP</role>
+<estimate>0</estimate>
+<lines>186-189</lines>
+</puzzle>
 </puzzles>
