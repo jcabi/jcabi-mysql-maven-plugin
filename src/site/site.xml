@@ -53,16 +53,16 @@
         </head>
         <menu ref="parent"/>
         <menu name="Overview">
-            <item name="Introduction" href="index.html"/>
-            <item name="Usage" href="usage.html"/>
-            <item name="Goals" href="plugin-info.html"/>
-            <item name="FAQ" href="faq.html"/>
-            <item name="Release History" href="changes-report.html"/>
+            <item name="Introduction" href="./index.html"/>
+            <item name="Usage" href="./usage.html"/>
+            <item name="Goals" href="./plugin-info.html"/>
+            <item name="FAQ" href="./faq.html"/>
+            <item name="Release History" href="https://github.com/jcabi/jcabi-mysql-maven-plugin/releases"/>
         </menu>
         <menu name="Examples">
-            <item name="Integration Testing" href="example-it.html"/>
-            <item name="MySQL CLI Options" href="example-options.html"/>
-            <item name="Custom credentials" href="example-credentials.html"/>
+            <item name="Integration Testing" href="./example-it.html"/>
+            <item name="MySQL CLI Options" href="./example-options.html"/>
+            <item name="Custom credentials" href="./example-credentials.html"/>
         </menu>
         <menu ref="reports"/>
     </body>
