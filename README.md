@@ -9,7 +9,6 @@ More details are here: [mysql.jcabi.com](http://mysql.jcabi.com/index.html)
 
 If you have any questions about the framework, or something doesn't work as expected,
 please [submit an issue here](https://github.com/jcabi/jcabi-mysql-maven-plugin/issues/new).
-If you want to discuss, please use our [Google Group](https://groups.google.com/forum/#!forum/jcabi).
 
 ## How to contribute?
 
