@@ -66,7 +66,7 @@ import org.apache.commons.lang3.StringUtils;
 @EqualsAndHashCode(of = "processes")
 @Loggable(Loggable.INFO)
 @SuppressWarnings("PMD.DoNotUseThreads")
-final class Instances {
+public final class Instances {
 
     /**
      * No defaults.
@@ -132,10 +132,9 @@ final class Instances {
      */
     public void stop(final int port) {
         synchronized (this.processes) {
-            final Process proc = this.processes.get(port);
+            final Process proc = this.processes.remove(port);
             if (proc != null) {
                 proc.destroy();
-                this.processes.remove(proc);
             }
         }
     }
