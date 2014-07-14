@@ -69,6 +69,11 @@ import org.apache.commons.lang3.StringUtils;
 public final class Instances {
 
     /**
+     * Directory of the actual database relative to the target.
+     */
+    private static final String DATA_SUB_DIR = "data";
+
+    /**
      * No defaults.
      */
     private static final String NO_DEFAULTS = "--no-defaults";
@@ -96,15 +101,23 @@ public final class Instances {
         new ConcurrentHashMap<Integer, Process>(0);
 
     /**
+     * Always create a clean database. If this true an existing database at the
+     * target location it will be deleted, otherwise it will be reused.
+     */
+    private transient boolean clean = true;
+
+    /**
      * Start a new one at this port.
      * @param config Instance configuration
      * @param dist Path to MySQL distribution
      * @param target Where to keep temp data
+     * @param deldir If existing DB should be deleted
      * @throws IOException If fails to start
      * @checkstyle ParameterNumberCheck (10 lines)
      */
     public void start(@NotNull final Config config, @NotNull final File dist,
-        @NotNull final File target) throws IOException {
+        @NotNull final File target, final boolean deldir) throws IOException {
+        this.setClean(target, deldir);
         synchronized (this.processes) {
             if (this.processes.containsKey(config.port())) {
                 throw new IllegalArgumentException(
@@ -151,18 +164,7 @@ public final class Instances {
     private Process process(@NotNull final Config config,
         final File dist, final File target)
         throws IOException {
-        if (target.exists()) {
-            FileUtils.deleteDirectory(target);
-            Logger.info(this, "deleted %s directory", target);
-        }
-        if (target.mkdirs()) {
-            Logger.info(this, "created %s directory", target);
-        }
-        if (!new File(target, "temp").mkdirs()) {
-            throw new IllegalStateException(
-                "Error during temporary folder creation"
-            );
-        }
+        final File temp = this.prepareFolders(target);
         final File socket = new File(target, "mysql.sock");
         final ProcessBuilder builder = this.builder(
             dist,
@@ -178,7 +180,7 @@ public final class Instances {
             String.format("--basedir=%s", dist),
             String.format("--lc-messages-dir=%s", new File(dist, "share")),
             String.format("--datadir=%s", this.data(dist, target)),
-            String.format("--tmpdir=%s", new File(target, "temp")),
+            String.format("--tmpdir=%s", temp),
             String.format("--socket=%s", socket),
             String.format("--pid-file=%s", new File(target, "mysql.pid")),
             String.format("--port=%d", config.port())
@@ -203,8 +205,33 @@ public final class Instances {
         );
         thread.setDaemon(true);
         thread.start();
-        this.configure(config, dist, this.waitFor(socket, config.port()));
+        if (this.clean) {
+            this.configure(config, dist, this.waitFor(socket, config.port()));
+        }
         return proc;
+    }
+
+    /**
+     * Prepare the folder structure for the database if necessary.
+     * @param target Location of the database
+     * @return The location of the temp directory
+     * @throws IOException If fails to create temp directory
+     */
+    private File prepareFolders(final File target) throws IOException {
+        if (this.clean && target.exists()) {
+            FileUtils.deleteDirectory(target);
+            Logger.info(this, "deleted %s directory", target);
+        }
+        if (!target.exists() && target.mkdirs()) {
+            Logger.info(this, "created %s directory", target);
+        }
+        final File temp = new File(target, "temp");
+        if (!temp.exists() && !temp.mkdirs()) {
+            throw new IllegalStateException(
+                "Error during temporary folder creation"
+            );
+        }
+        return temp;
     }
 
     /**
@@ -215,22 +242,24 @@ public final class Instances {
      * @throws IOException If fails
      */
     private File data(final File dist, final File target) throws IOException {
-        final File dir = new File(target, "data");
-        FileUtils.writeStringToFile(
-            new File(dist, "support-files/my-default.cnf"),
-            "[mysql]\n# no defaults..."
-        );
-        new VerboseProcess(
-            this.builder(
-                dist,
-                "scripts/mysql_install_db",
-                Instances.NO_DEFAULTS,
-                "--force",
-                "--innodb_use_native_aio=0",
-                String.format("--datadir=%s", dir),
-                String.format("--basedir=%s", dist)
-            )
-        ).stdoutQuietly();
+        final File dir = new File(target, DATA_SUB_DIR);
+        if (!dir.exists()) {
+            FileUtils.writeStringToFile(
+                new File(dist, "support-files/my-default.cnf"),
+                "[mysql]\n# no defaults..."
+            );
+            new VerboseProcess(
+                this.builder(
+                    dist,
+                    "scripts/mysql_install_db",
+                    Instances.NO_DEFAULTS,
+                    "--force",
+                    "--innodb_use_native_aio=0",
+                    String.format("--datadir=%s", dir),
+                    String.format("--basedir=%s", dist)
+                )
+            ).stdoutQuietly();
+        }
         return dir;
     }
 
@@ -373,6 +402,22 @@ public final class Instances {
         return new ProcessBuilder()
             .command(commands.toArray(new String[commands.size()]))
             .directory(dist);
+    }
+
+    /**
+     * Will set the {@link Instances#clean} flag, indicating if the database
+     * can be reused or should be deleted and recreated.
+     * @param target Location of database
+     * @param deldir Should database always be cleared
+     */
+    private void setClean(final File target, final boolean deldir) {
+        if (new File(target, DATA_SUB_DIR).exists() && !deldir) {
+            Logger.info(this, "reuse existing database %s", target);
+            this.clean = false;
+        } else {
+            this.clean = true;
+        }
+        Logger.info(this, "reuse existing database %s", !this.clean);
     }
 
     /**

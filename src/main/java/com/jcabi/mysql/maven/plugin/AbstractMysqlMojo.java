@@ -115,6 +115,15 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     private transient File data;
 
     /**
+     * Shall we always delete an existing database or reuse it?
+     */
+    @Parameter(
+        defaultValue = "true",
+        required = false
+    )
+    private transient boolean clearexistingdata;
+
+    /**
      * Configuration options.
      */
     @Parameter(
@@ -162,6 +171,15 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      */
     public File dataDir() {
         return this.data;
+    }
+
+    /**
+     * If true, always delete existing database files and create a new instance
+     * from scratch. If false, try to reuse existing files.
+     * @return If existing database files should be deleted.
+     */
+    public boolean clear() {
+        return this.clearexistingdata;
     }
 
     /**
