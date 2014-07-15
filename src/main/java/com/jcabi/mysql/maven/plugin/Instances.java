@@ -205,8 +205,9 @@ public final class Instances {
         );
         thread.setDaemon(true);
         thread.start();
+        this.waitFor(socket, config.port());
         if (this.clean) {
-            this.configure(config, dist, this.waitFor(socket, config.port()));
+            this.configure(config, dist, socket);
         }
         return proc;
     }
