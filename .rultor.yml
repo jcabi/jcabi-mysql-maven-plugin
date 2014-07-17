@@ -15,11 +15,6 @@ deploy:
     MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
   script: 
     - "sudo apt-get install libaio1"
-    - "useradd -p test test"
-    - "cp -R . /tmp/test"
-    - "cp ../settings.xml /tmp/test"
-    - "chown -R test /tmp/test"
-    - "cd /tmp/test"
     - "sudo -u test mvn clean deploy -Ppdd -Pqulice --errors --settings settings.xml"
 
 release:
