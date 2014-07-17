@@ -36,6 +36,7 @@ import java.net.ServerSocket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 /**
@@ -64,9 +65,14 @@ public final class InstancesTest {
     public static final String DBNAME = "root";
 
     /**
+     * Time to sleep in between instances.
+     */
+    private static final long SLEEP_SECONDS = 5L;
+
+    /**
      * Location of MySQL dist.
      */
-    private static final String DIST = System.getProperty("surefire.dist");
+    private static final String DIST = getDist();
 
     /**
      * MySQL driver name.
@@ -96,7 +102,8 @@ public final class InstancesTest {
                 Collections.<String>emptyList()
             ),
             new File(InstancesTest.DIST),
-            Files.createTempDir()
+            Files.createTempDir(),
+            true
         );
         Class.forName(InstancesTest.DRIVER).newInstance();
         try {
@@ -148,7 +155,8 @@ public final class InstancesTest {
                 Collections.singletonList("sql-mode=ALLOW_INVALID_DATES")
             ),
             new File(InstancesTest.DIST),
-            Files.createTempDir()
+            Files.createTempDir(),
+            true
         );
         Class.forName(InstancesTest.DRIVER).newInstance();
         try {
@@ -202,7 +210,8 @@ public final class InstancesTest {
                 Collections.<String>emptyList()
             ),
             new File(InstancesTest.DIST),
-            Files.createTempDir()
+            Files.createTempDir(),
+            true
         );
         Class.forName(InstancesTest.DRIVER).newInstance();
         try {
@@ -255,7 +264,8 @@ public final class InstancesTest {
                 Collections.<String>emptyList()
             ),
             new File(InstancesTest.DIST),
-            Files.createTempDir()
+            Files.createTempDir(),
+            true
         );
         Class.forName(InstancesTest.DRIVER).newInstance();
         try {
@@ -305,7 +315,8 @@ public final class InstancesTest {
                 Collections.<String>emptyList()
             ),
             new File(InstancesTest.DIST),
-            Files.createTempDir()
+            Files.createTempDir(),
+            true
         );
         Class.forName(InstancesTest.DRIVER).newInstance();
         try {
@@ -338,6 +349,162 @@ public final class InstancesTest {
     }
 
     /**
+     * If no database exists, it will create one even if clear = false.
+     * @throws Exception If something is wrong
+     */
+    @Test
+    public void willCreateDatabaseEvenWithoutClear() throws Exception {
+        final int port = this.reserve();
+        final Instances instances = new Instances();
+        instances.start(
+            new Config(
+                port,
+                InstancesTest.USER,
+                InstancesTest.PASSWORD,
+                InstancesTest.DBNAME,
+                Collections.<String>emptyList()
+            ),
+            new File(InstancesTest.DIST),
+            Files.createTempDir(),
+            false
+        );
+        Class.forName(InstancesTest.DRIVER).newInstance();
+        try {
+            final Connection conn = DriverManager.getConnection(
+                String.format(
+                    InstancesTest.CONNECTION_STRING,
+                    port,
+                    InstancesTest.USER,
+                    InstancesTest.PASSWORD,
+                    InstancesTest.DBNAME
+                )
+            );
+            try {
+                new JdbcSession(conn)
+                    .autocommit(false)
+                    .sql("CREATE TABLE foo (id INT)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES (1)")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .execute()
+                    .sql("DROP TABLE foo")
+                    .execute();
+            } finally {
+                conn.close();
+            }
+        } finally {
+            instances.stop(port);
+        }
+    }
+
+    /**
+     * Is able to reuse a previously created database.
+     * @throws Exception If something is wrong
+     */
+    @Test
+    public void canReuseExistingDatabse() throws Exception {
+        final int port = this.reserve();
+        final File target = Files.createTempDir();
+        final Instances instances = new Instances();
+        instances.start(
+            new Config(
+                port,
+                InstancesTest.USER,
+                InstancesTest.PASSWORD,
+                InstancesTest.DBNAME,
+                Collections.<String>emptyList()
+            ),
+            new File(InstancesTest.DIST),
+            target,
+            true
+        );
+        Class.forName(InstancesTest.DRIVER).newInstance();
+        try {
+            final Connection conn = DriverManager.getConnection(
+                String.format(
+                    InstancesTest.CONNECTION_STRING,
+                    port,
+                    InstancesTest.USER,
+                    InstancesTest.PASSWORD,
+                    InstancesTest.DBNAME
+                )
+            );
+            try {
+                new JdbcSession(conn)
+                    .autocommit(false)
+                    .sql("START TRANSACTION")
+                    .execute()
+                    .sql("CREATE TABLE foo (id INT)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES (1)")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .execute()
+                    .sql("COMMIT")
+                    .execute();
+            } finally {
+                conn.close();
+            }
+        } finally {
+            instances.stop(port);
+        }
+        this.checkExistingDatabase(target);
+    }
+
+    /**
+     * Helper for canReuseExistingDatabse test.
+     * @param target Directory of existing database
+     * @throws Exception If something is wrong
+     */
+    private void checkExistingDatabase(final File target) throws Exception {
+        final File socket = new File(target, "mysql.sock");
+        while (socket.exists()) {
+            TimeUnit.SECONDS.sleep(SLEEP_SECONDS);
+        }
+        final int port = this.reserve();
+        final Instances instances = new Instances();
+        instances.start(
+            new Config(
+                port,
+                InstancesTest.USER,
+                InstancesTest.PASSWORD,
+                InstancesTest.DBNAME,
+                Collections.<String>emptyList()
+            ),
+            new File(InstancesTest.DIST),
+            target,
+            false
+        );
+        do {
+            TimeUnit.SECONDS.sleep(SLEEP_SECONDS);
+        } while (!socket.exists());
+        try {
+            final Connection conn = DriverManager.getConnection(
+                String.format(
+                    InstancesTest.CONNECTION_STRING,
+                    port,
+                    InstancesTest.USER,
+                    InstancesTest.PASSWORD,
+                    InstancesTest.DBNAME
+                )
+            );
+            try {
+                new JdbcSession(conn)
+                    .autocommit(false)
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .execute()
+                    .sql("DROP TABLE foo")
+                    .execute();
+            } finally {
+                conn.close();
+            }
+        } finally {
+            instances.stop(port);
+        }
+    }
+
+    /**
      * Find and return the first available port.
      * @return The port number
      * @throws Exception If fails
@@ -349,5 +516,18 @@ public final class InstancesTest {
         } finally {
             socket.close();
         }
+    }
+
+    /**
+     * This will be taken from the surefire.dist system property
+     * or defaulted to the target.
+     * @return The MySQL distribution location
+     */
+    private static String getDist() {
+        String dist = System.getProperty("surefire.dist");
+        if (dist == null) {
+            dist = "./target/mysql-dist";
+        }
+        return dist;
     }
 }

@@ -1,0 +1,42 @@
+ ------
+ With custom MySQL credentials
+ ------
+ Christian Redl
+ ------
+ 2014-07-15
+ ------
+
+ Reuse existing database
+
+  This feature is primarily intended for development. A developer debugging an
+  issue might want to keep reusing an database instance either for performance
+  reasons or to save the time of recreating the test conditions.
+
+  When adding the optional configuration setting:
+
++--
+<configuration>
+...
+<clearexistingdata>false</clearexistingdata>
+...
+</configuration>
++--
+
+  The plugin will behave as following:
+
+   * If there is already a folder structure under the folder provided by the
+     configuration setting <<<data>>>, the plugin will try to reuse it.
+
+   * If no folder exists at the <<<data>>> location the plugin will try to
+     create a new database regardless of the <<<clearexistingdata>>> value.
+
+   * Calling Maven with <<<clean>>> will always delete the existing database.
+     This will cause the plugin to create a new database regardless.
+
+   []
+
+  Run <<<mvn clean install>>> to create a new database and <<<mvn install>>>
+  to reuse it.
+
+  Please note that the default value of the setting is <<<true>>>, in which
+  case the plugin will always delete and recreate the database.
