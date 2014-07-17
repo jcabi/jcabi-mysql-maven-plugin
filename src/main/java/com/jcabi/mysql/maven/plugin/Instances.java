@@ -168,6 +168,7 @@ public final class Instances {
             dist,
             "bin/mysqld",
             Instances.NO_DEFAULTS,
+            String.format("--user=%s", System.getProperty("user.name")),
             "--general_log",
             "--console",
             "--innodb_buffer_pool_size=64M",
