@@ -7,12 +7,14 @@ merge:
   env:
     MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
   script: 
+    - "sudo apt-get install libaio1"
     - "mvn clean install -Pqulice --errors --settings ../settings.xml"
 
 deploy:
   env:
     MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
   script: 
+    - "sudo apt-get install libaio1"
     - "mvn clean deploy -Ppdd -Pqulice --errors --settings ../settings.xml"
 
 release:
@@ -21,5 +23,6 @@ release:
   script: 
     - "mvn versions:set \"-DnewVersion=${tag}\""
     - "git commit -am \"${tag}\""
+    - "sudo apt-get install libaio1"
     - "mvn clean deploy -Pqulice -Psonatype -Pjcabi --errors --settings ../settings.xml"
     - "mvn clean site-deploy -Psite -Prempl --errors --settings ../settings.xml"
