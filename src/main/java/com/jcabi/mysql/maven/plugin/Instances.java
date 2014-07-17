@@ -30,6 +30,7 @@
 package com.jcabi.mysql.maven.plugin;
 
 import com.jcabi.aspects.Loggable;
+import com.jcabi.aspects.Tv;
 import com.jcabi.log.Logger;
 import com.jcabi.log.VerboseProcess;
 import com.jcabi.log.VerboseRunnable;
@@ -269,7 +270,7 @@ public final class Instances {
                 throw new IllegalStateException(ex);
             }
             age = System.currentTimeMillis() - start;
-            if (age > TimeUnit.MINUTES.toMillis(1L)) {
+            if (age > TimeUnit.MINUTES.toMillis((long) Tv.FIVE)) {
                 throw new IOException(
                     Logger.format(
                         "socket %s is not available after %[ms]s of waiting",
