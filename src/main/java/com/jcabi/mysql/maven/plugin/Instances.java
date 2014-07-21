@@ -247,15 +247,16 @@ public final class Instances {
     private File data(final File dist, final File target) throws IOException {
         final File dir = new File(target, DATA_SUB_DIR);
         if (!dir.exists()) {
+            final File cnf = new File(target, "my-default.cnf");
             FileUtils.writeStringToFile(
-                new File(dist, "support-files/my-default.cnf"),
+                cnf,
                 "[mysql]\n# no defaults..."
             );
             new VerboseProcess(
                 this.builder(
                     dist,
                     "scripts/mysql_install_db",
-                    Instances.NO_DEFAULTS,
+                    String.format("--defaults-file=%s", cnf),
                     "--force",
                     "--innodb_use_native_aio=0",
                     String.format("--datadir=%s", dir),
