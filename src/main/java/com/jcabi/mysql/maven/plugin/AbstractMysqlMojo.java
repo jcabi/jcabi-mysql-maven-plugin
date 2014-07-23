@@ -39,6 +39,7 @@ import lombok.ToString;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 import org.slf4j.impl.StaticLoggerBinder;
 
 /**
@@ -50,6 +51,21 @@ import org.slf4j.impl.StaticLoggerBinder;
 @ToString
 @EqualsAndHashCode(callSuper = false)
 abstract class AbstractMysqlMojo extends AbstractMojo {
+
+    /**
+     * Property that will be exported by the plugin indicating if an existing
+     * database could be reused.
+     */
+    private static final String PROPERTY_REUSED = "jcabi.reused.database";
+
+    /**
+     * The Maven project.
+     */
+    @Parameter(
+        defaultValue = "${project}",
+        readonly = true
+    )
+    private transient MavenProject project;
 
     /**
      * Shall we skip execution?
@@ -147,6 +163,26 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
             return;
         }
         this.run(AbstractMysqlMojo.instances());
+        if (this.project == null) {
+            Logger.warn(
+                this,
+                "MavenProject not initialized, unable to set property %s",
+                PROPERTY_REUSED
+            );
+        } else {
+            Logger.info(
+                this,
+                "set Maven property %s = %s ",
+                PROPERTY_REUSED,
+                AbstractMysqlMojo.instances().reusedExistingDatabase()
+            );
+            this.project.getProperties().setProperty(
+                PROPERTY_REUSED,
+                Boolean.toString(
+                    AbstractMysqlMojo.instances().reusedExistingDatabase()
+                )
+            );
+        }
     }
 
     /**

@@ -38,7 +38,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -66,7 +65,7 @@ import org.apache.commons.lang3.StringUtils;
 @ToString
 @EqualsAndHashCode(of = "processes")
 @Loggable(Loggable.INFO)
-@SuppressWarnings("PMD.DoNotUseThreads")
+@SuppressWarnings({ "PMD.DoNotUseThreads", "PMD.TooManyMethods" })
 public final class Instances {
 
     /**
@@ -102,8 +101,9 @@ public final class Instances {
         new ConcurrentHashMap<Integer, Process>(0);
 
     /**
-     * Always create a clean database. If this true an existing database at the
-     * target location it will be deleted, otherwise it will be reused.
+     * If true, always create a new database. If false, check if there is an
+     * existing database at the target location and try to use that if
+     * possible, otherwise create a new one anyway.
      */
     private transient boolean clean = true;
 
@@ -151,6 +151,15 @@ public final class Instances {
                 proc.destroy();
             }
         }
+    }
+
+    /**
+     * Returns if a clean database had to be created. Note that this must be
+     * called after {@link Instances#start(Config, File, File, boolean)}.
+     * @return If this is a clean database or could have been reused
+     */
+    public boolean reusedExistingDatabase() {
+        return !this.clean;
     }
 
     /**
@@ -286,7 +295,7 @@ public final class Instances {
                 );
                 break;
             }
-            if (Instances.isOpen(port)) {
+            if (SocketHelper.isOpen(port)) {
                 Logger.info(
                     this,
                     "port %s is available after %[ms]s of waiting",
@@ -410,7 +419,7 @@ public final class Instances {
 
     /**
      * Will set the {@link Instances#clean} flag, indicating if the database
-     * can be reused or should be deleted and recreated.
+     * can be reused or if it should be deleted and recreated.
      * @param target Location of database
      * @param deldir Should database always be cleared
      */
@@ -422,22 +431,6 @@ public final class Instances {
             this.clean = true;
         }
         Logger.info(this, "reuse existing database %s", !this.clean);
-    }
-
-    /**
-     * Port is open.
-     * @param port The port to check
-     * @return TRUE if it's open
-     */
-    private static boolean isOpen(final int port) {
-        boolean open;
-        try {
-            new Socket((String) null, port);
-            open = true;
-        } catch (final IOException ex) {
-            open = false;
-        }
-        return open;
     }
 
 }
