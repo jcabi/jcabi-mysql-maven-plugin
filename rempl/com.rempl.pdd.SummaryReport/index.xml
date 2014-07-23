@@ -6,6 +6,6 @@
 <body>Create integration tests for Config. Integration tests 'WithConfigITCase' should be created to test that user name, password and dbname are set properly. This issue should be done after non root user name is set properly</body>
 <role>IMP</role>
 <estimate>0</estimate>
-<lines>186-189</lines>
+<lines>195-198</lines>
 </puzzle>
 </puzzles>

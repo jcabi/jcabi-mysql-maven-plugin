@@ -100,6 +100,12 @@
                                                                                                                                                                 <ul>
                                                                     </ul>
                                                     </li>
+                                                                                                                        <li >
+                            <span>                        <a href="example-database-reuse.html" title="Reuse existing database">Reuse existing database</a>
+        </span>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
                                                                                         </ul>
                                                     </li>
                                             <li>
@@ -135,11 +141,11 @@
                             </div>
                             <div class="date">
                                 <div class="date-numbers">
-                                    <strong itemprop="version">0.7</strong>
+                                    <strong itemprop="version">0.8</strong>
                                     
-                                    <time itemprop="datePublished" datetime="2014-06-27T12:23:58Z">
+                                    <time itemprop="datePublished" datetime="2014-07-23T11:24:35Z">
                                         
-                                        27-Jun-2014
+                                        23-Jul-2014
                                     </time>
                                 </div>
                                                                                                     <div>
@@ -158,7 +164,7 @@
       
 <p><b>Full name</b>:</p>
       
-<p>com.jcabi:jcabi-mysql-maven-plugin:0.7:start</p>
+<p>com.jcabi:jcabi-mysql-maven-plugin:0.8:start</p>
       
 <p><b>Description</b>:</p>
       
@@ -235,6 +241,17 @@
           
 <tr class="b">
             
+<td><b><a href="#clearexistingdata">clearexistingdata</a></b></td>
+            
+<td><tt>boolean</tt></td>
+            
+<td><tt>0.1</tt></td>
+            
+<td>Shall we always delete an existing database or reuse it?<br /><b>Default value is</b>: <tt>true</tt>.<br /></td>
+          </tr>
+          
+<tr class="a">
+            
 <td><b><a href="#dbname">dbname</a></b></td>
             
 <td><tt>String</tt></td>
@@ -244,7 +261,7 @@
 <td>Database name to use.<br /><b>Default value is</b>: <tt>root</tt>.<br /></td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><b><a href="#options">options</a></b></td>
             
@@ -255,7 +272,7 @@
 <td>Configuration options.<br /></td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><b><a href="#password">password</a></b></td>
             
@@ -266,7 +283,7 @@
 <td>Password to use.<br /><b>Default value is</b>: <tt>root</tt>.<br /></td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><b><a href="#port">port</a></b></td>
             
@@ -277,7 +294,7 @@
 <td>Port to use.<br /><b>Default value is</b>: <tt>3306</tt>.<br /></td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><b><a href="#skip">skip</a></b></td>
             
@@ -288,7 +305,7 @@
 <td>Shall we skip execution?<br /><b>Default value is</b>: <tt>false</tt>.<br /></td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><b><a href="#user">user</a></b></td>
             
@@ -304,6 +321,20 @@
 <div class="section">
 <h3>Parameter Details<a name="Parameter_Details"></a></h3>
         
+<p><b><a name="clearexistingdata">clearexistingdata</a>:</b></p>
+        
+<div>Shall we always delete an existing database or reuse it?</div>
+        
+<ul>
+          
+<li><b>Type</b>: <tt>boolean</tt></li>
+          
+<li><b>Since</b>: <tt>0.1</tt></li>
+          
+<li><b>Required</b>: <tt>No</tt></li>
+          
+<li><b>Default</b>: <tt>true</tt></li>
+        </ul><hr />
 <p><b><a name="data">data</a>:</b></p>
         
 <div>Location of MySQL data.</div>
