@@ -100,8 +100,9 @@ public final class Instances {
         new ConcurrentHashMap<Integer, Process>(0);
 
     /**
-     * Always create a clean database. If this true an existing database at the
-     * target location it will be deleted, otherwise it will be reused.
+     * If true, always create a new database. If false, check if there is an
+     * existing database at the target location and try to use that if
+     * possible, otherwise create a new one anyway.
      */
     private transient boolean clean = true;
 
@@ -416,7 +417,7 @@ public final class Instances {
 
     /**
      * Will set the {@link Instances#clean} flag, indicating if the database
-     * can be reused or should be deleted and recreated.
+     * can be reused or if it should be deleted and recreated.
      * @param target Location of database
      * @param deldir Should database always be cleared
      */

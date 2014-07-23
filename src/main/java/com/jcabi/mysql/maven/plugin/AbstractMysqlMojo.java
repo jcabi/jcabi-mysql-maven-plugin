@@ -164,7 +164,11 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
         }
         this.run(AbstractMysqlMojo.instances());
         if (this.project == null) {
-            Logger.warn(this, "MavenProject is null, unable to set property.");
+            Logger.warn(
+                this,
+                "MavenProject not initialized, unable to set property %s",
+                PROPERTY_REUSED
+            );
         } else {
             Logger.info(
                 this,
