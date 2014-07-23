@@ -164,19 +164,17 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
         }
         this.run(AbstractMysqlMojo.instances());
         if (this.project == null) {
-            Logger.warn(this, "MavenProject is null");
+            Logger.warn(this, "MavenProject is null, unable to set property.");
         } else {
             Logger.info(
                 this,
-                String.format(
-                    "set Maven property %s = %s ",
-                    PROPERTY_REUSED,
-                    AbstractMysqlMojo.instances().reusedExistingDatabase()
-                )
+                "set Maven property %s = %s ",
+                PROPERTY_REUSED,
+                AbstractMysqlMojo.instances().reusedExistingDatabase()
             );
             this.project.getProperties().setProperty(
                 PROPERTY_REUSED,
-                String.valueOf(
+                Boolean.toString(
                     AbstractMysqlMojo.instances().reusedExistingDatabase()
                 )
             );

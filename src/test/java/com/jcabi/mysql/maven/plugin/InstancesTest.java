@@ -37,7 +37,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
-import org.junit.Assert;
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
 /**
@@ -369,9 +369,9 @@ public final class InstancesTest {
             Files.createTempDir(),
             false
         );
-        Assert.assertFalse(
+        MatcherAssert.assertThat(
             "Instance reusedExistingDatabase should be false.",
-            instances.reusedExistingDatabase()
+            !instances.reusedExistingDatabase()
         );
         Class.forName(InstancesTest.DRIVER).newInstance();
         try {
@@ -424,9 +424,9 @@ public final class InstancesTest {
             target,
             true
         );
-        Assert.assertFalse(
+        MatcherAssert.assertThat(
             "Instance reusedExistingDatabase should be false.",
-            instances.reusedExistingDatabase()
+            !instances.reusedExistingDatabase()
         );
         Class.forName(InstancesTest.DRIVER).newInstance();
         try {
@@ -485,7 +485,7 @@ public final class InstancesTest {
             target,
             false
         );
-        Assert.assertTrue(
+        MatcherAssert.assertThat(
             "Instance reusedExistingDatabase should be true.",
             instances.reusedExistingDatabase()
         );
