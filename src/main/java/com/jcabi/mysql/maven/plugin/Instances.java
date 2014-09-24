@@ -256,7 +256,8 @@ public final class Instances {
     private File data(final File dist, final File target) throws IOException {
         final File dir = new File(target, DATA_SUB_DIR);
         if (!dir.exists()) {
-            final File cnf = new File(target, "my-default.cnf");
+            final File support = new File(dist, "support-files");
+            final File cnf = new File(support, "my-default.cnf");
             FileUtils.writeStringToFile(
                 cnf,
                 "[mysql]\n# no defaults..."
