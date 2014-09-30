@@ -5,6 +5,8 @@ branches:
   except:
     - gh-pages
 os: Windows Server 2012
+before_build:
+  - cmd: java -version
 test_script:
   - cmd: mvn clean install -Pqulice
 
