@@ -9,4 +9,4 @@ env:
 install:
   - sudo apt-get install libaio1
 script:
-  - mvn clean install -Pqulice
+  - mvn clean install -Pqulice --quiet
