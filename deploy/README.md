@@ -6,10 +6,10 @@ to Maven Central you should do the following steps:
  2. Download five files from http://dev.mysql.com/downloads/mysql/
 
    1. Windows 64
-   2. Windows 32
+   2. Windows
    3. MacOS
-   4. Linux
-   5. Linux
+   4. Linux amd64
+   5. Linux x86
 
  3. Unpack them all
 
@@ -17,25 +17,24 @@ to Maven Central you should do the following steps:
 
 ```
 $ cd directory_with_dist_content
-$ zip -0 -r ../dist-1.zip *
+$ zip -r ../linux-amd64.zip *
 ```
 
  5. Install it locally and test how it works with the plugin
 
 ```
-$ mvn install:install-file -Dfile=dist-1.zip -DgroupId=com.jcabi \
-    -DartifactId=mysql-dist -Dversion=5.6.21 -Dpackaging=zip -Dclassifier=mac-x86_64
+$ mvn install:install-file -Dfile=mac-x86_64.zip -DgroupId=com.jcabi -DartifactId=mysql-dist -Dversion=5.6.21 -Dpackaging=zip -Dclassifier=mac-x86_64
 ```
 
  6. Sign them all, using gnupg:
 
 ```
 $ gpg -ab pom.xml
-$ gpg -ab dist-1.zip
-$ gpg -ab dist-2.zip
-$ gpg -ab dist-3.zip
-$ gpg -ab dist-4.zip
-$ gpg -ab dist-5.zip
+$ gpg -ab mac-x86_64.zip
+$ gpg -ab linux-amd64.zip
+$ gpg -ab linux-x86_64.zip
+$ gpg -ab windows-amd64.zip
+$ gpg -ab windows-x86.zip
 ```
 
  5. Login to sonatype and deploy them both (pom.xml and all dist-*.zip). You
@@ -44,14 +43,14 @@ $ gpg -ab dist-5.zip
 ```
 pom.xml
 pom.pom.asc
-dist-1.zip
-dist-1.zip.asc
-dist-2.zip
-dist-2.zip.asc
-dist-3.zip
-dist-3.zip.asc
-dist-4.zip
-dist-4.zip.asc
-dist-5.zip
-dist-6.zip.asc
+mac-x86_64.zip
+mac-x86_64.zip.asc
+linux-amd64.zip
+linux-amd64.zip.asc
+linux-x86_64.zip
+linux-x86_64.zip.asc
+windows-amd64.zip
+windows-amd64.zip.asc
+windows-x86.zip
+windows-x86.zip.asc
 ```
