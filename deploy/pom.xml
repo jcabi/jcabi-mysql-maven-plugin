@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.jcabi</groupId>
+    <artifactId>mysql-dist</artifactId>
+    <version>5.6.21</version>
+    <packaging>zip</packaging>
+    <name>mysql-dist</name>
+    <description>MySQL distribution</description>
+    <url>http://www.jcabi.com</url>
+    <inceptionYear>2013</inceptionYear>
+    <licenses>
+        <license>
+            <name>BSD</name>
+            <url>http://www.jcabi.com/LICENSE.txt</url>
+            <distribution>repo</distribution>
+            <comments><![CDATA[
+                This is free open source project, feel free to redistribute it
+                ]]></comments>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>1</id>
+            <name>Yegor Bugayenko</name>
+            <email>yegor@tpc2.com</email>
+            <organization>tpc2.com</organization>
+            <organizationUrl>http://www.tpc2.com</organizationUrl>
+            <roles>
+                <role>Architect</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:github.com:jcabi/jcabi-mysql-maven-plugin.git</connection>
+        <developerConnection>scm:git:github.com:jcabi/jcabi-mysql-maven-plugin.git</developerConnection>
+        <url>https://github.com/jcabi/jcabi-mysql-maven-plugin</url>
+    </scm>
+</project>
