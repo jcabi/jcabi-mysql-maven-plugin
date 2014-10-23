@@ -78,10 +78,12 @@ public final class ClassifyMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoFailureException {
         final String[] words = System.getProperty("os.name").split(" ");
+        String arch = System.getProperty("os.arch").toLowerCase(Locale.ENGLISH);
+        if ("i386".equals(arch)) {
+            arch = "x86";
+        }
         final String value = String.format(
-            "%s-%s",
-            words[0].toLowerCase(Locale.ENGLISH),
-            System.getProperty("os.arch").toLowerCase(Locale.ENGLISH)
+            "%s-%s", words[0].toLowerCase(Locale.ENGLISH), arch
         );
         final String existing = this.project.getProperties()
             .getProperty(this.classifier);
