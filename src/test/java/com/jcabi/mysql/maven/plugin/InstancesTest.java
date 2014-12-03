@@ -104,7 +104,8 @@ public final class InstancesTest {
             ),
             new File(InstancesTest.DIST),
             Files.createTempDir(),
-            true
+            true,
+            null
         );
         Class.forName(InstancesTest.DRIVER).newInstance();
         try {
@@ -157,7 +158,8 @@ public final class InstancesTest {
             ),
             new File(InstancesTest.DIST),
             Files.createTempDir(),
-            true
+            true,
+            null
         );
         Class.forName(InstancesTest.DRIVER).newInstance();
         try {
@@ -212,7 +214,8 @@ public final class InstancesTest {
             ),
             new File(InstancesTest.DIST),
             Files.createTempDir(),
-            true
+            true,
+            null
         );
         Class.forName(InstancesTest.DRIVER).newInstance();
         try {
@@ -266,7 +269,8 @@ public final class InstancesTest {
             ),
             new File(InstancesTest.DIST),
             Files.createTempDir(),
-            true
+            true,
+            null
         );
         Class.forName(InstancesTest.DRIVER).newInstance();
         try {
@@ -317,7 +321,8 @@ public final class InstancesTest {
             ),
             new File(InstancesTest.DIST),
             Files.createTempDir(),
-            true
+            true,
+            null
         );
         Class.forName(InstancesTest.DRIVER).newInstance();
         try {
@@ -367,7 +372,8 @@ public final class InstancesTest {
             ),
             new File(InstancesTest.DIST),
             Files.createTempDir(),
-            false
+            false,
+            null
         );
         MatcherAssert.assertThat(
             "Instance reusedExistingDatabase should be false.",
@@ -422,7 +428,8 @@ public final class InstancesTest {
             ),
             new File(InstancesTest.DIST),
             target,
-            true
+            true,
+            null
         );
         MatcherAssert.assertThat(
             "Instance reusedExistingDatabase should be false.",
@@ -483,7 +490,8 @@ public final class InstancesTest {
             ),
             new File(InstancesTest.DIST),
             target,
-            false
+            false,
+            null
         );
         MatcherAssert.assertThat(
             "Instance reusedExistingDatabase should be true.",

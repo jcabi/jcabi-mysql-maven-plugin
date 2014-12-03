@@ -131,6 +131,15 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     private transient File data;
 
     /**
+     * Override location of MySQL socket file.  Defaults to
+     * (data dir)/mysql.socket.
+     */
+    @Parameter(
+            required = false
+    )
+    private transient File socket;
+
+    /**
      * Shall we always delete an existing database or reuse it?
      */
     @Parameter(
@@ -207,6 +216,14 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      */
     public File dataDir() {
         return this.data;
+    }
+
+    /**
+     * Get MySQL socket location.
+     * @return socket
+     */
+    public File socket() {
+        return this.socket;
     }
 
     /**
