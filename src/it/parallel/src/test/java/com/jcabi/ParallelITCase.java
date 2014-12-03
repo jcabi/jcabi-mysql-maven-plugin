@@ -48,12 +48,6 @@ public final class ParallelITCase {
         System.getProperty("failsafe.mysql.first");
 
     /**
-     * Second MySQL port.
-     */
-    private static final String SECOND =
-        System.getProperty("failsafe.mysql.second");
-
-    /**
      * MySQL works.
      * @throws Exception If something is wrong
      */
