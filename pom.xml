@@ -209,6 +209,9 @@
                         </goals>
                         <configuration>
                             <rules>
+                                <requireMavenVersion>
+                                    <version>3.2.3</version>
+                                </requireMavenVersion>
                                 <requireSameVersions>
                                     <dependencies>
                                         <dependency>org.apache.maven:*</dependency>
