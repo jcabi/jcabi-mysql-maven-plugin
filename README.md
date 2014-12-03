@@ -12,6 +12,12 @@ More details are here: [mysql.jcabi.com](http://mysql.jcabi.com/index.html)
 Read [this article](http://www.yegor256.com/2014/05/21/mysql-maven-plugin.html),
 it explains what this plugin is for.
 
+On Linux, don't forget to install `libaio1`:
+
+```
+$ sudo apt-get install libaio1
+```
+
 ## Questions?
 
 If you have any questions about the framework, or something doesn't work as expected,
