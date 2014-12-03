@@ -119,7 +119,7 @@ public final class Instances {
      */
     public void start(@NotNull final Config config, @NotNull final File dist,
         @NotNull final File target, final boolean deldir, final File socket)
-            throws IOException {
+        throws IOException {
         this.setClean(target, deldir);
         synchronized (this.processes) {
             if (this.processes.containsKey(config.port())) {
@@ -169,17 +169,21 @@ public final class Instances {
      * @param config Instance configuration
      * @param dist Path to MySQL distribution
      * @param target Where to keep temp data
-     * @param socket Alternative socket location for mysql (may be null)
+     * @param socketfile Alternative socket location for mysql (may be null)
      * @return Process started
      * @throws IOException If fails to start
      * @checkstyle ParameterNumberCheck (10 lines)
      */
     private Process process(@NotNull final Config config,
-        final File dist, final File target, final File socketFile)
+        final File dist, final File target, final File socketfile)
         throws IOException {
         final File temp = this.prepareFolders(target);
-        final File socket = socketFile != null ? socketFile :
-                new File(target, "mysql.sock");
+        final File socket;
+        if (socketfile != null) {
+            socket = socketfile;
+        } else {
+            socket = new File(target, "mysql.sock");
+        }
         final ProcessBuilder builder = this.builder(
             dist,
             "bin/mysqld",
