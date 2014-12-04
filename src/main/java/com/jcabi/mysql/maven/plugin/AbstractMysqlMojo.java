@@ -222,7 +222,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      * Get MySQL socket location.
      * @return Overridden socket location (null for default)
      */
-    public File socket() {
+    public File socketFile() {
         return this.socket;
     }
 

@@ -179,10 +179,10 @@ public final class Instances {
         throws IOException {
         final File temp = this.prepareFolders(target);
         final File socket;
-        if (socketfile != null) {
-            socket = socketfile;
-        } else {
+        if (socketfile == null) {
             socket = new File(target, "mysql.sock");
+        } else {
+            socket = socketfile;
         }
         final ProcessBuilder builder = this.builder(
             dist,
