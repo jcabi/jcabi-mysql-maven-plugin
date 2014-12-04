@@ -60,7 +60,8 @@ public final class RunMojo extends AbstractMysqlMojo {
                 config,
                 this.distDir(),
                 this.dataDir(),
-                this.clear()
+                this.clear(),
+                this.socketFile()
             );
         } catch (final IOException ex) {
             throw new MojoFailureException(

@@ -113,11 +113,13 @@ public final class Instances {
      * @param dist Path to MySQL distribution
      * @param target Where to keep temp data
      * @param deldir If existing DB should be deleted
+     * @param socket Alternative socket location for mysql (may be null)
      * @throws IOException If fails to start
      * @checkstyle ParameterNumberCheck (10 lines)
      */
     public void start(@NotNull final Config config, @NotNull final File dist,
-        @NotNull final File target, final boolean deldir) throws IOException {
+        @NotNull final File target, final boolean deldir, final File socket)
+        throws IOException {
         this.setClean(target, deldir);
         synchronized (this.processes) {
             if (this.processes.containsKey(config.port())) {
@@ -125,7 +127,7 @@ public final class Instances {
                     String.format("port %d is already busy", config.port())
                 );
             }
-            final Process proc = this.process(config, dist, target);
+            final Process proc = this.process(config, dist, target, socket);
             this.processes.put(config.port(), proc);
             Runtime.getRuntime().addShutdownHook(
                 new Thread(
@@ -167,15 +169,21 @@ public final class Instances {
      * @param config Instance configuration
      * @param dist Path to MySQL distribution
      * @param target Where to keep temp data
+     * @param socketfile Alternative socket location for mysql (may be null)
      * @return Process started
      * @throws IOException If fails to start
      * @checkstyle ParameterNumberCheck (10 lines)
      */
     private Process process(@NotNull final Config config,
-        final File dist, final File target)
+        final File dist, final File target, final File socketfile)
         throws IOException {
         final File temp = this.prepareFolders(target);
-        final File socket = new File(target, "mysql.sock");
+        final File socket;
+        if (socketfile == null) {
+            socket = new File(target, "mysql.sock");
+        } else {
+            socket = socketfile;
+        }
         final ProcessBuilder builder = this.builder(
             dist,
             "bin/mysqld",
