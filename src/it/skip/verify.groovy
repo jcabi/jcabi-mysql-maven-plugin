@@ -30,3 +30,4 @@
 
 def log = new File(basedir, 'build.log')
 assert log.text.contains('execution skipped')
+new File(basedir, 'target').deleteDir()

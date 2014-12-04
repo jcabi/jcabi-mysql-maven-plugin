@@ -31,3 +31,4 @@
 def log = new File(basedir, 'build.log')
 assert log.text.contains('Installing MySQL system tables...')
 assert log.text.contains('InnoDB: Completed initialization of buffer pool')
+new File(basedir, 'target').deleteDir()
