@@ -35,4 +35,5 @@ Please run Maven build before submitting a pull request:
 $ mvn clean install -Pqulice
 ```
 
-Make sure you're using JDK 6+ and Maven 3.2+. Older versions won't work. Also, on Linux, don't forget to install `libaio1` as explained above.
+Make sure you're using JDK 6+ and Maven 3.2+. Older versions won't work.
+Also, on Linux, don't forget to install `libaio1` as explained above.
