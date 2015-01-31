@@ -194,10 +194,6 @@ public final class InstancesTest {
     /**
      * Instances can use custom db user name.
      * @throws Exception If something is wrong
-     * @todo #8 Create integration tests for Config.
-     *  Integration tests 'WithConfigITCase' should be created to test
-     *  that user name, password and dbname are set properly.
-     *  This issue should be done after non root user name is set properly
      */
     @Test
     public void canUseCustomDbUserName() throws Exception {
