@@ -44,8 +44,8 @@ import org.junit.Test;
  * Test case for {@link Config}.
  * @author Alexander Paderin (apocarteres@gmail.com)
  * @version $Id$
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
- * @checkstyle MultipleStringLiterals (500 lines)
+ * @checkstyle ClassDataAbstractionCoupling (170 lines)
+ * @checkstyle MultipleStringLiterals (170 lines)
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public final class ConfigTest {
