@@ -1,6 +1,6 @@
 architect:
-- yegor256
 - dmarkov
+- yegor256
 install:
 - sudo apt-get install libaio1
 - sudo gem install pdd
