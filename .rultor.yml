@@ -29,8 +29,7 @@ deploy:
     mvn clean
     pdd --source=$(pwd) --verbose --file=jcabi-mysql-maven-plugin.xml
     s3cmd --no-progress put jcabi-mysql-maven-plugin.xml --config=../s3cfg s3://pdd.teamed.io/jcabi-mysql-maven-plugin.xml
-  commanders:
-  - yegor256
+  commanders: []
 env:
   MAVEN_OPTS: -XX:MaxPermSize=256m -Xmx1g
 release:
