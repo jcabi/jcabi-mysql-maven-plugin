@@ -3,6 +3,7 @@ architect:
 - dmarkov
 install:
 - sudo apt-get install libaio1
+- sudo apt-get install libc6-i386
 - sudo gem install pdd
 assets:
   secring.gpg: yegor256/home#assets/secring.gpg
