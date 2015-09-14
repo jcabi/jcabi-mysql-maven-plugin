@@ -79,6 +79,11 @@ public final class Instances {
     private static final String NO_DEFAULTS = "--no-defaults";
 
     /**
+     * Default retry count.
+     */
+    private static final int RETRY_COUNT = 5;
+
+    /**
      * Default user.
      */
     private static final String DEFAULT_USER = "root";
@@ -345,6 +350,7 @@ public final class Instances {
                 dist,
                 "bin/mysqladmin",
                 Instances.NO_DEFAULTS,
+                String.format("--wait=%d", Instances.RETRY_COUNT),
                 String.format("--port=%d", config.port()),
                 String.format("--user=%s", Instances.DEFAULT_USER),
                 String.format("--socket=%s", socket),
