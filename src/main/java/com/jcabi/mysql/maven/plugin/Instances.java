@@ -367,7 +367,7 @@ public final class Instances {
                 process.getOutputStream(), CharEncoding.UTF_8
             )
         );
-        writer.print("CREATE DATABASE ");
+        writer.print("CREATE DATABASE IF NOT EXISTS ");
         writer.print(config.dbname());
         writer.println(";");
         if (!Instances.DEFAULT_USER.equals(config.user())) {
@@ -385,6 +385,15 @@ public final class Instances {
                     config.dbname(),
                     config.user(),
                     Instances.DEFAULT_HOST
+                )
+            );
+        } else {
+            writer.println(
+                String.format(
+                    "SET PASSWORD FOR '%s'@'%s' = PASSWORD('%s');",
+                    config.user(),
+                    Instances.DEFAULT_HOST,
+                    config.password()
                 )
             );
         }
