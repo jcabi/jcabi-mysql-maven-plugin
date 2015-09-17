@@ -279,7 +279,7 @@ public final class Instances {
                     String.format("--datadir=%s", dir),
                     String.format("--basedir=%s", dist)
                 )
-            ).stdoutQuietly();
+            ).stdout();
         }
         return dir;
     }
@@ -352,7 +352,7 @@ public final class Instances {
                 "password",
                 Instances.DEFAULT_PASSWORD
             )
-        ).stdoutQuietly();
+        ).stdout();
         final Process process =
             this.builder(
                 dist,
@@ -389,7 +389,7 @@ public final class Instances {
             );
         }
         writer.close();
-        new VerboseProcess(process).stdoutQuietly();
+        new VerboseProcess(process).stdout();
     }
 
     /**
