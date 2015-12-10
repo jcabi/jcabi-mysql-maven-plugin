@@ -1,6 +1,7 @@
 ## Puzzles
 
-There are 1 active puzzles (2 total), updated on 2015-12-09T12:20:28Z:
+There are 1 active puzzles (2 total):
 
-unknown ?
-&nbsp;**8-aea18ffe** src/test/java/com/jcabi/mysql/maven/plugin/InstancesTest.java:186-189
+
+<del>unknown</del> [`?`](../master/?)<br/>
+&nbsp;&nbsp;&nbsp;**8-aea18ffe** [`InstancesTest.java:186-189`](../master/src/test/java/com/jcabi/mysql/maven/plugin/InstancesTest.java#L186-L189)<br/>
