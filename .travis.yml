@@ -8,7 +8,7 @@ addons:
     packages:
     - libmagic1
     - libmagic-dev
-    - libaio1
+    - libaio-dev
 install:
   - gem install pdd
   - gem install est
