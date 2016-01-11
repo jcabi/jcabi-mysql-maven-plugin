@@ -1,12 +1,24 @@
 language: java
+sudo: false
 cache:
   directories:
     - $HOME/.m2
+addons:
+  apt:
+    packages:
+    - libmagic1
+    - libmagic-dev
+    - libaio1
+install:
+  - gem install pdd
+  - gem install est
 env:
   global:
     - MAVEN_OPTS="-XX:MaxPermSize=2g -Xmx4g"
     - JAVA_OPTS="-XX:MaxPermSize=2g -Xmx4g"
-install:
-  - sudo apt-get install libaio1
 script:
+  - set -e
   - mvn clean install -Pqulice --quiet
+  - mvn clean
+  - pdd --source=$(pwd) --file=/dev/null
+  - est --dir=est --file=/dev/null
