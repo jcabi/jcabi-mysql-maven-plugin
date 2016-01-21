@@ -6,6 +6,7 @@
 
 [![Build Status](https://travis-ci.org/jcabi/jcabi-mysql-maven-plugin.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-mysql-maven-plugin)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-mysql-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-mysql-maven-plugin)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/com.jcabi/jcabi-mysql-maven-plugin/badge.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-mysql-maven-plugin)
 [![Build status](https://ci.appveyor.com/api/projects/status/3axyj0ho4xjc5i5k)](https://ci.appveyor.com/project/yegor256/jcabi-mysql-maven-plugin)
 
 More details are here: [mysql.jcabi.com](http://mysql.jcabi.com/index.html)
