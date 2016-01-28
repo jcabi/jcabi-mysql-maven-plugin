@@ -38,6 +38,7 @@ import java.sql.DriverManager;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import org.hamcrest.MatcherAssert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -414,6 +415,7 @@ public final class InstancesTest {
      * @throws Exception If something is wrong
      */
     @Test
+    @Ignore
     public void canReuseExistingDatabse() throws Exception {
         final int port = this.reserve();
         final File target = Files.createTempDir();
