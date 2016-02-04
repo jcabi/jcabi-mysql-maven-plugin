@@ -270,7 +270,7 @@ public final class Instances {
         final File dir = new File(target, DATA_SUB_DIR);
         if (!dir.exists()) {
             final File cnf = new File(
-                new File(dist, "share"), 
+                new File(dist, "share"),
                 "my-default.cnf"
             );
             FileUtils.writeStringToFile(
