@@ -305,7 +305,6 @@
             </goals>
             <configuration>
               <ignoreFailures>true</ignoreFailures>
-              <skipInvocation>true</skipInvocation>
             </configuration>
           </execution>
         </executions>
