@@ -305,6 +305,7 @@
             </goals>
             <configuration>
               <ignoreFailures>true</ignoreFailures>
+              <skipInvocation>true</skipInvocation>
             </configuration>
           </execution>
         </executions>
@@ -319,7 +320,6 @@
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
-            <version>0.16</version>
             <configuration>
               <excludes>
                 <exclude>findbugs:.*</exclude>
