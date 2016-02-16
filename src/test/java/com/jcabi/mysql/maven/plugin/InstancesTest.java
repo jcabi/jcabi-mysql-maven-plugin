@@ -47,6 +47,7 @@ import org.junit.Test;
  * @version $Id$
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle MultipleStringLiterals (500 lines)
+ * @since 0.6
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public final class InstancesTest {
@@ -478,7 +479,7 @@ public final class InstancesTest {
     private void checkExistingDatabase(final File target) throws Exception {
         final File socket = new File(target, "mysql.sock");
         while (socket.exists()) {
-            TimeUnit.SECONDS.sleep(SLEEP_SECONDS);
+            TimeUnit.SECONDS.sleep(InstancesTest.SLEEP_SECONDS);
         }
         final int port = this.reserve();
         final Instances instances = new Instances();
@@ -500,7 +501,7 @@ public final class InstancesTest {
             instances.reusedExistingDatabase()
         );
         do {
-            TimeUnit.SECONDS.sleep(SLEEP_SECONDS);
+            TimeUnit.SECONDS.sleep(InstancesTest.SLEEP_SECONDS);
         } while (!socket.exists());
         try {
             final Connection conn = DriverManager.getConnection(
