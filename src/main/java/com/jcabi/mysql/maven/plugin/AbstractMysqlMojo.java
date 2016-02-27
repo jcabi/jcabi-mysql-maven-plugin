@@ -134,9 +134,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      * Override location of MySQL socket file.  Defaults to
      * (data dir)/mysql.socket.
      */
-    @Parameter(
-            required = false
-    )
+    @Parameter(required = false)
     private transient File socket;
 
     /**
@@ -146,7 +144,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
         defaultValue = "true",
         required = false
     )
-    private transient boolean clearexistingdata;
+    private transient boolean erase;
 
     /**
      * Configuration options.
@@ -176,17 +174,17 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
             Logger.warn(
                 this,
                 "MavenProject not initialized, unable to set property %s",
-                PROPERTY_REUSED
+                AbstractMysqlMojo.PROPERTY_REUSED
             );
         } else {
             Logger.info(
                 this,
                 "set Maven property %s = %s ",
-                PROPERTY_REUSED,
+                AbstractMysqlMojo.PROPERTY_REUSED,
                 AbstractMysqlMojo.instances().reusedExistingDatabase()
             );
             this.project.getProperties().setProperty(
-                PROPERTY_REUSED,
+                AbstractMysqlMojo.PROPERTY_REUSED,
                 Boolean.toString(
                     AbstractMysqlMojo.instances().reusedExistingDatabase()
                 )
@@ -232,7 +230,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      * @return If existing database files should be deleted.
      */
     public boolean clear() {
-        return this.clearexistingdata;
+        return this.erase;
     }
 
     /**

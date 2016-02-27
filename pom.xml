@@ -305,6 +305,20 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-invoker-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>install</goal>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <ignoreFailures>true</ignoreFailures>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <profiles>
@@ -315,12 +329,15 @@
                     <plugin>
                         <groupId>com.qulice</groupId>
                         <artifactId>qulice-maven-plugin</artifactId>
+                        <version>0.16.1</version>
                         <configuration>
                             <excludes>
                                 <exclude>findbugs:.*</exclude>
                                 <exclude>duplicatefinder:.*</exclude>
                                 <exclude>pmd:/src/it/.*</exclude>
-                                <exclude>xml:/src/it/settings.xml</exclude>
+                                <exclude>checkstyle:/src/it/.*/target/.*</exclude>
+                                <exclude>xml:.*.xml</exclude>
+                                <exclude>dependencies:.*</exclude>
                             </excludes>
                         </configuration>
                     </plugin>

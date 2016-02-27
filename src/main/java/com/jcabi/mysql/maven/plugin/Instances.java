@@ -267,9 +267,12 @@ public final class Instances {
      * @throws IOException If fails
      */
     private File data(final File dist, final File target) throws IOException {
-        final File dir = new File(target, DATA_SUB_DIR);
+        final File dir = new File(target, Instances.DATA_SUB_DIR);
         if (!dir.exists()) {
-            final File cnf = new File(target, "my-default.cnf");
+            final File cnf = new File(
+                new File(dist, "share"),
+                "my-default.cnf"
+            );
             FileUtils.writeStringToFile(
                 cnf,
                 "[mysql]\n# no defaults..."
@@ -438,7 +441,7 @@ public final class Instances {
      * @param deldir Should database always be cleared
      */
     private void setClean(final File target, final boolean deldir) {
-        if (new File(target, DATA_SUB_DIR).exists() && !deldir) {
+        if (new File(target, Instances.DATA_SUB_DIR).exists() && !deldir) {
             Logger.info(this, "reuse existing database %s", target);
             this.clean = false;
         } else {

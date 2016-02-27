@@ -40,6 +40,7 @@ import org.junit.Test;
  * Test case for {@link Foo}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.0
  */
 public final class FooITCase {
 
