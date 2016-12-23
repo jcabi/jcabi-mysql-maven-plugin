@@ -5,7 +5,7 @@
 [![We recommend IntelliJ IDEA](http://img.teamed.io/intellij-idea-recommend.svg)](https://www.jetbrains.com/idea/)
 
 [![Build Status](https://travis-ci.org/jcabi/jcabi-mysql-maven-plugin.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-mysql-maven-plugin)
-[![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-mysql-maven-plugin)](http://www.0pdd.com/p?name=teamed/jcabi/jcabi-mysql-maven-plugin)
+[![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-mysql-maven-plugin)](http://www.0pdd.com/p?name=jcabi/jcabi-mysql-maven-plugin)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-mysql-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-mysql-maven-plugin)
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/com.jcabi/jcabi-mysql-maven-plugin/badge.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-mysql-maven-plugin)
 [![Build status](https://ci.appveyor.com/api/projects/status/3axyj0ho4xjc5i5k)](https://ci.appveyor.com/project/yegor256/jcabi-mysql-maven-plugin)
