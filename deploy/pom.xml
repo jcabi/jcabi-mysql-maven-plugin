@@ -1,42 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.jcabi</groupId>
-    <artifactId>mysql-dist</artifactId>
-    <version>5.6.21</version>
-    <packaging>zip</packaging>
-    <name>mysql-dist</name>
-    <description>MySQL distribution</description>
-    <url>http://www.jcabi.com</url>
-    <inceptionYear>2013</inceptionYear>
-    <licenses>
-        <license>
-            <name>BSD</name>
-            <url>http://www.jcabi.com/LICENSE.txt</url>
-            <distribution>repo</distribution>
-            <comments><![CDATA[
+<!--
+Copyright (c) 2012-2023, jcabi.com
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met: 1) Redistributions of source code must retain the above
+copyright notice, this list of conditions and the following
+disclaimer. 2) Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided
+with the distribution. 3) Neither the name of the jcabi.com nor
+the names of its contributors may be used to endorse or promote
+products derived from this software without specific prior written
+permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.jcabi</groupId>
+  <artifactId>mysql-dist</artifactId>
+  <version>5.6.21</version>
+  <packaging>zip</packaging>
+  <name>mysql-dist</name>
+  <description>MySQL distribution</description>
+  <url>http://www.jcabi.com</url>
+  <inceptionYear>2013</inceptionYear>
+  <licenses>
+    <license>
+      <name>BSD</name>
+      <url>http://www.jcabi.com/LICENSE.txt</url>
+      <distribution>repo</distribution>
+      <comments><![CDATA[
                 This is free open source project, feel free to redistribute it
                 ]]></comments>
-        </license>
-    </licenses>
-    <developers>
-        <developer>
-            <id>1</id>
-            <name>Yegor Bugayenko</name>
-            <email>yegor@tpc2.com</email>
-            <organization>tpc2.com</organization>
-            <organizationUrl>http://www.tpc2.com</organizationUrl>
-            <roles>
-                <role>Architect</role>
-                <role>Developer</role>
-            </roles>
-            <timezone>+1</timezone>
-        </developer>
-    </developers>
-    <scm>
-        <connection>scm:git:github.com:jcabi/jcabi-mysql-maven-plugin.git</connection>
-        <developerConnection>scm:git:github.com:jcabi/jcabi-mysql-maven-plugin.git</developerConnection>
-        <url>https://github.com/jcabi/jcabi-mysql-maven-plugin</url>
-    </scm>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>1</id>
+      <name>Yegor Bugayenko</name>
+      <email>yegor@tpc2.com</email>
+      <organization>tpc2.com</organization>
+      <organizationUrl>http://www.tpc2.com</organizationUrl>
+      <roles>
+        <role>Architect</role>
+        <role>Developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:github.com:jcabi/jcabi-mysql-maven-plugin.git</connection>
+    <developerConnection>scm:git:github.com:jcabi/jcabi-mysql-maven-plugin.git</developerConnection>
+    <url>https://github.com/jcabi/jcabi-mysql-maven-plugin</url>
+  </scm>
 </project>
