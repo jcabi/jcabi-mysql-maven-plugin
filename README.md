@@ -4,7 +4,7 @@
 [![DevOps By Rultor.com](http://www.rultor.com/b/jcabi/jcabi-mysql-maven-plugin)](http://www.rultor.com/p/jcabi/jcabi-mysql-maven-plugin)
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 
-[![Build Status](https://travis-ci.org/jcabi/jcabi-mysql-maven-plugin.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-mysql-maven-plugin)
+[![mvn](https://github.com/jcabi/jcabi-mysql-maven-plugin/actions/workflows/mvn.yml/badge.svg)](https://github.com/jcabi/jcabi-mysql-maven-plugin/actions/workflows/mvn.yml)
 [![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-mysql-maven-plugin)](http://www.0pdd.com/p?name=jcabi/jcabi-mysql-maven-plugin)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-mysql-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-mysql-maven-plugin)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-mysql-maven-plugin.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-mysql-maven-plugin)
