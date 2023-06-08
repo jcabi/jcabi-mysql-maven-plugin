@@ -534,11 +534,8 @@ final class InstancesTest {
      * @throws Exception If fails
      */
     private int reserve() throws Exception {
-        final ServerSocket socket = new ServerSocket(0);
-        try {
+        try (ServerSocket socket = new ServerSocket(0)) {
             return socket.getLocalPort();
-        } finally {
-            socket.close();
         }
     }
 
