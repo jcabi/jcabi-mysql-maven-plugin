@@ -29,17 +29,18 @@
  */
 package com.jcabi.mysql.maven.plugin;
 
-import com.google.common.io.Files;
 import com.jcabi.jdbc.JdbcSession;
+import com.jcabi.jdbc.StaticSource;
 import java.io.File;
 import java.net.ServerSocket;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import org.hamcrest.MatcherAssert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link Instances}.
@@ -50,7 +51,7 @@ import org.junit.Test;
  * @since 0.6
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-public final class InstancesTest {
+final class InstancesTest {
 
     /**
      * User.
@@ -93,7 +94,7 @@ public final class InstancesTest {
      * @throws Exception If something is wrong
      */
     @Test
-    public void startsAndStops() throws Exception {
+    void startsAndStops() throws Exception {
         final int port = this.reserve();
         final Instances instances = new Instances();
         instances.start(
@@ -105,11 +106,11 @@ public final class InstancesTest {
                 Collections.<String>emptyList()
             ),
             new File(InstancesTest.DIST),
-            Files.createTempDir(),
+            Files.createTempDirectory("").toFile(),
             true,
             null
         );
-        Class.forName(InstancesTest.DRIVER).newInstance();
+        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
@@ -121,7 +122,7 @@ public final class InstancesTest {
                 )
             );
             try {
-                new JdbcSession(conn)
+                new JdbcSession(new StaticSource(conn))
                     .autocommit(false)
                     .sql("CREATE TABLE foo (id INT)")
                     .execute()
@@ -147,7 +148,7 @@ public final class InstancesTest {
      * @throws Exception If something is wrong
      */
     @Test
-    public void useOptions() throws Exception {
+    void useOptions() throws Exception {
         final int port = this.reserve();
         final Instances instances = new Instances();
         instances.start(
@@ -159,11 +160,11 @@ public final class InstancesTest {
                 Collections.singletonList("sql-mode=ALLOW_INVALID_DATES")
             ),
             new File(InstancesTest.DIST),
-            Files.createTempDir(),
+            Files.createTempDirectory("").toFile(),
             true,
             null
         );
-        Class.forName(InstancesTest.DRIVER).newInstance();
+        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
@@ -175,7 +176,7 @@ public final class InstancesTest {
                 )
             );
             try {
-                new JdbcSession(conn)
+                new JdbcSession(new StaticSource(conn))
                     .autocommit(false)
                     .sql("CREATE TABLE foo (date DATE)")
                     .execute()
@@ -202,7 +203,7 @@ public final class InstancesTest {
      *  This issue should be done after non root user name is set properly
      */
     @Test
-    public void canUseCustomDbUserName() throws Exception {
+    void canUseCustomDbUserName() throws Exception {
         final int port = this.reserve();
         final String user = "notRoot";
         final Instances instances = new Instances();
@@ -215,11 +216,11 @@ public final class InstancesTest {
                 Collections.<String>emptyList()
             ),
             new File(InstancesTest.DIST),
-            Files.createTempDir(),
+            Files.createTempDirectory("").toFile(),
             true,
             null
         );
-        Class.forName(InstancesTest.DRIVER).newInstance();
+        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
@@ -231,7 +232,7 @@ public final class InstancesTest {
                 )
             );
             try {
-                new JdbcSession(conn)
+                new JdbcSession(new StaticSource(conn))
                     .autocommit(false)
                     .sql("CREATE TABLE foo (id INT)")
                     .execute()
@@ -256,7 +257,7 @@ public final class InstancesTest {
      * @throws Exception If something is wrong
      */
     @Test
-    public void canUseCustomDbPassword() throws Exception {
+    void canUseCustomDbPassword() throws Exception {
         final int port = this.reserve();
         final String user = "notRoot";
         final String password = "notRoot";
@@ -270,11 +271,11 @@ public final class InstancesTest {
                 Collections.<String>emptyList()
             ),
             new File(InstancesTest.DIST),
-            Files.createTempDir(),
+            Files.createTempDirectory("").toFile(),
             true,
             null
         );
-        Class.forName(InstancesTest.DRIVER).newInstance();
+        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
@@ -286,7 +287,7 @@ public final class InstancesTest {
                 )
             );
             try {
-                new JdbcSession(conn)
+                new JdbcSession(new StaticSource(conn))
                     .autocommit(false)
                     .sql("CREATE TABLE foo (id INT)")
                     .execute()
@@ -309,7 +310,7 @@ public final class InstancesTest {
      * @throws Exception If something is wrong
      */
     @Test
-    public void canUseCustomDbDbName() throws Exception {
+    void canUseCustomDbDbName() throws Exception {
         final int port = this.reserve();
         final String dbname = "notRoot";
         final Instances instances = new Instances();
@@ -322,11 +323,11 @@ public final class InstancesTest {
                 Collections.<String>emptyList()
             ),
             new File(InstancesTest.DIST),
-            Files.createTempDir(),
+            Files.createTempDirectory("").toFile(),
             true,
             null
         );
-        Class.forName(InstancesTest.DRIVER).newInstance();
+        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
@@ -338,7 +339,7 @@ public final class InstancesTest {
                 )
             );
             try {
-                new JdbcSession(conn)
+                new JdbcSession(new StaticSource(conn))
                     .autocommit(false)
                     .sql("CREATE TABLE foo (id INT)")
                     .execute()
@@ -361,7 +362,7 @@ public final class InstancesTest {
      * @throws Exception If something is wrong
      */
     @Test
-    public void willCreateDatabaseEvenWithoutClear() throws Exception {
+    void willCreateDatabaseEvenWithoutClear() throws Exception {
         final int port = this.reserve();
         final Instances instances = new Instances();
         instances.start(
@@ -373,7 +374,7 @@ public final class InstancesTest {
                 Collections.<String>emptyList()
             ),
             new File(InstancesTest.DIST),
-            Files.createTempDir(),
+            Files.createTempDirectory("").toFile(),
             false,
             null
         );
@@ -381,7 +382,7 @@ public final class InstancesTest {
             "Instance reusedExistingDatabase should be false.",
             !instances.reusedExistingDatabase()
         );
-        Class.forName(InstancesTest.DRIVER).newInstance();
+        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
@@ -393,7 +394,7 @@ public final class InstancesTest {
                 )
             );
             try {
-                new JdbcSession(conn)
+                new JdbcSession(new StaticSource(conn))
                     .autocommit(false)
                     .sql("CREATE TABLE foo (id INT)")
                     .execute()
@@ -416,10 +417,10 @@ public final class InstancesTest {
      * @throws Exception If something is wrong
      */
     @Test
-    @Ignore
-    public void canReuseExistingDatabse() throws Exception {
+    @Disabled
+    void canReuseExistingDatabse() throws Exception {
         final int port = this.reserve();
-        final File target = Files.createTempDir();
+        final File target = Files.createTempDirectory("").toFile();
         final Instances instances = new Instances();
         instances.start(
             new Config(
@@ -427,7 +428,7 @@ public final class InstancesTest {
                 InstancesTest.USER,
                 InstancesTest.PASSWORD,
                 InstancesTest.DBNAME,
-                Collections.<String>emptyList()
+                Collections.emptyList()
             ),
             new File(InstancesTest.DIST),
             target,
@@ -438,7 +439,7 @@ public final class InstancesTest {
             "Instance reusedExistingDatabase should be false.",
             !instances.reusedExistingDatabase()
         );
-        Class.forName(InstancesTest.DRIVER).newInstance();
+        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
         try {
             final Connection conn = DriverManager.getConnection(
                 String.format(
@@ -450,7 +451,7 @@ public final class InstancesTest {
                 )
             );
             try {
-                new JdbcSession(conn)
+                new JdbcSession(new StaticSource(conn))
                     .autocommit(false)
                     .sql("START TRANSACTION")
                     .execute()
@@ -489,7 +490,7 @@ public final class InstancesTest {
                 InstancesTest.USER,
                 InstancesTest.PASSWORD,
                 InstancesTest.DBNAME,
-                Collections.<String>emptyList()
+                Collections.emptyList()
             ),
             new File(InstancesTest.DIST),
             target,
@@ -514,7 +515,7 @@ public final class InstancesTest {
                 )
             );
             try {
-                new JdbcSession(conn)
+                new JdbcSession(new StaticSource(conn))
                     .autocommit(false)
                     .sql("SELECT COUNT(*) FROM foo")
                     .execute()

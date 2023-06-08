@@ -1,13 +1,13 @@
-In order to deploy a new version of mysql-dist artifact
-to Maven Central you should do the following steps:
+In order to deploy a new version of mysql-dist artifact to Maven Central you should do the following steps:
 
  1. Update `deploy/pom.xml` file with a new version of MySQL
 
- 2. Download five files from http://dev.mysql.com/downloads/mysql/
+ 2. Download six files from http://dev.mysql.com/downloads/mysql/
 
    1. Windows 64
    2. Windows
-   3. MacOS
+   3. MacOS x86
+   3. MacOS arm64
    4. Linux amd64
    5. Linux x86
 
@@ -20,7 +20,7 @@ $ cd directory_with_dist_content
 $ zip -r ../linux-amd64.zip *
 ```
 
- 5. Install it locally and test how it works with the plugin
+ 5. Install it locally and test how it works with the plugin (not from the `deploy` directory):
 
 ```
 $ mvn install:install-file -Dfile=mac-x86_64.zip -DgroupId=com.jcabi -DartifactId=mysql-dist -Dversion=5.6.21 -Dpackaging=zip -Dclassifier=mac-x86_64
@@ -31,6 +31,7 @@ $ mvn install:install-file -Dfile=mac-x86_64.zip -DgroupId=com.jcabi -DartifactI
 ```
 $ gpg -ab pom.xml
 $ gpg -ab mac-x86_64.zip
+$ gpg -ab mac-aarch64.zip
 $ gpg -ab linux-amd64.zip
 $ gpg -ab linux-x86_64.zip
 $ gpg -ab windows-amd64.zip

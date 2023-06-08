@@ -30,7 +30,6 @@
 package com.jcabi.mysql.maven.plugin;
 
 import com.jcabi.aspects.Loggable;
-import com.jcabi.aspects.Tv;
 import com.jcabi.log.Logger;
 import com.jcabi.log.VerboseProcess;
 import com.jcabi.log.VerboseRunnable;
@@ -38,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -49,7 +49,6 @@ import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -275,7 +274,8 @@ public final class Instances {
             );
             FileUtils.writeStringToFile(
                 cnf,
-                "[mysql]\n# no defaults..."
+                "[mysql]\n# no defaults...",
+                StandardCharsets.UTF_8
             );
             new VerboseProcess(
                 this.builder(
@@ -326,7 +326,7 @@ public final class Instances {
                 throw new IllegalStateException(ex);
             }
             age = System.currentTimeMillis() - start;
-            if (age > TimeUnit.MINUTES.toMillis((long) Tv.FIVE)) {
+            if (age > TimeUnit.MINUTES.toMillis((long) 5)) {
                 throw new IOException(
                     Logger.format(
                         "socket %s is not available after %[ms]s of waiting",
@@ -373,7 +373,8 @@ public final class Instances {
             ).start();
         final PrintWriter writer = new PrintWriter(
             new OutputStreamWriter(
-                process.getOutputStream(), CharEncoding.UTF_8
+                process.getOutputStream(),
+                StandardCharsets.UTF_8
             )
         );
         writer.print("CREATE DATABASE ");

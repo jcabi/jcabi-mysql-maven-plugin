@@ -29,7 +29,7 @@
  */
 package com.jcabi.mysql.maven.plugin;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link StopMojo} (more detailed test is in maven invoker).
@@ -37,14 +37,14 @@ import org.junit.Test;
  * @version $Id$
  * @since 0.6
  */
-public final class StopMojoTest {
+final class StopMojoTest {
 
     /**
      * StopMojo can skip execution when flag is set.
      * @throws Exception If something is wrong
      */
     @Test
-    public void skipsExecutionWhenRequired() throws Exception {
+    void skipsExecutionWhenRequired() throws Exception {
         final StopMojo mojo = new StopMojo();
         mojo.setSkip(true);
         mojo.execute();

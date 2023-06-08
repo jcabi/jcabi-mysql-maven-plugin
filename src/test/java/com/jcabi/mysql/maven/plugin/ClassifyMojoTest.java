@@ -33,7 +33,7 @@ import java.util.Properties;
 import org.apache.maven.project.MavenProject;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 /**
@@ -42,7 +42,7 @@ import org.mockito.Mockito;
  * @version $Id$
  * @since 0.6
  */
-public final class ClassifyMojoTest {
+final class ClassifyMojoTest {
 
     /**
      * ClassifyMojo can detect current platform.
