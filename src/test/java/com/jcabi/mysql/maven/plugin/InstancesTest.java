@@ -81,7 +81,7 @@ final class InstancesTest {
     /**
      * MySQL driver name.
      */
-    private static final String DRIVER = "com.mysql.jdbc.Driver";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     /**
      * MySQL connection string format.
@@ -116,9 +116,9 @@ final class InstancesTest {
                 String.format(
                     InstancesTest.CONNECTION_STRING,
                     port,
+                    InstancesTest.DBNAME,
                     InstancesTest.USER,
-                    InstancesTest.PASSWORD,
-                    InstancesTest.DBNAME
+                    InstancesTest.PASSWORD
                 )
             );
             try {
@@ -371,7 +371,7 @@ final class InstancesTest {
                 InstancesTest.USER,
                 InstancesTest.PASSWORD,
                 InstancesTest.DBNAME,
-                Collections.<String>emptyList()
+                Collections.emptyList()
             ),
             new File(InstancesTest.DIST),
             Files.createTempDirectory("").toFile(),
@@ -388,10 +388,9 @@ final class InstancesTest {
                 String.format(
                     InstancesTest.CONNECTION_STRING,
                     port,
+                    InstancesTest.DBNAME,
                     InstancesTest.USER,
-                    InstancesTest.PASSWORD,
-                    InstancesTest.DBNAME
-                )
+                    InstancesTest.PASSWORD
             );
             try {
                 new JdbcSession(new StaticSource(conn))
@@ -445,9 +444,9 @@ final class InstancesTest {
                 String.format(
                     InstancesTest.CONNECTION_STRING,
                     port,
+                    InstancesTest.DBNAME,
                     InstancesTest.USER,
-                    InstancesTest.PASSWORD,
-                    InstancesTest.DBNAME
+                    InstancesTest.PASSWORD
                 )
             );
             try {
@@ -509,9 +508,9 @@ final class InstancesTest {
                 String.format(
                     InstancesTest.CONNECTION_STRING,
                     port,
+                    InstancesTest.DBNAME,
                     InstancesTest.USER,
-                    InstancesTest.PASSWORD,
-                    InstancesTest.DBNAME
+                    InstancesTest.PASSWORD
                 )
             );
             try {

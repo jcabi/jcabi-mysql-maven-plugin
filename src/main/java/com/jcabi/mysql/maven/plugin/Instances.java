@@ -38,6 +38,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -197,7 +199,7 @@ public final class Instances {
             "--console",
             "--innodb_buffer_pool_size=64M",
             "--innodb_log_file_size=64M",
-            "--log_warnings",
+//            "--log_warnings",
             "--innodb_use_native_aio=0",
             String.format("--binlog-ignore-db=%s", config.dbname()),
             String.format("--basedir=%s", dist),
@@ -217,12 +219,9 @@ public final class Instances {
         final Process proc = builder.start();
         final Thread thread = new Thread(
             new VerboseRunnable(
-                new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        new VerboseProcess(proc).stdoutQuietly();
-                        return null;
-                    }
+                (Callable<Void>) () -> {
+                    new VerboseProcess(proc).stdoutQuietly();
+                    return null;
                 }
             )
         );
@@ -277,17 +276,30 @@ public final class Instances {
                 "[mysql]\n# no defaults...",
                 StandardCharsets.UTF_8
             );
-            new VerboseProcess(
-                this.builder(
-                    dist,
-                    "scripts/mysql_install_db",
-                    String.format("--defaults-file=%s", cnf),
-                    "--force",
-                    "--innodb_use_native_aio=0",
-                    String.format("--datadir=%s", dir),
-                    String.format("--basedir=%s", dist)
-                )
-            ).stdout();
+            if (Files.exists(Paths.get(dist.getAbsolutePath()).resolve("scripts/mysql_install_db"))) {
+                new VerboseProcess(
+                    this.builder(
+                        dist,
+                        "scripts/mysql_install_db",
+                        String.format("--defaults-file=%s", cnf),
+                        "--force",
+                        "--innodb_use_native_aio=0",
+                        String.format("--datadir=%s", dir),
+                        String.format("--basedir=%s", dist)
+                    )
+                ).stdout();
+            } else {
+                new VerboseProcess(
+                    this.builder(
+                        dist,
+                        "bin/mysqld",
+                        "--initialize-insecure",
+                        String.format("--user=%s", Instances.DEFAULT_USER),
+                        String.format("--datadir=%s", dir),
+                        String.format("--basedir=%s", dist)
+                    )
+                ).stdout();
+            }
         }
         return dir;
     }

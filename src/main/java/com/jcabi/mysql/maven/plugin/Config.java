@@ -37,7 +37,8 @@ import lombok.ToString;
 
 /**
  * Configuration POJO.
- * Contains configuration for particular db instance {@link Instances}
+ *
+ * <p>Contains configuration for particular db instance {@link Instances}.</p>
  *
  * @author Paul Polischuk (ppol@ua.fm)
  * @version $Id$
