@@ -391,6 +391,7 @@ final class InstancesTest {
                     InstancesTest.DBNAME,
                     InstancesTest.USER,
                     InstancesTest.PASSWORD
+                )
             );
             try {
                 new JdbcSession(new StaticSource(conn))
