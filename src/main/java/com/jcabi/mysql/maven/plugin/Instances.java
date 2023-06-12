@@ -130,22 +130,20 @@ public final class Instances {
         synchronized (this.processes) {
             if (this.processes.containsKey(config.port())) {
                 throw new IllegalArgumentException(
-                    String.format("port %d is already busy", config.port())
+                    String.format("Port %d is already busy", config.port())
                 );
             }
             final Process proc = this.process(config, dist, target, socket);
             this.processes.put(config.port(), proc);
             Runtime.getRuntime().addShutdownHook(
-                new Thread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            Instances.this.stop(config.port());
-                        }
-                    }
-                )
+                new Thread(() -> Instances.this.stop(config.port()))
             );
         }
+        Logger.info(
+            this,
+            "MySQL database is up and running at the %d port",
+            config.port()
+        );
     }
 
     /**
@@ -318,7 +316,7 @@ public final class Instances {
             if (socket.exists()) {
                 Logger.info(
                     this,
-                    "socket %s is available after %[ms]s of waiting",
+                    "Socket %s is available after %[ms]s of waiting",
                     socket, age
                 );
                 break;
@@ -326,7 +324,7 @@ public final class Instances {
             if (SocketHelper.isOpen(port)) {
                 Logger.info(
                     this,
-                    "port %s is available after %[ms]s of waiting",
+                    "Port %s is available after %[ms]s of waiting",
                     port, age
                 );
                 break;
@@ -341,7 +339,7 @@ public final class Instances {
             if (age > TimeUnit.MINUTES.toMillis((long) 5)) {
                 throw new IOException(
                     Logger.format(
-                        "socket %s is not available after %[ms]s of waiting",
+                        "Socket %s is not available after %[ms]s of waiting",
                         socket, age
                     )
                 );
@@ -374,6 +372,12 @@ public final class Instances {
                 Instances.DEFAULT_PASSWORD
             )
         ).stdout();
+        Logger.info(
+            this,
+            "Root password '%s' set for the '%s' user",
+            Instances.DEFAULT_PASSWORD,
+            Instances.DEFAULT_USER
+        );
         final Process process =
             this.builder(
                 dist,
@@ -409,9 +413,17 @@ public final class Instances {
                     Instances.DEFAULT_HOST
                 )
             );
+            writer.println("SHOW DATABASES;");
         }
         writer.close();
         new VerboseProcess(process).stdout();
+        Logger.info(
+            this,
+            "The '%s' user created in the '%s' database with the '%s' password",
+            config.user(),
+            config.dbname(),
+            config.password()
+        );
     }
 
     /**
