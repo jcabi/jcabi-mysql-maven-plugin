@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -40,8 +40,6 @@ import lombok.ToString;
  *
  * <p>Contains configuration for particular db instance {@link Instances}.</p>
  *
- * @author Paul Polischuk (ppol@ua.fm)
- * @version $Id$
  * @since 0.6
  */
 @ToString

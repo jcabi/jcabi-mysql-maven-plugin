@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -31,8 +31,6 @@
 /**
  * MySQL Maven plugin, tests.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.4
  */
 package com.jcabi.mysql.maven.plugin;

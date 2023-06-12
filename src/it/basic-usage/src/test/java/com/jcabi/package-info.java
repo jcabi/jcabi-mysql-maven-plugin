@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -31,8 +31,6 @@
 /**
  * Mysql maven plugin, integration tests.
  *
- * @author Paul Polishchuk (ppol@ua.fm)
- * @version $Id$
  * @since 0.4
  * @see <a href="http://www.jcabi.com/jcabi-mysql-maven-plugin">project website</a>
  */

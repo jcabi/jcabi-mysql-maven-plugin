@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -39,6 +39,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,8 +58,6 @@ import org.apache.commons.lang3.StringUtils;
  * Running instances of MySQL.
  *
  * <p>The class is thread-safe.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle MultipleStringLiterals (500 lines)
  * @since 0.1
@@ -104,7 +103,7 @@ public final class Instances {
      * Running processes.
      */
     private final transient ConcurrentMap<Integer, Process> processes =
-        new ConcurrentHashMap<Integer, Process>(0);
+        new ConcurrentHashMap<>(0);
 
     /**
      * If true, always create a new database. If false, check if there is an
@@ -136,7 +135,7 @@ public final class Instances {
             final Process proc = this.process(config, dist, target, socket);
             this.processes.put(config.port(), proc);
             Runtime.getRuntime().addShutdownHook(
-                new Thread(() -> Instances.this.stop(config.port()))
+                new Thread(() -> this.stop(config.port()))
             );
         }
         Logger.info(
@@ -197,7 +196,6 @@ public final class Instances {
             "--console",
             "--innodb_buffer_pool_size=64M",
             "--innodb_log_file_size=64M",
-//            "--log_warnings",
             "--innodb_use_native_aio=0",
             String.format("--binlog-ignore-db=%s", config.dbname()),
             String.format("--basedir=%s", dist),
@@ -274,7 +272,9 @@ public final class Instances {
                 "[mysql]\n# no defaults...",
                 StandardCharsets.UTF_8
             );
-            if (Files.exists(Paths.get(dist.getAbsolutePath()).resolve("scripts/mysql_install_db"))) {
+            final Path installer = Paths.get(dist.getAbsolutePath())
+                .resolve("scripts/mysql_install_db");
+            if (Files.exists(installer)) {
                 new VerboseProcess(
                     this.builder(
                         dist,
@@ -436,7 +436,7 @@ public final class Instances {
     private ProcessBuilder builder(final File dist, final String name,
         final String... cmds) {
         String label = name;
-        final Collection<String> commands = new LinkedList<String>();
+        final Collection<String> commands = new LinkedList<>();
         final File exec = new File(dist, label);
         if (exec.exists()) {
             try {
@@ -455,7 +455,7 @@ public final class Instances {
         commands.addAll(Arrays.asList(cmds));
         Logger.info(this, "$ %s", StringUtils.join(commands, " "));
         return new ProcessBuilder()
-            .command(commands.toArray(new String[commands.size()]))
+            .command(commands.toArray(new String[0]))
             .directory(dist);
     }
 

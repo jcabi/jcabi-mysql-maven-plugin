@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -44,8 +44,6 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * Abstract MOJO.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.1
  */
 @ToString
@@ -252,8 +250,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      * @param instances Instances to work with
      * @throws MojoFailureException If fails
      */
-    protected abstract void run(final Instances instances)
-        throws MojoFailureException;
+    protected abstract void run(Instances instances) throws MojoFailureException;
 
     /**
      * Get instances.

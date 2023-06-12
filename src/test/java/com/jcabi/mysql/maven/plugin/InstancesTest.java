@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -43,8 +43,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link Instances}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle MultipleStringLiterals (500 lines)
  * @since 0.6
@@ -76,11 +74,6 @@ final class InstancesTest {
      * Location of MySQL dist.
      */
     private static final String DIST = getDist();
-
-    /**
-     * MySQL driver name.
-     */
-    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     /**
      * MySQL connection string format.

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -38,8 +38,6 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link ClassifyMojo} (more detailed test is in maven invoker).
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.6
  */
 final class ClassifyMojoTest {
@@ -49,7 +47,7 @@ final class ClassifyMojoTest {
      * @throws Exception If something is wrong
      */
     @Test
-    public void detectsCurrentPlatform() throws Exception {
+    void detectsCurrentPlatform() throws Exception {
         final Properties props = new Properties();
         final MavenProject project = Mockito.mock(MavenProject.class);
         Mockito.doReturn(props).when(project).getProperties();
