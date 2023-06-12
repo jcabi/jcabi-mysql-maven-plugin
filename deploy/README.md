@@ -2,13 +2,12 @@ In order to deploy a new version of mysql-dist artifact to Maven Central you sho
 
  1. Update `deploy/pom.xml` file with a new version of MySQL
 
- 2. Download six files from http://dev.mysql.com/downloads/mysql/
+ 2. Download five files from http://dev.mysql.com/downloads/mysql/
 
-   1. Windows 64
-   2. Windows
-   3. MacOS x86
-   3. MacOS arm64
-   4. Linux amd64
+   1. Windows x86
+   2. MacOS x86
+   3. MacOS aarch64
+   4. Linux aarch64
    5. Linux x86
 
  3. Unpack them all
@@ -32,26 +31,22 @@ $ mvn install:install-file -Dfile=mac-x86_64.zip -DgroupId=com.jcabi -DartifactI
 $ gpg -ab pom.xml
 $ gpg -ab mac-x86_64.zip
 $ gpg -ab mac-aarch64.zip
-$ gpg -ab linux-amd64.zip
+$ gpg -ab linux-aarch64.zip
 $ gpg -ab linux-x86_64.zip
-$ gpg -ab windows-amd64.zip
 $ gpg -ab windows-x86.zip
 ```
 
- 5. Login to sonatype and deploy them both (pom.xml and all dist-*.zip). You
- should have these files before upload:
+ 7. Login to oss.sonatype.org and deploy them both (`pom.xml` and all `dist-*.zip`). You should have these files before upload:
 
 ```
 pom.xml
 pom.pom.asc
 mac-x86_64.zip
 mac-x86_64.zip.asc
-linux-amd64.zip
-linux-amd64.zip.asc
+linux-aarch64.zip
+linux-aarch64.zip.asc
 linux-x86_64.zip
 linux-x86_64.zip.asc
-windows-amd64.zip
-windows-amd64.zip.asc
 windows-x86.zip
 windows-x86.zip.asc
 ```
