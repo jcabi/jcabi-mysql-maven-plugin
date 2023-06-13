@@ -33,7 +33,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <groupId>com.jcabi</groupId>
   <artifactId>mysql-dist</artifactId>
   <version>8.0.33.1</version>
-  <packaging>zip</packaging>
+  <packaging>pom</packaging>
   <name>mysql-dist</name>
   <description>MySQL distribution</description>
   <url>https://www.jcabi.com</url>
@@ -65,4 +65,71 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <developerConnection>scm:git:github.com:jcabi/jcabi-mysql-maven-plugin.git</developerConnection>
     <url>https://github.com/jcabi/jcabi-mysql-maven-plugin</url>
   </scm>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>./linux-aarch64.zip</file>
+                  <type>zip</type>
+                  <classifier>linux-aarch64</classifier>
+                </artifact>
+                <artifact>
+                  <file>./linux-x86_64.zip</file>
+                  <type>zip</type>
+                  <classifier>linux-x86_64</classifier>
+                </artifact>
+                <artifact>
+                  <file>./mac-x86_64.zip</file>
+                  <type>zip</type>
+                  <classifier>mac-x86_64</classifier>
+                </artifact>
+                <artifact>
+                  <file>./mac-aarch64.zip</file>
+                  <type>zip</type>
+                  <classifier>mac-aarch64</classifier>
+                </artifact>
+                <artifact>
+                  <file>./windows-x86.zip</file>
+                  <type>zip</type>
+                  <classifier>windows-x86</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+            <configuration>
+              <keyname>82A1A9D03A09B8334650940FB8283801026E65F3</keyname>
+              <passphrase></passphrase>
+              <gpgArguments>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
