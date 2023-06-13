@@ -127,11 +127,36 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             </goals>
             <configuration>
               <keyname>82A1A9D03A09B8334650940FB8283801026E65F3</keyname>
-              <passphrase></passphrase>
               <gpgArguments>
                 <arg>--pinentry-mode</arg>
                 <arg>loopback</arg>
               </gpgArguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.13</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <phase>deploy</phase>
+            <goals>
+              <goal>deploy</goal>
+              <goal>release</goal>
+            </goals>
+            <configuration>
+              <serverId>oss.sonatype.org</serverId>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <stagingProgressTimeoutMinutes>10</stagingProgressTimeoutMinutes>
             </configuration>
           </execution>
         </executions>

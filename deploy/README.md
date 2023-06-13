@@ -32,3 +32,17 @@ Deploy to Sonatype:
 ```
 $ mvn deploy
 ```
+
+Make sure, you have a `<server>` in you `~/.m2/settings.xml` with `id` set to `oss.sonatype.org`, like this:
+
+```xml
+<settings>
+  <servers>
+    <server>
+      <id>oss.sonatype.org</id>
+      <username>...</username>
+      <password>...</password>
+    </server>
+  </servers>
+</settings>
+```
