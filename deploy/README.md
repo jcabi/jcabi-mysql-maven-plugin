@@ -32,6 +32,7 @@ $ gpg -ab pom.xml
 $ gpg -ab mac-x86_64.zip
 $ gpg -ab mac-aarch64.zip
 $ gpg -ab linux-aarch64.zip
+$ gpg -ab linux-arm64.zip
 $ gpg -ab linux-x86_64.zip
 $ gpg -ab windows-x86.zip
 ```

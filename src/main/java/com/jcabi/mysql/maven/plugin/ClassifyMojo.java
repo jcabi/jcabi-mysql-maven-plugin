@@ -66,11 +66,7 @@ public final class ClassifyMojo extends AbstractMojo {
     /**
      * Classifier to set.
      */
-    @Parameter(
-        defaultValue = "mysql.classifier",
-        required = true,
-        readonly = false
-    )
+    @Parameter(defaultValue = "mysql.classifier", required = true)
     private transient String classifier;
 
     @Override
