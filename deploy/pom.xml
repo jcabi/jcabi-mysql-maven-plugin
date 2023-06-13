@@ -32,7 +32,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.jcabi</groupId>
   <artifactId>mysql-dist</artifactId>
-  <version>8.0.33</version>
+  <version>8.0.33.1</version>
   <packaging>zip</packaging>
   <name>mysql-dist</name>
   <description>MySQL distribution</description>

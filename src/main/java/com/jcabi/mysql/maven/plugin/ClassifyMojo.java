@@ -69,12 +69,26 @@ public final class ClassifyMojo extends AbstractMojo {
     @Parameter(defaultValue = "mysql.classifier", required = true)
     private transient String classifier;
 
+    /**
+     * Classify "amd64" as "aarch64" (setting this to "false" should be useful
+     * for older versions of MySQL distribution, which are older than 8.0.33).
+     *
+     * @since 0.9.0
+     * @checkstyle MemberNameCheck (5 lines)
+     */
+    @Parameter(defaultValue = "true", required = true)
+    @SuppressWarnings("PMD.ImmutableField")
+    private transient boolean classifyAsAarch64 = true;
+
     @Override
     public void execute() throws MojoFailureException {
         final String[] words = System.getProperty("os.name").split(" ");
         String arch = System.getProperty("os.arch").toLowerCase(Locale.ENGLISH);
         if ("i386".equals(arch)) {
             arch = "x86";
+        }
+        if ("amd64".equals(arch) && this.classifyAsAarch64) {
+            arch = "aarch64";
         }
         final String value = String.format(
             "%s-%s", words[0].toLowerCase(Locale.ENGLISH), arch
