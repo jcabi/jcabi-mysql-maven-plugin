@@ -65,6 +65,12 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <developerConnection>scm:git:github.com:jcabi/jcabi-mysql-maven-plugin.git</developerConnection>
     <url>https://github.com/jcabi/jcabi-mysql-maven-plugin</url>
   </scm>
+  <distributionManagement>
+    <repository>
+      <id>oss.sonatype.org</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+    </repository>
+  </distributionManagement>
   <build>
     <plugins>
       <plugin>
