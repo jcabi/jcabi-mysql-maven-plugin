@@ -281,7 +281,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
               <mavenOpts>-Dmysql.classifier=${mysql.classifier}</mavenOpts>
               <ignoreFailures>true</ignoreFailures>
               <pomExcludes>
-                <pomExclude>parallel/pom.xml</pomExclude>
+                <pomExclude>**/parallel/pom.xml</pomExclude>
               </pomExcludes>
             </configuration>
           </execution>
