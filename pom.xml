@@ -278,6 +278,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
               <goal>run</goal>
             </goals>
             <configuration>
+              <mavenOpts>-Dmysql.classifier=${mysql.classifier}</mavenOpts>
               <ignoreFailures>true</ignoreFailures>
             </configuration>
           </execution>
