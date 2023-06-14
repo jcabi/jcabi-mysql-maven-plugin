@@ -117,12 +117,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
         </configuration>
         <executions>
           <execution>
-            <id>classify-platform</id>
-            <goals>
-              <goal>classify</goal>
-            </goals>
-          </execution>
-          <execution>
             <id>start-stop-first</id>
             <goals>
               <goal>start</goal>

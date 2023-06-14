@@ -28,4 +28,5 @@ jobs:
             ${{ runner.os }}-jdk-${{ matrix.java }}-maven-
       - run: java -version
       - run: mvn -version
+      - run: sudo apt-get install -y libnuma1 libaio1
       - run: mvn --errors --batch-mode clean install -Pqulice -Dmysql.classifier=linux-aarch64
