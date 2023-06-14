@@ -280,6 +280,9 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             <configuration>
               <mavenOpts>-Dmysql.classifier=${mysql.classifier}</mavenOpts>
               <ignoreFailures>true</ignoreFailures>
+              <pomExcludes>
+                <pomInclude>parallel/pom.xml</pomInclude>
+              </pomExcludes>
             </configuration>
           </execution>
         </executions>
