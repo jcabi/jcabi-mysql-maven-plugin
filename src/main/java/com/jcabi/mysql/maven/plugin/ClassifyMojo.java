@@ -88,7 +88,6 @@ public final class ClassifyMojo extends AbstractMojo {
             this.mappings.add("amd64->aarch64");
             this.mappings.add("i386->x86_64");
         }
-        final String[] words = System.getProperty("os.name").split(" ");
         String arch = System.getProperty("os.arch").toLowerCase(Locale.ENGLISH);
         for (final String mapping : this.mappings) {
             final String[] pair = mapping.split("->");
@@ -105,6 +104,7 @@ public final class ClassifyMojo extends AbstractMojo {
                 break;
             }
         }
+        final String[] words = System.getProperty("os.name").split(" ");
         final String value = String.format(
             "%s-%s", words[0].toLowerCase(Locale.ENGLISH), arch
         );
