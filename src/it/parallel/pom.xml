@@ -87,7 +87,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
                 <artifactItem>
                   <groupId>com.jcabi</groupId>
                   <artifactId>mysql-dist</artifactId>
-                  <version>5.6.21</version>
+                  <version>8.0.33.1</version>
                   <classifier>${mysql.classifier}</classifier>
                   <type>zip</type>
                   <overWrite>false</overWrite>
