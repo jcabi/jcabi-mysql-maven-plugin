@@ -203,6 +203,7 @@ public final class Instances {
             String.format("--datadir=%s", this.data(dist, target)),
             String.format("--tmpdir=%s", temp),
             String.format("--socket=%s", socket),
+            String.format("--log-error=%s", new File(target, "errors.log")),
             String.format("--general-log-file=%s", new File(target, "mysql.log")),
             String.format("--pid-file=%s", new File(target, "mysql.pid")),
             String.format("--port=%d", config.port())
