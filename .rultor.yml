@@ -9,7 +9,7 @@ install: |
   sudo apt-get install -y libnuma1 libaio1
 merge:
   script: |
-    mvn clean install -Pqulice --errors --batch-mode
+    mvn clean install -Pqulice --errors --batch-mode -Dmysql.classifier=linux-x86_64
 release:
   pre: false
   script: |-

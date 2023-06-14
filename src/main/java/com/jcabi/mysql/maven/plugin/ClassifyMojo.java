@@ -30,6 +30,8 @@
 package com.jcabi.mysql.maven.plugin;
 
 import com.jcabi.log.Logger;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -70,25 +72,38 @@ public final class ClassifyMojo extends AbstractMojo {
     private transient String classifier;
 
     /**
-     * Classify "amd64" as "aarch64" (setting this to "false" should be useful
-     * for older versions of MySQL distribution, which are older than 8.0.33).
+     * Classification mappings.
      *
      * @since 0.9.0
      * @checkstyle MemberNameCheck (5 lines)
      */
-    @Parameter(defaultValue = "true", required = true)
+    @Parameter(required = true)
     @SuppressWarnings("PMD.ImmutableField")
-    private transient boolean classifyAsAarch64 = true;
+    private transient List<String> mappings;
 
     @Override
     public void execute() throws MojoFailureException {
+        if (this.mappings == null) {
+            this.mappings = new LinkedList<>();
+            this.mappings.add("amd64->aarch64");
+            this.mappings.add("i386->x86_64");
+        }
         final String[] words = System.getProperty("os.name").split(" ");
         String arch = System.getProperty("os.arch").toLowerCase(Locale.ENGLISH);
-        if ("i386".equals(arch)) {
-            arch = "x86";
-        }
-        if ("amd64".equals(arch) && this.classifyAsAarch64) {
-            arch = "aarch64";
+        for (final String mapping : this.mappings) {
+            final String[] pair = mapping.split("->");
+            if (pair.length != 2) {
+                throw new MojoFailureException(
+                    String.format(
+                        "Invalid mapping \"%s\" (should be \"from->to\")",
+                        mapping
+                    )
+                );
+            }
+            if (arch.equals(pair[0])) {
+                arch = pair[1];
+                break;
+            }
         }
         final String value = String.format(
             "%s-%s", words[0].toLowerCase(Locale.ENGLISH), arch
