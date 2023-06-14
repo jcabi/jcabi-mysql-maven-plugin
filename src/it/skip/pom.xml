@@ -36,9 +36,9 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <version>1.0-SNAPSHOT</version>
   <dependencies>
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.26</version>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>8.0.33</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

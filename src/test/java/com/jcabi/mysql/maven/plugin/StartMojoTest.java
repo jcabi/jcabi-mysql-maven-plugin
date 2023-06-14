@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -29,13 +29,11 @@
  */
 package com.jcabi.mysql.maven.plugin;
 
-
 import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link StartMojo} (more detailed test is in maven invoker).
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
+ *
  * @since 0.6
  */
 final class StartMojoTest {

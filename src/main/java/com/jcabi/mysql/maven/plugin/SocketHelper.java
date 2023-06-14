@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -37,8 +37,6 @@ import java.net.Socket;
  * complexity of Instances (TooManyMethods).
  *
  * <p>The class is thread-safe.
- * @author Christian Redl (github@xresearch.net)
- * @version $Id$
  * @since 0.6
  */
 final class SocketHelper {
@@ -53,7 +51,7 @@ final class SocketHelper {
      * @param port The port to check
      * @return TRUE if it's open
      */
-    public static boolean isOpen(final int port) {
+    static boolean isOpen(final int port) {
         boolean open;
         try {
             new Socket((String) null, port);

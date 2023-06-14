@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -30,22 +30,19 @@
 package com.jcabi.mysql.maven.plugin;
 
 import com.jcabi.jdbc.JdbcSession;
-import com.jcabi.jdbc.StaticSource;
+import com.jcabi.jdbc.UrlSource;
 import java.io.File;
 import java.net.ServerSocket;
 import java.nio.file.Files;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+import javax.sql.DataSource;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link Instances}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle MultipleStringLiterals (500 lines)
  * @since 0.6
@@ -56,17 +53,17 @@ final class InstancesTest {
     /**
      * User.
      */
-    public static final String USER = "root";
+    public static final String USER = "u13";
 
     /**
      * Password.
      */
-    public static final String PASSWORD = "root";
+    public static final String PASSWORD = "swordfish";
 
     /**
      * Database name.
      */
-    public static final String DBNAME = "root";
+    public static final String DBNAME = "papamama";
 
     /**
      * Time to sleep in between instances.
@@ -77,11 +74,6 @@ final class InstancesTest {
      * Location of MySQL dist.
      */
     private static final String DIST = getDist();
-
-    /**
-     * MySQL driver name.
-     */
-    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     /**
      * MySQL connection string format.
@@ -103,38 +95,33 @@ final class InstancesTest {
                 InstancesTest.USER,
                 InstancesTest.PASSWORD,
                 InstancesTest.DBNAME,
-                Collections.<String>emptyList()
+                Collections.emptyList()
             ),
             new File(InstancesTest.DIST),
             Files.createTempDirectory("").toFile(),
             true,
             null
         );
-        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
+        final DataSource source = new UrlSource(
+            String.format(
+                InstancesTest.CONNECTION_STRING,
+                port,
+                InstancesTest.DBNAME,
+                InstancesTest.USER,
+                InstancesTest.PASSWORD
+            )
+        );
         try {
-            final Connection conn = DriverManager.getConnection(
-                String.format(
-                    InstancesTest.CONNECTION_STRING,
-                    port,
-                    InstancesTest.DBNAME,
-                    InstancesTest.USER,
-                    InstancesTest.PASSWORD
-                )
-            );
-            try {
-                new JdbcSession(new StaticSource(conn))
-                    .autocommit(false)
-                    .sql("CREATE TABLE foo (id INT)")
-                    .execute()
-                    .sql("INSERT INTO foo VALUES (1)")
-                    .execute()
-                    .sql("SELECT COUNT(*) FROM foo")
-                    .execute()
-                    .sql("DROP TABLE foo")
-                    .execute();
-            } finally {
-                conn.close();
-            }
+            new JdbcSession(source)
+                .autocommit(false)
+                .sql("CREATE TABLE foo (id INT)")
+                .execute()
+                .sql("INSERT INTO foo VALUES (1)")
+                .execute()
+                .sql("SELECT COUNT(*) FROM foo")
+                .execute()
+                .sql("DROP TABLE foo")
+                .execute();
         } finally {
             instances.stop(port);
         }
@@ -164,9 +151,8 @@ final class InstancesTest {
             true,
             null
         );
-        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
         try {
-            final Connection conn = DriverManager.getConnection(
+            final DataSource source = new UrlSource(
                 String.format(
                     InstancesTest.CONNECTION_STRING,
                     port,
@@ -175,20 +161,16 @@ final class InstancesTest {
                     InstancesTest.PASSWORD
                 )
             );
-            try {
-                new JdbcSession(new StaticSource(conn))
-                    .autocommit(false)
-                    .sql("CREATE TABLE foo (date DATE)")
-                    .execute()
-                    .sql("INSERT INTO foo VALUES ('2004-04-31')")
-                    .execute()
-                    .sql("SELECT * FROM foo")
-                    .execute()
-                    .sql("DROP TABLE foo")
-                    .execute();
-            } finally {
-                conn.close();
-            }
+            new JdbcSession(source)
+                .autocommit(false)
+                .sql("CREATE TABLE foo (date DATE)")
+                .execute()
+                .sql("INSERT INTO foo VALUES ('2004-04-31')")
+                .execute()
+                .sql("SELECT * FROM foo")
+                .execute()
+                .sql("DROP TABLE foo")
+                .execute();
         } finally {
             instances.stop(port);
         }
@@ -220,31 +202,26 @@ final class InstancesTest {
             true,
             null
         );
-        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
+        final DataSource source = new UrlSource(
+            String.format(
+                InstancesTest.CONNECTION_STRING,
+                port,
+                InstancesTest.DBNAME,
+                user,
+                InstancesTest.PASSWORD
+            )
+        );
         try {
-            final Connection conn = DriverManager.getConnection(
-                String.format(
-                    InstancesTest.CONNECTION_STRING,
-                    port,
-                    InstancesTest.DBNAME,
-                    user,
-                    InstancesTest.PASSWORD
-                )
-            );
-            try {
-                new JdbcSession(new StaticSource(conn))
-                    .autocommit(false)
-                    .sql("CREATE TABLE foo (id INT)")
-                    .execute()
-                    .sql("INSERT INTO foo VALUES (1)")
-                    .execute()
-                    .sql("SELECT COUNT(*) FROM foo")
-                    .execute()
-                    .sql("DROP TABLE foo")
-                    .execute();
-            } finally {
-                conn.close();
-            }
+            new JdbcSession(source)
+                .autocommit(false)
+                .sql("CREATE TABLE foo (id INT)")
+                .execute()
+                .sql("INSERT INTO foo VALUES (1)")
+                .execute()
+                .sql("SELECT COUNT(*) FROM foo")
+                .execute()
+                .sql("DROP TABLE foo")
+                .execute();
         } finally {
             instances.stop(port);
         }
@@ -275,31 +252,26 @@ final class InstancesTest {
             true,
             null
         );
-        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
+        final DataSource source = new UrlSource(
+            String.format(
+                InstancesTest.CONNECTION_STRING,
+                port,
+                InstancesTest.DBNAME,
+                user,
+                password
+            )
+        );
         try {
-            final Connection conn = DriverManager.getConnection(
-                String.format(
-                    InstancesTest.CONNECTION_STRING,
-                    port,
-                    InstancesTest.DBNAME,
-                    user,
-                    password
-                )
-            );
-            try {
-                new JdbcSession(new StaticSource(conn))
-                    .autocommit(false)
-                    .sql("CREATE TABLE foo (id INT)")
-                    .execute()
-                    .sql("INSERT INTO foo VALUES (1)")
-                    .execute()
-                    .sql("SELECT COUNT(*) FROM foo")
-                    .execute()
-                    .sql("DROP TABLE foo")
-                    .execute();
-            } finally {
-                conn.close();
-            }
+            new JdbcSession(source)
+                .autocommit(false)
+                .sql("CREATE TABLE foo (id INT)")
+                .execute()
+                .sql("INSERT INTO foo VALUES (1)")
+                .execute()
+                .sql("SELECT COUNT(*) FROM foo")
+                .execute()
+                .sql("DROP TABLE foo")
+                .execute();
         } finally {
             instances.stop(port);
         }
@@ -327,31 +299,26 @@ final class InstancesTest {
             true,
             null
         );
-        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
+        final DataSource source = new UrlSource(
+            String.format(
+                InstancesTest.CONNECTION_STRING,
+                port,
+                dbname,
+                InstancesTest.USER,
+                InstancesTest.PASSWORD
+            )
+        );
         try {
-            final Connection conn = DriverManager.getConnection(
-                String.format(
-                    InstancesTest.CONNECTION_STRING,
-                    port,
-                    dbname,
-                    InstancesTest.USER,
-                    InstancesTest.PASSWORD
-                )
-            );
-            try {
-                new JdbcSession(new StaticSource(conn))
-                    .autocommit(false)
-                    .sql("CREATE TABLE foo (id INT)")
-                    .execute()
-                    .sql("INSERT INTO foo VALUES (1)")
-                    .execute()
-                    .sql("SELECT COUNT(*) FROM foo")
-                    .execute()
-                    .sql("DROP TABLE foo")
-                    .execute();
-            } finally {
-                conn.close();
-            }
+            new JdbcSession(source)
+                .autocommit(false)
+                .sql("CREATE TABLE foo (id INT)")
+                .execute()
+                .sql("INSERT INTO foo VALUES (1)")
+                .execute()
+                .sql("SELECT COUNT(*) FROM foo")
+                .execute()
+                .sql("DROP TABLE foo")
+                .execute();
         } finally {
             instances.stop(port);
         }
@@ -382,31 +349,26 @@ final class InstancesTest {
             "Instance reusedExistingDatabase should be false.",
             !instances.reusedExistingDatabase()
         );
-        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
+        final DataSource source = new UrlSource(
+            String.format(
+                InstancesTest.CONNECTION_STRING,
+                port,
+                InstancesTest.DBNAME,
+                InstancesTest.USER,
+                InstancesTest.PASSWORD
+            )
+        );
         try {
-            final Connection conn = DriverManager.getConnection(
-                String.format(
-                    InstancesTest.CONNECTION_STRING,
-                    port,
-                    InstancesTest.DBNAME,
-                    InstancesTest.USER,
-                    InstancesTest.PASSWORD
-                )
-            );
-            try {
-                new JdbcSession(new StaticSource(conn))
-                    .autocommit(false)
-                    .sql("CREATE TABLE foo (id INT)")
-                    .execute()
-                    .sql("INSERT INTO foo VALUES (1)")
-                    .execute()
-                    .sql("SELECT COUNT(*) FROM foo")
-                    .execute()
-                    .sql("DROP TABLE foo")
-                    .execute();
-            } finally {
-                conn.close();
-            }
+            new JdbcSession(source)
+                .autocommit(false)
+                .sql("CREATE TABLE foo (id INT)")
+                .execute()
+                .sql("INSERT INTO foo VALUES (1)")
+                .execute()
+                .sql("SELECT COUNT(*) FROM foo")
+                .execute()
+                .sql("DROP TABLE foo")
+                .execute();
         } finally {
             instances.stop(port);
         }
@@ -439,33 +401,28 @@ final class InstancesTest {
             "Instance reusedExistingDatabase should be false.",
             !instances.reusedExistingDatabase()
         );
-        Class.forName(InstancesTest.DRIVER).getConstructor().newInstance();
+        final DataSource source = new UrlSource(
+            String.format(
+                InstancesTest.CONNECTION_STRING,
+                port,
+                InstancesTest.DBNAME,
+                InstancesTest.USER,
+                InstancesTest.PASSWORD
+            )
+        );
         try {
-            final Connection conn = DriverManager.getConnection(
-                String.format(
-                    InstancesTest.CONNECTION_STRING,
-                    port,
-                    InstancesTest.DBNAME,
-                    InstancesTest.USER,
-                    InstancesTest.PASSWORD
-                )
-            );
-            try {
-                new JdbcSession(new StaticSource(conn))
-                    .autocommit(false)
-                    .sql("START TRANSACTION")
-                    .execute()
-                    .sql("CREATE TABLE foo (id INT)")
-                    .execute()
-                    .sql("INSERT INTO foo VALUES (1)")
-                    .execute()
-                    .sql("SELECT COUNT(*) FROM foo")
-                    .execute()
-                    .sql("COMMIT")
-                    .execute();
-            } finally {
-                conn.close();
-            }
+            new JdbcSession(source)
+                .autocommit(false)
+                .sql("START TRANSACTION")
+                .execute()
+                .sql("CREATE TABLE foo (id INT)")
+                .execute()
+                .sql("INSERT INTO foo VALUES (1)")
+                .execute()
+                .sql("SELECT COUNT(*) FROM foo")
+                .execute()
+                .sql("COMMIT")
+                .execute();
         } finally {
             instances.stop(port);
         }
@@ -505,7 +462,7 @@ final class InstancesTest {
             TimeUnit.SECONDS.sleep(InstancesTest.SLEEP_SECONDS);
         } while (!socket.exists());
         try {
-            final Connection conn = DriverManager.getConnection(
+            final DataSource source = new UrlSource(
                 String.format(
                     InstancesTest.CONNECTION_STRING,
                     port,
@@ -514,16 +471,12 @@ final class InstancesTest {
                     InstancesTest.PASSWORD
                 )
             );
-            try {
-                new JdbcSession(new StaticSource(conn))
-                    .autocommit(false)
-                    .sql("SELECT COUNT(*) FROM foo")
-                    .execute()
-                    .sql("DROP TABLE foo")
-                    .execute();
-            } finally {
-                conn.close();
-            }
+            new JdbcSession(source)
+                .autocommit(false)
+                .sql("SELECT COUNT(*) FROM foo")
+                .execute()
+                .sql("DROP TABLE foo")
+                .execute();
         } finally {
             instances.stop(port);
         }

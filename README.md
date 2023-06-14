@@ -8,17 +8,16 @@
 [![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-mysql-maven-plugin)](http://www.0pdd.com/p?name=jcabi/jcabi-mysql-maven-plugin)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-mysql-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-mysql-maven-plugin)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-mysql-maven-plugin.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-mysql-maven-plugin)
-[![Build status](https://ci.appveyor.com/api/projects/status/3axyj0ho4xjc5i5k)](https://ci.appveyor.com/project/yegor256/jcabi-mysql-maven-plugin)
 
 More details are here: [mysql.jcabi.com](http://mysql.jcabi.com/index.html)
 
 Read [this article](http://www.yegor256.com/2014/05/21/mysql-maven-plugin.html),
 it explains what this plugin is for.
 
-On Linux, don't forget to install `libaio1`:
+On Linux, don't forget to install `libaio1` and `libnuma1`:
 
 ```
-$ sudo apt-get install libaio1
+$ sudo apt-get install libaio1 libnuma1
 ```
 
 ## How to contribute?

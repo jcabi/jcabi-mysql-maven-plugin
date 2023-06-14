@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -30,16 +30,16 @@
 package com.jcabi;
 
 import com.jcabi.jdbc.JdbcSession;
+import com.jcabi.jdbc.UrlSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import javax.sql.DataSource;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
  * Test case for {@link Foo}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 1.0
  */
 public final class FooITCase {
@@ -68,14 +68,13 @@ public final class FooITCase {
      */
     @Test
     public void basicMySqlManipulations() throws Exception {
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        final Connection conn = DriverManager.getConnection(
+        final DataSource source = new UrlSource(
             String.format(
                 "jdbc:mysql://localhost:%s/root?user=root&password=root",
                 FooITCase.PORT
             )
         );
-        new JdbcSession(conn)
+        new JdbcSession(source)
             .autocommit(false)
             .sql("CREATE TABLE foo (id INT)")
             .execute()

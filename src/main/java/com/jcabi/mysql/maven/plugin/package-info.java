@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -39,8 +39,6 @@
  *   &lt;artifactId&gt;jcabi-mysql-maven-plugin&lt;/artifactId&gt;
  * &lt;/dependency&gt;</pre>
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.4
  * @see <a href="http://www.jcabi.com/jcabi-mysql-maven-plugin">project website</a>
  */

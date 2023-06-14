@@ -56,20 +56,20 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <distributionManagement>
     <site>
       <id>mysql.jcabi.com</id>
-      <url>http://mysql.jcabi.com/</url>
+      <url>https://mysql.jcabi.com/</url>
     </site>
   </distributionManagement>
   <dependencies>
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
       <version>8.0.33</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-jdbc</artifactId>
-      <version>0.18.0</version>
+      <version>0.19.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -186,34 +186,9 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     </pluginManagement>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.3.1</version>
-        <executions>
-          <execution>
-            <id>enforce-maven-same-versions</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireMavenVersion>
-                  <version>${maven.version}</version>
-                </requireMavenVersion>
-                <requireSameVersions>
-                  <dependencies>
-                    <dependency>org.apache.maven:*</dependency>
-                  </dependencies>
-                </requireSameVersions>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi-mysql-maven-plugin</artifactId>
-        <version>0.1</version>
+        <version>0.9</version>
         <executions>
           <execution>
             <goals>
@@ -237,7 +212,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
                 <artifactItem>
                   <groupId>com.jcabi</groupId>
                   <artifactId>mysql-dist</artifactId>
-                  <version>8.0.33</version>
+                  <version>8.0.33.1</version>
                   <classifier>${mysql.classifier}</classifier>
                   <type>zip</type>
                   <outputDirectory>${project.build.directory}/mysql-dist</outputDirectory>
@@ -295,6 +270,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       </plugin>
       <plugin>
         <artifactId>maven-invoker-plugin</artifactId>
+        <version>3.5.1</version>
         <executions>
           <execution>
             <goals>
@@ -302,7 +278,11 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
               <goal>run</goal>
             </goals>
             <configuration>
+              <mavenOpts>-Dmysql.classifier=${mysql.classifier}</mavenOpts>
               <ignoreFailures>true</ignoreFailures>
+              <pomExcludes>
+                <pomExclude>**/parallel/pom.xml</pomExclude>
+              </pomExcludes>
             </configuration>
           </execution>
         </executions>

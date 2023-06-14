@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -30,6 +30,8 @@
 package com.jcabi.mysql.maven.plugin;
 
 import com.jcabi.log.Logger;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -43,8 +45,6 @@ import org.apache.maven.project.MavenProject;
 /**
  * Classify current platform.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.1
  */
 @ToString
@@ -68,20 +68,43 @@ public final class ClassifyMojo extends AbstractMojo {
     /**
      * Classifier to set.
      */
-    @Parameter(
-        defaultValue = "mysql.classifier",
-        required = true,
-        readonly = false
-    )
+    @Parameter(defaultValue = "mysql.classifier", required = true)
     private transient String classifier;
+
+    /**
+     * Classification mappings.
+     *
+     * @since 0.9.0
+     * @checkstyle MemberNameCheck (5 lines)
+     */
+    @Parameter(required = true)
+    @SuppressWarnings("PMD.ImmutableField")
+    private transient List<String> mappings;
 
     @Override
     public void execute() throws MojoFailureException {
-        final String[] words = System.getProperty("os.name").split(" ");
-        String arch = System.getProperty("os.arch").toLowerCase(Locale.ENGLISH);
-        if ("i386".equals(arch)) {
-            arch = "x86";
+        if (this.mappings == null) {
+            this.mappings = new LinkedList<>();
+            this.mappings.add("amd64->aarch64");
+            this.mappings.add("i386->x86_64");
         }
+        String arch = System.getProperty("os.arch").toLowerCase(Locale.ENGLISH);
+        for (final String mapping : this.mappings) {
+            final String[] pair = mapping.split("->");
+            if (pair.length != 2) {
+                throw new MojoFailureException(
+                    String.format(
+                        "Invalid mapping \"%s\" (should be \"from->to\")",
+                        mapping
+                    )
+                );
+            }
+            if (arch.equals(pair[0])) {
+                arch = pair[1];
+                break;
+            }
+        }
+        final String[] words = System.getProperty("os.name").split(" ");
         final String value = String.format(
             "%s-%s", words[0].toLowerCase(Locale.ENGLISH), arch
         );

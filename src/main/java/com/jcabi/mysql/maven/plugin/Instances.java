@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2023, jcabi.com
  * All rights reserved.
  *
@@ -39,6 +39,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,8 +58,6 @@ import org.apache.commons.lang3.StringUtils;
  * Running instances of MySQL.
  *
  * <p>The class is thread-safe.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle MultipleStringLiterals (500 lines)
  * @since 0.1
@@ -104,7 +103,7 @@ public final class Instances {
      * Running processes.
      */
     private final transient ConcurrentMap<Integer, Process> processes =
-        new ConcurrentHashMap<Integer, Process>(0);
+        new ConcurrentHashMap<>(0);
 
     /**
      * If true, always create a new database. If false, check if there is an
@@ -130,22 +129,20 @@ public final class Instances {
         synchronized (this.processes) {
             if (this.processes.containsKey(config.port())) {
                 throw new IllegalArgumentException(
-                    String.format("port %d is already busy", config.port())
+                    String.format("Port %d is already busy", config.port())
                 );
             }
             final Process proc = this.process(config, dist, target, socket);
             this.processes.put(config.port(), proc);
             Runtime.getRuntime().addShutdownHook(
-                new Thread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            Instances.this.stop(config.port());
-                        }
-                    }
-                )
+                new Thread(() -> this.stop(config.port()))
             );
         }
+        Logger.info(
+            this,
+            "MySQL database is up and running at the %d port",
+            config.port()
+        );
     }
 
     /**
@@ -199,7 +196,6 @@ public final class Instances {
             "--console",
             "--innodb_buffer_pool_size=64M",
             "--innodb_log_file_size=64M",
-//            "--log_warnings",
             "--innodb_use_native_aio=0",
             String.format("--binlog-ignore-db=%s", config.dbname()),
             String.format("--basedir=%s", dist),
@@ -207,6 +203,8 @@ public final class Instances {
             String.format("--datadir=%s", this.data(dist, target)),
             String.format("--tmpdir=%s", temp),
             String.format("--socket=%s", socket),
+            String.format("--log-error=%s", new File(target, "errors.log")),
+            String.format("--general-log-file=%s", new File(target, "mysql.log")),
             String.format("--pid-file=%s", new File(target, "mysql.pid")),
             String.format("--port=%d", config.port())
         ).redirectErrorStream(true);
@@ -276,7 +274,9 @@ public final class Instances {
                 "[mysql]\n# no defaults...",
                 StandardCharsets.UTF_8
             );
-            if (Files.exists(Paths.get(dist.getAbsolutePath()).resolve("scripts/mysql_install_db"))) {
+            final Path installer = Paths.get(dist.getAbsolutePath())
+                .resolve("scripts/mysql_install_db");
+            if (Files.exists(installer)) {
                 new VerboseProcess(
                     this.builder(
                         dist,
@@ -296,7 +296,9 @@ public final class Instances {
                         "--initialize-insecure",
                         String.format("--user=%s", Instances.DEFAULT_USER),
                         String.format("--datadir=%s", dir),
-                        String.format("--basedir=%s", dist)
+                        String.format("--basedir=%s", dist),
+                        String.format("--log-error=%s", new File(target, "errors.log")),
+                        String.format("--general-log-file=%s", new File(target, "mysql.log"))
                     )
                 ).stdout();
             }
@@ -318,7 +320,7 @@ public final class Instances {
             if (socket.exists()) {
                 Logger.info(
                     this,
-                    "socket %s is available after %[ms]s of waiting",
+                    "Socket %s is available after %[ms]s of waiting",
                     socket, age
                 );
                 break;
@@ -326,7 +328,7 @@ public final class Instances {
             if (SocketHelper.isOpen(port)) {
                 Logger.info(
                     this,
-                    "port %s is available after %[ms]s of waiting",
+                    "Port %s is available after %[ms]s of waiting",
                     port, age
                 );
                 break;
@@ -341,7 +343,7 @@ public final class Instances {
             if (age > TimeUnit.MINUTES.toMillis((long) 5)) {
                 throw new IOException(
                     Logger.format(
-                        "socket %s is not available after %[ms]s of waiting",
+                        "Socket %s is not available after %[ms]s of waiting",
                         socket, age
                     )
                 );
@@ -374,6 +376,12 @@ public final class Instances {
                 Instances.DEFAULT_PASSWORD
             )
         ).stdout();
+        Logger.info(
+            this,
+            "Root password '%s' set for the '%s' user",
+            Instances.DEFAULT_PASSWORD,
+            Instances.DEFAULT_USER
+        );
         final Process process =
             this.builder(
                 dist,
@@ -409,9 +417,17 @@ public final class Instances {
                     Instances.DEFAULT_HOST
                 )
             );
+            writer.println("SHOW DATABASES;");
         }
         writer.close();
         new VerboseProcess(process).stdout();
+        Logger.info(
+            this,
+            "The '%s' user created in the '%s' database with the '%s' password",
+            config.user(),
+            config.dbname(),
+            config.password()
+        );
     }
 
     /**
@@ -424,7 +440,7 @@ public final class Instances {
     private ProcessBuilder builder(final File dist, final String name,
         final String... cmds) {
         String label = name;
-        final Collection<String> commands = new LinkedList<String>();
+        final Collection<String> commands = new LinkedList<>();
         final File exec = new File(dist, label);
         if (exec.exists()) {
             try {
@@ -443,7 +459,7 @@ public final class Instances {
         commands.addAll(Arrays.asList(cmds));
         Logger.info(this, "$ %s", StringUtils.join(commands, " "));
         return new ProcessBuilder()
-            .command(commands.toArray(new String[commands.size()]))
+            .command(commands.toArray(new String[0]))
             .directory(dist);
     }
 
