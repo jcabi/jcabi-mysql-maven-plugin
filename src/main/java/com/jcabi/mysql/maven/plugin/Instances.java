@@ -296,7 +296,9 @@ public final class Instances {
                         "--initialize-insecure",
                         String.format("--user=%s", Instances.DEFAULT_USER),
                         String.format("--datadir=%s", dir),
-                        String.format("--basedir=%s", dist)
+                        String.format("--basedir=%s", dist),
+                        String.format("--log-error=%s", new File(target, "errors.log")),
+                        String.format("--general-log-file=%s", new File(target, "mysql.log"))
                     )
                 ).stdout();
             }
