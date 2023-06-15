@@ -188,7 +188,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <plugin>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi-mysql-maven-plugin</artifactId>
-        <version>0.10.0</version>
+        <version>0.10.1</version>
         <executions>
           <execution>
             <goals>
@@ -197,8 +197,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             <configuration>
               <classifier>mysql.classifier</classifier>
               <mappings>
-                <mapping>linux-amd64-&gt;linux-x86_64</mapping>
-                <mapping>windows-x86_64-&gt;windows-x86</mapping>
+                <mapping>linux-amd64 linux-x86_64</mapping>
+                <mapping>windows-x86_64 windows-x86</mapping>
               </mappings>
             </configuration>
           </execution>
