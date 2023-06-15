@@ -199,6 +199,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
               <mappings>
                 <mapping>linux-amd64 linux-x86_64</mapping>
                 <mapping>windows-x86_64 windows-x86</mapping>
+                <mapping>windows-amd64 windows-x86</mapping>
               </mappings>
             </configuration>
           </execution>
