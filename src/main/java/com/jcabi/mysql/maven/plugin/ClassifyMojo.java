@@ -80,15 +80,16 @@ public final class ClassifyMojo extends AbstractMojo {
      * <p>This may be useful when your platform doesn't detect correctly (it may happen).
      * In this case you may either specify the classifier explicitly for the
      * maven-dependency-plugin, or use this mechanism of mappings. Each mapping
-     * must be formatted as "from->to", for example "i386->x86". When the platform
-     * is detected as "i386", it will be changed to "x86". You can specify
+     * must be formatted as "from to" (with a space inside),
+     * for example "linux-i386 linux-x86". When the platform
+     * is detected as "linux-i386", it will be changed to "linux-x86". You can specify
      * multiple mappings, for example:</p>
      *
      * <pre>
      * &lt;configuration&gt;
      *   &lt;mappings&gt;
-     *     &lt;mapping&gt;i386-&gt;x86&lt;/mapping&gt;
-     *     &lt;mapping&gt;amd64-&gt;x86_64&lt;/mapping&gt;
+     *     &lt;mapping&gt;linux-i386 linux-x86&lt;/mapping&gt;
+     *     &lt;mapping&gt;linux-amd64 linux-x86_64&lt;/mapping&gt;
      *   &lt;/mappings&gt;
      * &lt;/configuration&gt;
      * </pre>
@@ -98,7 +99,7 @@ public final class ClassifyMojo extends AbstractMojo {
      * <pre>
      * &lt;configuration&gt;
      *   &lt;mappings&gt;
-     *     &lt;mapping&gt;i386-&gt;x86&lt;/mapping&gt;
+     *     &lt;mapping&gt;linux-i386 linux-x86&lt;/mapping&gt;
      *   &lt;/mappings&gt;
      * &lt;/configuration&gt;
      * </pre>
