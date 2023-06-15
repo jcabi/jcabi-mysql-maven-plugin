@@ -115,6 +115,50 @@ public final class ClassifyMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoFailureException {
+        final String existing = this.project.getProperties()
+            .getProperty(this.classifier);
+        if (existing == null) {
+            final String arch = this.arch();
+            this.project.getProperties().setProperty(this.classifier, arch);
+            Logger.info(this, "${%s} set to \"%s\"", this.classifier, arch);
+        } else if (existing.equals(this.arch())) {
+            Logger.info(
+                this, "${%s} already set to \"%s\"",
+                this.classifier, this.arch()
+            );
+        } else {
+            throw new MojoFailureException(
+                String.format(
+                    // @checkstyle LineLength (1 line)
+                    "Maven property ${%s} already set to \"%s\", can't change to \"%s\"",
+                    this.classifier, existing, this.arch()
+                )
+            );
+        }
+    }
+
+    /**
+     * Set project.
+     * @param prj Project to set
+     */
+    public void setProject(final MavenProject prj) {
+        this.project = prj;
+    }
+
+    /**
+     * Set classifier.
+     * @param name Name of property
+     */
+    public void setClassifier(final String name) {
+        this.classifier = name;
+    }
+
+    /**
+     * Calculate value.
+     * @return Value to set
+     * @throws MojoFailureException If fails
+     */
+    private String arch() throws MojoFailureException {
         if (this.mappings == null) {
             this.mappings = new LinkedList<>();
             this.mappings.add("linux-i386 linux-x86_64");
@@ -142,41 +186,7 @@ public final class ClassifyMojo extends AbstractMojo {
                 );
             }
         }
-        final String existing = this.project.getProperties()
-            .getProperty(this.classifier);
-        if (existing == null) {
-            this.project.getProperties().setProperty(this.classifier, value);
-            Logger.info(this, "${%s} set to \"%s\"", this.classifier, value);
-        } else if (existing.equals(value)) {
-            Logger.info(
-                this, "${%s} already set to \"%s\"",
-                this.classifier, value
-            );
-        } else {
-            throw new MojoFailureException(
-                String.format(
-                    // @checkstyle LineLength (1 line)
-                    "Maven property ${%s} already set to \"%s\", can't change to \"%s\"",
-                    this.classifier, existing, value
-                )
-            );
-        }
-    }
-
-    /**
-     * Set project.
-     * @param prj Project to set
-     */
-    public void setProject(final MavenProject prj) {
-        this.project = prj;
-    }
-
-    /**
-     * Set classifier.
-     * @param name Name of property
-     */
-    public void setClassifier(final String name) {
-        this.classifier = name;
+        return value;
     }
 
 }
