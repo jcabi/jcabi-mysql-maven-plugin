@@ -67,12 +67,44 @@ public final class ClassifyMojo extends AbstractMojo {
 
     /**
      * Classifier to set.
+     *
+     * <p>This is the name of the Maven property to set, for example
+     * "mysql.classifier".</p>
      */
     @Parameter(defaultValue = "mysql.classifier", required = true)
     private transient String classifier;
 
     /**
      * Classification mappings.
+     *
+     * <p>This may be useful when your platform doesn't detect correctly (it may happen).
+     * In this case you may either specify the classifier explicitly for the
+     * maven-dependency-plugin, or use this mechanism of mappings. Each mapping
+     * must be formatted as "from->to", for example "i386->x86". When the platform
+     * is detected as "i386", it will be changed to "x86". You can specify
+     * multiple mappings, for example:</p>
+     *
+     * <pre>
+     * &lt;configuration&gt;
+     *   &lt;mappings&gt;
+     *     &lt;mapping&gt;i386-&gt;x86&lt;/mapping&gt;
+     *     &lt;mapping&gt;amd64-&gt;x86_64&lt;/mapping&gt;
+     *   &lt;/mappings&gt;
+     * &lt;/configuration&gt;
+     * </pre>
+     *
+     * <p>By default, the following mapping is used:
+     *
+     * <pre>
+     * &lt;configuration&gt;
+     *   &lt;mappings&gt;
+     *     &lt;mapping&gt;i386-&gt;x86&lt;/mapping&gt;
+     *   &lt;/mappings&gt;
+     * &lt;/configuration&gt;
+     * </pre>
+     *
+     * <p>It means that if your platform is detected as "i386", it will be
+     * changed to "x86".
      *
      * @since 0.9.0
      * @checkstyle MemberNameCheck (5 lines)
@@ -85,8 +117,7 @@ public final class ClassifyMojo extends AbstractMojo {
     public void execute() throws MojoFailureException {
         if (this.mappings == null) {
             this.mappings = new LinkedList<>();
-            this.mappings.add("amd64->aarch64");
-            this.mappings.add("i386->x86_64");
+            this.mappings.add("i386->x86");
         }
         String arch = System.getProperty("os.arch").toLowerCase(Locale.ENGLISH);
         for (final String mapping : this.mappings) {
@@ -101,7 +132,10 @@ public final class ClassifyMojo extends AbstractMojo {
             }
             if (arch.equals(pair[0])) {
                 arch = pair[1];
-                break;
+                Logger.info(
+                    this, "Architecture \"%s\" changed to \"%s\"",
+                    pair[0], pair[1]
+                );
             }
         }
         final String[] words = System.getProperty("os.name").split(" ");
