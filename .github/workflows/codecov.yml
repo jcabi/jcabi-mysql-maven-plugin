@@ -19,7 +19,7 @@ jobs:
           key: maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             maven-
-      - run: mvn install -Pjacoco -Dmysql.classifier=linux-x86_64
+      - run: mvn install -Pjacoco
       - uses: codecov/codecov-action@v3
         with:
           file: ./target/site/jacoco/jacoco.xml
