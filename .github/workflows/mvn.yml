@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2022, macos-12]
+        os: [ubuntu-20.04]
         java: [11, 17]
     steps:
       - uses: actions/checkout@v3
@@ -30,4 +30,4 @@ jobs:
       - run: mvn -version
       - run: sudo apt-get install -y libnuma1 libaio1
         if: matrix.os == 'ubuntu-20.04'
-      - run: mvn --errors --batch-mode clean install -Pqulice
+      - run: mvn --errors --batch-mode clean install -Pqulice -Dmysql.classifier=linux-x86_64

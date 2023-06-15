@@ -197,8 +197,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             <configuration>
               <classifier>mysql.classifier</classifier>
               <mappings>
-                <mapping>i386-&gt;x86_64</mapping>
-                <mapping>amd64-&gt;x86_64</mapping>
+                <mapping>linux-amd64 linux-x86_64</mapping>
+                <mapping>windows-x86_64 windows-x86</mapping>
               </mappings>
             </configuration>
           </execution>

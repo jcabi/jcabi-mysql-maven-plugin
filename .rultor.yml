@@ -16,5 +16,5 @@ release:
     [[ "${tag}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit -1
     mvn versions:set "-DnewVersion=${tag}" --batch-mode
     git commit -am "${tag}"
-    mvn clean deploy -Pqulice -Psonatype -Pjcabi --batch-mode --errors --settings ../settings.xml
-    mvn clean site-deploy -Psite --errors --settings ../settings.xml --batch-mode
+    mvn clean deploy -Pqulice -Psonatype -Pjcabi --batch-mode --errors --settings ../settings.xml -Dmysql.classifier=linux-x86_64
+    mvn clean site-deploy -Psite --errors --settings ../settings.xml --batch-mode -Dmysql.classifier=linux-x86_64

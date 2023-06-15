@@ -117,31 +117,31 @@ public final class ClassifyMojo extends AbstractMojo {
     public void execute() throws MojoFailureException {
         if (this.mappings == null) {
             this.mappings = new LinkedList<>();
-            this.mappings.add("i386->x86");
+            this.mappings.add("linux-i386 linux-x86_64");
         }
-        String arch = System.getProperty("os.arch").toLowerCase(Locale.ENGLISH);
+        final String arch = System.getProperty("os.arch").toLowerCase(Locale.ENGLISH);
+        final String[] words = System.getProperty("os.name").split(" ");
+        String value = String.format(
+            "%s-%s", words[0].toLowerCase(Locale.ENGLISH), arch
+        );
         for (final String mapping : this.mappings) {
-            final String[] pair = mapping.split("->");
+            final String[] pair = mapping.split(" ");
             if (pair.length != 2) {
                 throw new MojoFailureException(
                     String.format(
-                        "Invalid mapping \"%s\" (should be \"from->to\")",
+                        "Invalid mapping \"%s\" (should be \"from to\")",
                         mapping
                     )
                 );
             }
-            if (arch.equals(pair[0])) {
-                arch = pair[1];
+            if (value.equals(pair[0])) {
+                value = pair[1];
                 Logger.info(
                     this, "Architecture \"%s\" changed to \"%s\"",
                     pair[0], pair[1]
                 );
             }
         }
-        final String[] words = System.getProperty("os.name").split(" ");
-        final String value = String.format(
-            "%s-%s", words[0].toLowerCase(Locale.ENGLISH), arch
-        );
         final String existing = this.project.getProperties()
             .getProperty(this.classifier);
         if (existing == null) {
