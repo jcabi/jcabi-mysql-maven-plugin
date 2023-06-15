@@ -16,32 +16,12 @@
                     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
                 })();
             </script>
-                                                                                                                
-<link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
-                                                                                                                
-<link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
-                                            <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-        <script>
-            $(document).ready(
-                function() {
-                    $(".menu-button").click(
-                        function() {
-                            if ($("#here-goes-menu").attr("class") == "menu-off") {
-                                $("#menu").clone().attr("class", "mobile-menu").appendTo("#here-goes-menu");
-                                $("#here-goes-menu").attr("class", "menu-on");
-                            } else {
-                                $(".mobile-menu").hide();
-                                $("#here-goes-menu").attr("class", "menu-off");
-                            }
-                        }
-                    );
-                }
-            );
-        </script>
+                                            <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script src="./js/jcabi.js"></script>
     </head>
     <body>
-                <section class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
-            <nav class="menu-section" role="navigation">
+                <div class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
+            <nav class="menu-section">
                 <ul class="menu" id="menu">
                                                                                     <li>
                             <span>Overview</span>
@@ -113,7 +93,7 @@
                                                                                                     <li >
                             <span>                        <a href="project-info.html" title="Project Information">Project Information</a>
         </span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
                                                                                                                         <li >
                             <span>                        <a href="project-reports.html" title="Project Reports">Project Reports</a>
         </span>
@@ -123,13 +103,13 @@
                                     </ul>
             </nav>
             <div class="right-side">
-                <main role="main">
+                <main>
                     <div class="content">
                         <header>
                             <div class="logo">
-                                <a href="../"
+                                <a href="http://www.jcabi.com/"
                                     title=" logo ">
-                                    <img src="http://img.jcabi.com/logo-square.svg"
+                                    <img src="../logo-square.svg"
                                         alt="jcabi"
                                                                                     width="64"
                                                                                                                             height="64"
@@ -137,20 +117,15 @@
                                     />
                                 </a>
                             </div>
-                            <div class="teamed">
-                                <a href="http://www.teamed.io">
-                                    <img src="http://img.teamed.io/btn.svg" alt="teamed.io logo"/>
-                                </a>
-                            </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">0.8.2</strong>
+                                    <strong itemprop="version">0.10.1</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-12-28T08:18:25Z">
+                                    <time itemprop="datePublished" datetime="2023-06-15T05:21:31Z">
                                         
-                                        28-Dec-2014
+                                        15-Jun-2023
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -158,9 +133,9 @@
                         </header>
                         <div id="here-goes-menu" class="menu-off"></div>
                                                                             <a href="https://github.com/jcabi/jcabi-mysql-maven-plugin">
-                                <img src="http://img.jcabi.com/fork-me.svg" class="fork-me"/>
+                                <img src="https://www.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
-                                                <article role="article" itemprop="articleBody">
+                                                <article itemprop="articleBody">
                             <p>Reuse existing database</p>
 <p>This feature is primarily intended for development. A developer debugging an issue might want to keep reusing an database instance either for performance reasons or to save the time of recreating the test conditions.</p>
 <p>When adding the optional configuration setting:</p>
@@ -172,12 +147,12 @@
 &lt;/configuration&gt;</pre></div>
 <p>The plugin will behave as following:</p>
 <ul>
-<li>If there is already a folder structure under the folder provided by the configuration setting <tt>data</tt>, the plugin will try to reuse it.</li>
-<li>If no folder exists at the <tt>data</tt> location the plugin will try to create a new database regardless of the <tt>clearexistingdata</tt> value.</li>
-<li>Calling Maven with <tt>clean</tt> will always delete the existing database. This will cause the plugin to create a new database regardless.</li></ul>
-<p>Run <tt>mvn clean install</tt> to create a new database and <tt>mvn install</tt> to reuse it.</p>
-<p>Please note that the default value of the setting is <tt>true</tt>, in which case the plugin will always delete and recreate the database.</p>
-<p>The plugin also exports a maven variable <tt>jcabi.reused.database</tt> indicating if an existing database could have been reused or if a new one was created. This can be useful to control if following tasks should be skipped.</p>
+<li>If there is already a folder structure under the folder provided by the configuration setting <code>data</code>, the plugin will try to reuse it.</li>
+<li>If no folder exists at the <code>data</code> location the plugin will try to create a new database regardless of the <code>clearexistingdata</code> value.</li>
+<li>Calling Maven with <code>clean</code> will always delete the existing database. This will cause the plugin to create a new database regardless.</li></ul>
+<p>Run <code>mvn clean install</code> to create a new database and <code>mvn install</code> to reuse it.</p>
+<p>Please note that the default value of the setting is <code>true</code>, in which case the plugin will always delete and recreate the database.</p>
+<p>The plugin also exports a maven variable <code>jcabi.reused.database</code> indicating if an existing database could have been reused or if a new one was created. This can be useful to control if following tasks should be skipped.</p>
 <p>Example, default data should only be loaded if this is a new database:</p>
 <div class="source">
 <pre>  &lt;plugin&gt;
@@ -210,8 +185,8 @@
      &lt;version&gt;1.5&lt;/version&gt;
     &lt;dependencies&gt;
       &lt;dependency&gt;
-        &lt;groupId&gt;mysql&lt;/groupId&gt;
-        &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+        &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+        &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
         &lt;version&gt;5.1.26&lt;/version&gt;
       &lt;/dependency&gt;
     &lt;/dependencies&gt;
@@ -240,19 +215,19 @@
       &lt;/execution&gt;
     &lt;/executions&gt;
   &lt;/plugin&gt;</pre></div>
-<p>Note that it is not necessart to set the <tt>jcabi.reused.database</tt> property under the <tt>properties</tt> section. Doing so would overwrite the value the plugin sets, as the <tt>properties</tt> will be set after the plugin was executed.</p>
+<p>Note that it is not necessart to set the <code>jcabi.reused.database</code> property under the <code>properties</code> section. Doing so would overwrite the value the plugin sets, as the <code>properties</code> will be set after the plugin was executed.</p>
                         </article>
                     </div>
                 </main>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2014
+                                                                            2012-2023
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
                     <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
                 </footer>
             </div>
-        </section>
+        </div>
     </body>
 </html>

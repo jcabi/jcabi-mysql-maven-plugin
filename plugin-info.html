@@ -15,32 +15,12 @@
                     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
                 })();
             </script>
-                                                                                                                
-<link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
-                                                                                                                
-<link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
-                                            <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-        <script>
-            $(document).ready(
-                function() {
-                    $(".menu-button").click(
-                        function() {
-                            if ($("#here-goes-menu").attr("class") == "menu-off") {
-                                $("#menu").clone().attr("class", "mobile-menu").appendTo("#here-goes-menu");
-                                $("#here-goes-menu").attr("class", "menu-on");
-                            } else {
-                                $(".mobile-menu").hide();
-                                $("#here-goes-menu").attr("class", "menu-off");
-                            }
-                        }
-                    );
-                }
-            );
-        </script>
+                                            <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script src="./js/jcabi.js"></script>
     </head>
     <body>
-                <section class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
-            <nav class="menu-section" role="navigation">
+                <div class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
+            <nav class="menu-section">
                 <ul class="menu" id="menu">
                                                                                     <li>
                             <span>Overview</span>
@@ -112,19 +92,19 @@
                                                                                                     <li >
                             <span>                        <a href="project-info.html" title="Project Information">Project Information</a>
         </span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
                                                                                                                         <li >
                             <span>                        <a href="project-reports.html" title="Project Reports">Project Reports</a>
         </span>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <ul>
                                                                                                     <li >
-                            <span>                        <a href="xref-test/index.html" title="Test Source Xref">Test Source Xref</a>
+                            <span>                        <a href="xref/index.html" title="Source Xref">Source Xref</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="xref/index.html" title="Source Xref">Source Xref</a>
+                            <span>                        <a href="xref-test/index.html" title="Test Source Xref">Test Source Xref</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -148,13 +128,13 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-0.8.2/index.html" title="JavaDocs">JavaDocs</a>
+                            <span>                        <a href="apidocs-0.10.1/index.html" title="Javadoc">Javadoc</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="cobertura/index.html" title="Cobertura Test Coverage">Cobertura Test Coverage</a>
+                            <span>                        <a href="jacoco-aggregate/index.html" title="JaCoCo Aggregate">JaCoCo Aggregate</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -172,13 +152,13 @@
                                     </ul>
             </nav>
             <div class="right-side">
-                <main role="main">
+                <main>
                     <div class="content">
                         <header>
                             <div class="logo">
-                                <a href="../"
+                                <a href="http://www.jcabi.com/"
                                     title=" logo ">
-                                    <img src="http://img.jcabi.com/logo-square.svg"
+                                    <img src="../logo-square.svg"
                                         alt="jcabi"
                                                                                     width="64"
                                                                                                                             height="64"
@@ -186,20 +166,15 @@
                                     />
                                 </a>
                             </div>
-                            <div class="teamed">
-                                <a href="http://www.teamed.io">
-                                    <img src="http://img.teamed.io/btn.svg" alt="teamed.io logo"/>
-                                </a>
-                            </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">0.8.2</strong>
+                                    <strong itemprop="version">0.10.1</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-12-28T08:19:50Z">
+                                    <time itemprop="datePublished" datetime="2023-06-15T05:21:55Z">
                                         
-                                        28-Dec-2014
+                                        15-Jun-2023
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -207,10 +182,10 @@
                         </header>
                         <div id="here-goes-menu" class="menu-off"></div>
                                                                             <a href="https://github.com/jcabi/jcabi-mysql-maven-plugin">
-                                <img src="http://img.jcabi.com/fork-me.svg" class="fork-me"/>
+                                <img src="https://www.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
-                                                <article role="article" itemprop="articleBody">
-                            <div class="section">
+                                                <article itemprop="articleBody">
+                            <section>
 <h2><a name="Plugin_Documentation"></a>Plugin Documentation</h2><a name="Plugin_Documentation"></a>
 <p>Goals available for this plugin:</p>
 <table border="0" class="bodyTable">
@@ -218,34 +193,32 @@
 <th>Goal</th>
 <th>Description</th></tr>
 <tr class="b">
-<td><a href="classify-mojo.html">jcabi-mysql:classify</a></td>
+<td align="left"><a href="./classify-mojo.html">jcabi-mysql:classify</a></td>
 <td>Classify current platform.</td></tr>
 <tr class="a">
-<td><a href="run-mojo.html">jcabi-mysql:run</a></td>
+<td align="left"><a href="./run-mojo.html">jcabi-mysql:run</a></td>
 <td>Run MySQL in background and don't stop it when Maven is finished.</td></tr>
 <tr class="b">
-<td><a href="start-mojo.html">jcabi-mysql:start</a></td>
+<td align="left"><a href="./start-mojo.html">jcabi-mysql:start</a></td>
 <td>Starts MySQL.</td></tr>
 <tr class="a">
-<td><a href="stop-mojo.html">jcabi-mysql:stop</a></td>
-<td>Stops MySQL.</td></tr></table>
-<div class="section">
+<td align="left"><a href="./stop-mojo.html">jcabi-mysql:stop</a></td>
+<td>Stops MySQL.</td></tr></table><section>
 <h3><a name="System_Requirements"></a>System Requirements</h3><a name="System_Requirements"></a>
 <p>The following specifies the minimum requirements to run this Maven plugin:</p>
 <table border="0" class="bodyTable">
 <tr class="a">
-<td>Maven</td>
+<td align="left">Maven</td>
 <td>2.0</td></tr>
 <tr class="b">
-<td>JDK</td>
-<td>1.6</td></tr>
+<td align="left">JDK</td>
+<td>1.8</td></tr>
 <tr class="a">
-<td>Memory</td>
+<td align="left">Memory</td>
 <td>No minimum requirement.</td></tr>
 <tr class="b">
-<td>Disk Space</td>
-<td>No minimum requirement.</td></tr></table></div>
-<div class="section">
+<td align="left">Disk Space</td>
+<td>No minimum requirement.</td></tr></table></section><section>
 <h3><a name="Usage"></a>Usage</h3><a name="Usage"></a>
 <p>You should specify the version in your project's plugin configuration:</p>
 <div class="source">
@@ -258,7 +231,7 @@
         &lt;plugin&gt;
           &lt;groupId&gt;com.jcabi&lt;/groupId&gt;
           &lt;artifactId&gt;jcabi-mysql-maven-plugin&lt;/artifactId&gt;
-          &lt;version&gt;0.8.2&lt;/version&gt;
+          &lt;version&gt;0.10.1&lt;/version&gt;
         &lt;/plugin&gt;
         ...
       &lt;/plugins&gt;
@@ -268,7 +241,7 @@
       &lt;plugin&gt;
         &lt;groupId&gt;com.jcabi&lt;/groupId&gt;
         &lt;artifactId&gt;jcabi-mysql-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;0.8.2&lt;/version&gt;
+        &lt;version&gt;0.10.1&lt;/version&gt;
       &lt;/plugin&gt;
       ...
     &lt;/plugins&gt;
@@ -276,19 +249,19 @@
   ...
 &lt;/project&gt;
 </pre></div>
-<p>For more information, see <a class="externalLink" href="http://maven.apache.org/guides/mini/guide-configuring-plugins.html">&quot;Guide to Configuring Plug-ins&quot;</a></p></div></div>
+<p>For more information, see <a class="externalLink" href="http://maven.apache.org/guides/mini/guide-configuring-plugins.html">&quot;Guide to Configuring Plug-ins&quot;</a></p></section></section>
                         </article>
                     </div>
                 </main>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2014
+                                                                            2012-2023
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
                     <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
                 </footer>
             </div>
-        </section>
+        </div>
     </body>
 </html>

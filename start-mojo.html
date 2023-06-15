@@ -15,32 +15,12 @@
                     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
                 })();
             </script>
-                                                                                                                
-<link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
-                                                                                                                
-<link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
-                                            <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-        <script>
-            $(document).ready(
-                function() {
-                    $(".menu-button").click(
-                        function() {
-                            if ($("#here-goes-menu").attr("class") == "menu-off") {
-                                $("#menu").clone().attr("class", "mobile-menu").appendTo("#here-goes-menu");
-                                $("#here-goes-menu").attr("class", "menu-on");
-                            } else {
-                                $(".mobile-menu").hide();
-                                $("#here-goes-menu").attr("class", "menu-off");
-                            }
-                        }
-                    );
-                }
-            );
-        </script>
+                                            <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script src="./js/jcabi.js"></script>
     </head>
     <body>
-                <section class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
-            <nav class="menu-section" role="navigation">
+                <div class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
+            <nav class="menu-section">
                 <ul class="menu" id="menu">
                                                                                     <li>
                             <span>Overview</span>
@@ -112,7 +92,7 @@
                                                                                                     <li >
                             <span>                        <a href="project-info.html" title="Project Information">Project Information</a>
         </span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
                                                                                                                         <li >
                             <span>                        <a href="project-reports.html" title="Project Reports">Project Reports</a>
         </span>
@@ -122,13 +102,13 @@
                                     </ul>
             </nav>
             <div class="right-side">
-                <main role="main">
+                <main>
                     <div class="content">
                         <header>
                             <div class="logo">
-                                <a href="../"
+                                <a href="http://www.jcabi.com/"
                                     title=" logo ">
-                                    <img src="http://img.jcabi.com/logo-square.svg"
+                                    <img src="../logo-square.svg"
                                         alt="jcabi"
                                                                                     width="64"
                                                                                                                             height="64"
@@ -136,20 +116,15 @@
                                     />
                                 </a>
                             </div>
-                            <div class="teamed">
-                                <a href="http://www.teamed.io">
-                                    <img src="http://img.teamed.io/btn.svg" alt="teamed.io logo"/>
-                                </a>
-                            </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">0.8.2</strong>
+                                    <strong itemprop="version">0.10.1</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-12-28T08:19:50Z">
+                                    <time itemprop="datePublished" datetime="2023-06-15T05:21:56Z">
                                         
-                                        28-Dec-2014
+                                        15-Jun-2023
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -157,17 +132,17 @@
                         </header>
                         <div id="here-goes-menu" class="menu-off"></div>
                                                                             <a href="https://github.com/jcabi/jcabi-mysql-maven-plugin">
-                                <img src="http://img.jcabi.com/fork-me.svg" class="fork-me"/>
+                                <img src="https://www.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
-                                                <article role="article" itemprop="articleBody">
+                                                <article itemprop="articleBody">
                             
   
-    <div class="section">
+    <section>
 <h2><a name="jcabi-mysql:start"></a>jcabi-mysql:start</h2>
       
 <p><b>Full name</b>:</p>
       
-<p>com.jcabi:jcabi-mysql-maven-plugin:0.8.2:start</p>
+<p>com.jcabi:jcabi-mysql-maven-plugin:0.10.1:start</p>
       
 <p><b>Description</b>:</p>
       
@@ -181,12 +156,11 @@
         
 <li>The goal is thread-safe and supports parallel builds.</li>
         
-<li>Since version: <tt>0.1</tt>.</li>
+<li>Since version: <code>0.1</code>.</li>
         
-<li>Binds by default to the <a class="externalLink" href="http://maven.apache.org/ref/current/maven-core/lifecycles.html">lifecycle phase</a>: <tt>pre-integration-test</tt>.</li>
+<li>Binds by default to the <a class="externalLink" href="http://maven.apache.org/ref/current/maven-core/lifecycles.html">lifecycle phase</a>: <code>pre-integration-test</code>.</li>
       </ul>
-      
-<div class="section">
+      <section>
 <h3><a name="Required_Parameters"></a>Required Parameters</h3>
         
 <table class="bodyTable" border="0">
@@ -204,29 +178,28 @@
           
 <tr class="b">
             
-<td><b><a href="#data">data</a></b></td>
+<td align="left"><code><a href="#data">&lt;data&gt;</a></code></td>
             
-<td><tt>File</tt></td>
+<td><code>File</code></td>
             
-<td><tt>0.1</tt></td>
+<td><code>0.1</code></td>
             
-<td>Location of MySQL data.<br /><b>Default value is</b>: <tt>${project.build.directory}/mysql-data</tt>.<br /></td>
+<td>Location of MySQL data.<br /><b>Default value is</b>: <code>${project.build.directory}/mysql-data</code>.<br /></td>
           </tr>
           
 <tr class="a">
             
-<td><b><a href="#dist">dist</a></b></td>
+<td align="left"><code><a href="#dist">&lt;dist&gt;</a></code></td>
             
-<td><tt>File</tt></td>
+<td><code>File</code></td>
             
-<td><tt>0.1</tt></td>
+<td><code>0.1</code></td>
             
-<td>Location of MySQL distribution.<br /><b>Default value is</b>: <tt>${project.build.directory}/mysql-dist</tt>.<br /></td>
+<td>Location of MySQL distribution.<br /><b>Default value is</b>: <code>${project.build.directory}/mysql-dist</code>.<br /></td>
           </tr>
         </table>
-      </div>
-      
-<div class="section">
+      </section>
+      <section>
 <h3><a name="Optional_Parameters"></a>Optional Parameters</h3>
         
 <table class="bodyTable" border="0">
@@ -244,77 +217,77 @@
           
 <tr class="b">
             
-<td><b><a href="#clearexistingdata">clearexistingdata</a></b></td>
+<td align="left"><code><a href="#dbname">&lt;dbname&gt;</a></code></td>
             
-<td><tt>boolean</tt></td>
+<td><code>String</code></td>
             
-<td><tt>0.1</tt></td>
+<td><code>0.1</code></td>
             
-<td>Shall we always delete an existing database or reuse it?<br /><b>Default value is</b>: <tt>true</tt>.<br /></td>
+<td>Database name to use.<br /><b>Default value is</b>: <code>root</code>.<br /></td>
           </tr>
           
 <tr class="a">
             
-<td><b><a href="#dbname">dbname</a></b></td>
+<td align="left"><code><a href="#erase">&lt;erase&gt;</a></code></td>
             
-<td><tt>String</tt></td>
+<td><code>boolean</code></td>
             
-<td><tt>0.1</tt></td>
+<td><code>0.1</code></td>
             
-<td>Database name to use.<br /><b>Default value is</b>: <tt>root</tt>.<br /></td>
+<td>Shall we always delete an existing database or reuse it?<br /><b>Default value is</b>: <code>true</code>.<br /></td>
           </tr>
           
 <tr class="b">
             
-<td><b><a href="#options">options</a></b></td>
+<td align="left"><code><a href="#options">&lt;options&gt;</a></code></td>
             
-<td><tt>List</tt></td>
+<td><code>List</code></td>
             
-<td><tt>0.1</tt></td>
+<td><code>0.1</code></td>
             
 <td>Configuration options.<br /></td>
           </tr>
           
 <tr class="a">
             
-<td><b><a href="#password">password</a></b></td>
+<td align="left"><code><a href="#password">&lt;password&gt;</a></code></td>
             
-<td><tt>String</tt></td>
+<td><code>String</code></td>
             
-<td><tt>0.1</tt></td>
+<td><code>0.1</code></td>
             
-<td>Password to use.<br /><b>Default value is</b>: <tt>root</tt>.<br /></td>
+<td>Password to use.<br /><b>Default value is</b>: <code>root</code>.<br /></td>
           </tr>
           
 <tr class="b">
             
-<td><b><a href="#port">port</a></b></td>
+<td align="left"><code><a href="#port">&lt;port&gt;</a></code></td>
             
-<td><tt>int</tt></td>
+<td><code>int</code></td>
             
-<td><tt>0.1</tt></td>
+<td><code>0.1</code></td>
             
-<td>Port to use.<br /><b>Default value is</b>: <tt>3306</tt>.<br /></td>
+<td>Port to use.<br /><b>Default value is</b>: <code>3306</code>.<br /></td>
           </tr>
           
 <tr class="a">
             
-<td><b><a href="#skip">skip</a></b></td>
+<td align="left"><code><a href="#skip">&lt;skip&gt;</a></code></td>
             
-<td><tt>boolean</tt></td>
+<td><code>boolean</code></td>
             
-<td><tt>0.1</tt></td>
+<td><code>0.1</code></td>
             
-<td>Shall we skip execution?<br /><b>Default value is</b>: <tt>false</tt>.<br /></td>
+<td>Shall we skip execution?<br /><b>Default value is</b>: <code>false</code>.<br /></td>
           </tr>
           
 <tr class="b">
             
-<td><b><a href="#socket">socket</a></b></td>
+<td align="left"><code><a href="#socket">&lt;socket&gt;</a></code></td>
             
-<td><tt>File</tt></td>
+<td><code>File</code></td>
             
-<td><tt>0.1</tt></td>
+<td><code>0.1</code></td>
             
 <td>Override location of MySQL socket file. Defaults to (data
 dir)/mysql.socket.<br /></td>
@@ -322,159 +295,158 @@ dir)/mysql.socket.<br /></td>
           
 <tr class="a">
             
-<td><b><a href="#user">user</a></b></td>
+<td align="left"><code><a href="#user">&lt;user&gt;</a></code></td>
             
-<td><tt>String</tt></td>
+<td><code>String</code></td>
             
-<td><tt>0.1</tt></td>
+<td><code>0.1</code></td>
             
-<td>Username to use.<br /><b>Default value is</b>: <tt>root</tt>.<br /></td>
+<td>Username to use.<br /><b>Default value is</b>: <code>root</code>.<br /></td>
           </tr>
         </table>
-      </div>
-      
-<div class="section">
+      </section>
+      <section>
 <h3><a name="Parameter_Details"></a>Parameter Details</h3>
-        
-<p><b><a name="clearexistingdata">clearexistingdata</a>:</b></p>
-        
-<div>Shall we always delete an existing database or reuse it?</div>
-        
-<ul>
-          
-<li><b>Type</b>: <tt>boolean</tt></li>
-          
-<li><b>Since</b>: <tt>0.1</tt></li>
-          
-<li><b>Required</b>: <tt>No</tt></li>
-          
-<li><b>Default</b>: <tt>true</tt></li>
-        </ul><hr />
-<p><b><a name="data">data</a>:</b></p>
+        <section>
+<h4><a name="a.3Cdata.3E"></a><b><a name="data">&lt;data&gt;</a></b></h4>
         
 <div>Location of MySQL data.</div>
         
 <ul>
           
-<li><b>Type</b>: <tt>java.io.File</tt></li>
+<li><b>Type</b>: <code>java.io.File</code></li>
           
-<li><b>Since</b>: <tt>0.1</tt></li>
+<li><b>Since</b>: <code>0.1</code></li>
           
-<li><b>Required</b>: <tt>Yes</tt></li>
+<li><b>Required</b>: <code>Yes</code></li>
           
-<li><b>Default</b>: <tt>${project.build.directory}/mysql-data</tt></li>
-        </ul><hr />
-<p><b><a name="dbname">dbname</a>:</b></p>
+<li><b>Default</b>: <code>${project.build.directory}/mysql-data</code></li>
+        </ul><hr /></section><section>
+<h4><a name="a.3Cdbname.3E"></a><b><a name="dbname">&lt;dbname&gt;</a></b></h4>
         
 <div>Database name to use.</div>
         
 <ul>
           
-<li><b>Type</b>: <tt>java.lang.String</tt></li>
+<li><b>Type</b>: <code>java.lang.String</code></li>
           
-<li><b>Since</b>: <tt>0.1</tt></li>
+<li><b>Since</b>: <code>0.1</code></li>
           
-<li><b>Required</b>: <tt>No</tt></li>
+<li><b>Required</b>: <code>No</code></li>
           
-<li><b>Default</b>: <tt>root</tt></li>
-        </ul><hr />
-<p><b><a name="dist">dist</a>:</b></p>
+<li><b>Default</b>: <code>root</code></li>
+        </ul><hr /></section><section>
+<h4><a name="a.3Cdist.3E"></a><b><a name="dist">&lt;dist&gt;</a></b></h4>
         
 <div>Location of MySQL distribution.</div>
         
 <ul>
           
-<li><b>Type</b>: <tt>java.io.File</tt></li>
+<li><b>Type</b>: <code>java.io.File</code></li>
           
-<li><b>Since</b>: <tt>0.1</tt></li>
+<li><b>Since</b>: <code>0.1</code></li>
           
-<li><b>Required</b>: <tt>Yes</tt></li>
+<li><b>Required</b>: <code>Yes</code></li>
           
-<li><b>Default</b>: <tt>${project.build.directory}/mysql-dist</tt></li>
-        </ul><hr />
-<p><b><a name="options">options</a>:</b></p>
+<li><b>Default</b>: <code>${project.build.directory}/mysql-dist</code></li>
+        </ul><hr /></section><section>
+<h4><a name="a.3Cerase.3E"></a><b><a name="erase">&lt;erase&gt;</a></b></h4>
+        
+<div>Shall we always delete an existing database or reuse it?</div>
+        
+<ul>
+          
+<li><b>Type</b>: <code>boolean</code></li>
+          
+<li><b>Since</b>: <code>0.1</code></li>
+          
+<li><b>Required</b>: <code>No</code></li>
+          
+<li><b>Default</b>: <code>true</code></li>
+        </ul><hr /></section><section>
+<h4><a name="a.3Coptions.3E"></a><b><a name="options">&lt;options&gt;</a></b></h4>
         
 <div>Configuration options.</div>
         
 <ul>
           
-<li><b>Type</b>: <tt>java.util.List</tt></li>
+<li><b>Type</b>: <code>java.util.List</code></li>
           
-<li><b>Since</b>: <tt>0.1</tt></li>
+<li><b>Since</b>: <code>0.1</code></li>
           
-<li><b>Required</b>: <tt>No</tt></li>
-        </ul><hr />
-<p><b><a name="password">password</a>:</b></p>
+<li><b>Required</b>: <code>No</code></li>
+        </ul><hr /></section><section>
+<h4><a name="a.3Cpassword.3E"></a><b><a name="password">&lt;password&gt;</a></b></h4>
         
 <div>Password to use.</div>
         
 <ul>
           
-<li><b>Type</b>: <tt>java.lang.String</tt></li>
+<li><b>Type</b>: <code>java.lang.String</code></li>
           
-<li><b>Since</b>: <tt>0.1</tt></li>
+<li><b>Since</b>: <code>0.1</code></li>
           
-<li><b>Required</b>: <tt>No</tt></li>
+<li><b>Required</b>: <code>No</code></li>
           
-<li><b>Default</b>: <tt>root</tt></li>
-        </ul><hr />
-<p><b><a name="port">port</a>:</b></p>
+<li><b>Default</b>: <code>root</code></li>
+        </ul><hr /></section><section>
+<h4><a name="a.3Cport.3E"></a><b><a name="port">&lt;port&gt;</a></b></h4>
         
 <div>Port to use.</div>
         
 <ul>
           
-<li><b>Type</b>: <tt>int</tt></li>
+<li><b>Type</b>: <code>int</code></li>
           
-<li><b>Since</b>: <tt>0.1</tt></li>
+<li><b>Since</b>: <code>0.1</code></li>
           
-<li><b>Required</b>: <tt>No</tt></li>
+<li><b>Required</b>: <code>No</code></li>
           
-<li><b>Default</b>: <tt>3306</tt></li>
-        </ul><hr />
-<p><b><a name="skip">skip</a>:</b></p>
+<li><b>Default</b>: <code>3306</code></li>
+        </ul><hr /></section><section>
+<h4><a name="a.3Cskip.3E"></a><b><a name="skip">&lt;skip&gt;</a></b></h4>
         
 <div>Shall we skip execution?</div>
         
 <ul>
           
-<li><b>Type</b>: <tt>boolean</tt></li>
+<li><b>Type</b>: <code>boolean</code></li>
           
-<li><b>Since</b>: <tt>0.1</tt></li>
+<li><b>Since</b>: <code>0.1</code></li>
           
-<li><b>Required</b>: <tt>No</tt></li>
+<li><b>Required</b>: <code>No</code></li>
           
-<li><b>Default</b>: <tt>false</tt></li>
-        </ul><hr />
-<p><b><a name="socket">socket</a>:</b></p>
+<li><b>Default</b>: <code>false</code></li>
+        </ul><hr /></section><section>
+<h4><a name="a.3Csocket.3E"></a><b><a name="socket">&lt;socket&gt;</a></b></h4>
         
 <div>Override location of MySQL socket file. Defaults to (data
 dir)/mysql.socket.</div>
         
 <ul>
           
-<li><b>Type</b>: <tt>java.io.File</tt></li>
+<li><b>Type</b>: <code>java.io.File</code></li>
           
-<li><b>Since</b>: <tt>0.1</tt></li>
+<li><b>Since</b>: <code>0.1</code></li>
           
-<li><b>Required</b>: <tt>No</tt></li>
-        </ul><hr />
-<p><b><a name="user">user</a>:</b></p>
+<li><b>Required</b>: <code>No</code></li>
+        </ul><hr /></section><section>
+<h4><a name="a.3Cuser.3E"></a><b><a name="user">&lt;user&gt;</a></b></h4>
         
 <div>Username to use.</div>
         
 <ul>
           
-<li><b>Type</b>: <tt>java.lang.String</tt></li>
+<li><b>Type</b>: <code>java.lang.String</code></li>
           
-<li><b>Since</b>: <tt>0.1</tt></li>
+<li><b>Since</b>: <code>0.1</code></li>
           
-<li><b>Required</b>: <tt>No</tt></li>
+<li><b>Required</b>: <code>No</code></li>
           
-<li><b>Default</b>: <tt>root</tt></li>
+<li><b>Default</b>: <code>root</code></li>
         </ul>
-      </div>
-    </div>
+      </section></section>
+    </section>
   
 
                         </article>
@@ -483,12 +455,12 @@ dir)/mysql.socket.</div>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2014
+                                                                            2012-2023
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
                     <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
                 </footer>
             </div>
-        </section>
+        </div>
     </body>
 </html>

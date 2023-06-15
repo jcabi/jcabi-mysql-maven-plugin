@@ -15,32 +15,12 @@
                     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
                 })();
             </script>
-                                                                                                                
-<link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
-                                                                                                                
-<link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
-                                            <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-        <script>
-            $(document).ready(
-                function() {
-                    $(".menu-button").click(
-                        function() {
-                            if ($("#here-goes-menu").attr("class") == "menu-off") {
-                                $("#menu").clone().attr("class", "mobile-menu").appendTo("#here-goes-menu");
-                                $("#here-goes-menu").attr("class", "menu-on");
-                            } else {
-                                $(".mobile-menu").hide();
-                                $("#here-goes-menu").attr("class", "menu-off");
-                            }
-                        }
-                    );
-                }
-            );
-        </script>
+                                            <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script src="./js/jcabi.js"></script>
     </head>
     <body>
-                <section class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
-            <nav class="menu-section" role="navigation">
+                <div class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
+            <nav class="menu-section">
                 <ul class="menu" id="menu">
                                                                                     <li>
                             <span>Overview</span>
@@ -112,7 +92,7 @@
                                                                                                     <li >
                             <span>                        <a href="project-info.html" title="Project Information">Project Information</a>
         </span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
                                                                                                                         <li >
                             <span>                        <a href="project-reports.html" title="Project Reports">Project Reports</a>
         </span>
@@ -122,13 +102,13 @@
                                     </ul>
             </nav>
             <div class="right-side">
-                <main role="main">
+                <main>
                     <div class="content">
                         <header>
                             <div class="logo">
-                                <a href="../"
+                                <a href="http://www.jcabi.com/"
                                     title=" logo ">
-                                    <img src="http://img.jcabi.com/logo-square.svg"
+                                    <img src="../logo-square.svg"
                                         alt="jcabi"
                                                                                     width="64"
                                                                                                                             height="64"
@@ -136,20 +116,15 @@
                                     />
                                 </a>
                             </div>
-                            <div class="teamed">
-                                <a href="http://www.teamed.io">
-                                    <img src="http://img.teamed.io/btn.svg" alt="teamed.io logo"/>
-                                </a>
-                            </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">0.8.2</strong>
+                                    <strong itemprop="version">0.10.1</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-12-28T08:19:50Z">
+                                    <time itemprop="datePublished" datetime="2023-06-15T05:21:56Z">
                                         
-                                        28-Dec-2014
+                                        15-Jun-2023
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -157,17 +132,17 @@
                         </header>
                         <div id="here-goes-menu" class="menu-off"></div>
                                                                             <a href="https://github.com/jcabi/jcabi-mysql-maven-plugin">
-                                <img src="http://img.jcabi.com/fork-me.svg" class="fork-me"/>
+                                <img src="https://www.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
-                                                <article role="article" itemprop="articleBody">
+                                                <article itemprop="articleBody">
                             
   
-    <div class="section">
+    <section>
 <h2><a name="jcabi-mysql:classify"></a>jcabi-mysql:classify</h2>
       
 <p><b>Full name</b>:</p>
       
-<p>com.jcabi:jcabi-mysql-maven-plugin:0.8.2:classify</p>
+<p>com.jcabi:jcabi-mysql-maven-plugin:0.10.1:classify</p>
       
 <p><b>Description</b>:</p>
       
@@ -181,12 +156,11 @@
         
 <li>The goal is thread-safe and supports parallel builds.</li>
         
-<li>Since version: <tt>0.1</tt>.</li>
+<li>Since version: <code>0.1</code>.</li>
         
-<li>Binds by default to the <a class="externalLink" href="http://maven.apache.org/ref/current/maven-core/lifecycles.html">lifecycle phase</a>: <tt>initialize</tt>.</li>
+<li>Binds by default to the <a class="externalLink" href="http://maven.apache.org/ref/current/maven-core/lifecycles.html">lifecycle phase</a>: <code>initialize</code>.</li>
       </ul>
-      
-<div class="section">
+      <section>
 <h3><a name="Required_Parameters"></a>Required Parameters</h3>
         
 <table class="bodyTable" border="0">
@@ -204,36 +178,132 @@
           
 <tr class="b">
             
-<td><b><a href="#classifier">classifier</a></b></td>
+<td align="left"><code><a href="#classifier">&lt;classifier&gt;</a></code></td>
             
-<td><tt>String</tt></td>
+<td><code>String</code></td>
             
-<td><tt>0.1</tt></td>
+<td><code>0.1</code></td>
             
-<td>Classifier to set.<br /><b>Default value is</b>: <tt>mysql.classifier</tt>.<br /></td>
+<td>Classifier to set. 
+
+<p>This is the name of the Maven property to set, for example
+&quot;mysql.classifier&quot;.</p><br /><b>Default value is</b>: <code>mysql.classifier</code>.<br /></td>
+          </tr>
+          
+<tr class="a">
+            
+<td align="left"><code><a href="#mappings">&lt;mappings&gt;</a></code></td>
+            
+<td><code>List</code></td>
+            
+<td><code>0.9.0</code></td>
+            
+<td>Classification mappings. 
+
+<p>This may be useful when your platform doesn't detect correctly
+(it may happen). In this case you may either specify the classifier
+explicitly for the maven-dependency-plugin, or use this mechanism
+of mappings. Each mapping must be formatted as &quot;from to&quot; (with a
+space inside), for example &quot;linux-i386 linux-x86&quot;. When the
+platform is detected as &quot;linux-i386&quot;, it will be changed to
+&quot;linux-x86&quot;. You can specify multiple mappings, for example:</p>
+
+<div>
+<pre>
+&lt;configuration&gt;
+  &lt;mappings&gt;
+    &lt;mapping&gt;linux-i386 linux-x86&lt;/mapping&gt;
+    &lt;mapping&gt;linux-amd64 linux-x86_64&lt;/mapping&gt;
+  &lt;/mappings&gt;
+&lt;/configuration&gt;
+</pre></div>
+
+
+<p>By default, the following mapping is used:</p>
+
+<div>
+<pre>
+&lt;configuration&gt;
+  &lt;mappings&gt;
+    &lt;mapping&gt;linux-i386 linux-x86&lt;/mapping&gt;
+  &lt;/mappings&gt;
+&lt;/configuration&gt;
+</pre></div>
+
+
+<p>It means that if your platform is detected as &quot;i386&quot;, it will be
+changed to &quot;x86&quot;.</p><br /></td>
           </tr>
         </table>
-      </div>
-      
-<div class="section">
+      </section>
+      <section>
 <h3><a name="Parameter_Details"></a>Parameter Details</h3>
+        <section>
+<h4><a name="a.3Cclassifier.3E"></a><b><a name="classifier">&lt;classifier&gt;</a></b></h4>
         
-<p><b><a name="classifier">classifier</a>:</b></p>
-        
-<div>Classifier to set.</div>
+<div>Classifier to set. 
+
+<p>This is the name of the Maven property to set, for example
+&quot;mysql.classifier&quot;.</p></div>
         
 <ul>
           
-<li><b>Type</b>: <tt>java.lang.String</tt></li>
+<li><b>Type</b>: <code>java.lang.String</code></li>
           
-<li><b>Since</b>: <tt>0.1</tt></li>
+<li><b>Since</b>: <code>0.1</code></li>
           
-<li><b>Required</b>: <tt>Yes</tt></li>
+<li><b>Required</b>: <code>Yes</code></li>
           
-<li><b>Default</b>: <tt>mysql.classifier</tt></li>
+<li><b>Default</b>: <code>mysql.classifier</code></li>
+        </ul><hr /></section><section>
+<h4><a name="a.3Cmappings.3E"></a><b><a name="mappings">&lt;mappings&gt;</a></b></h4>
+        
+<div>Classification mappings. 
+
+<p>This may be useful when your platform doesn't detect correctly
+(it may happen). In this case you may either specify the classifier
+explicitly for the maven-dependency-plugin, or use this mechanism
+of mappings. Each mapping must be formatted as &quot;from to&quot; (with a
+space inside), for example &quot;linux-i386 linux-x86&quot;. When the
+platform is detected as &quot;linux-i386&quot;, it will be changed to
+&quot;linux-x86&quot;. You can specify multiple mappings, for example:</p>
+
+<div>
+<pre>
+&lt;configuration&gt;
+  &lt;mappings&gt;
+    &lt;mapping&gt;linux-i386 linux-x86&lt;/mapping&gt;
+    &lt;mapping&gt;linux-amd64 linux-x86_64&lt;/mapping&gt;
+  &lt;/mappings&gt;
+&lt;/configuration&gt;
+</pre></div>
+
+
+<p>By default, the following mapping is used:</p>
+
+<div>
+<pre>
+&lt;configuration&gt;
+  &lt;mappings&gt;
+    &lt;mapping&gt;linux-i386 linux-x86&lt;/mapping&gt;
+  &lt;/mappings&gt;
+&lt;/configuration&gt;
+</pre></div>
+
+
+<p>It means that if your platform is detected as &quot;i386&quot;, it will be
+changed to &quot;x86&quot;.</p></div>
+        
+<ul>
+          
+<li><b>Type</b>: <code>java.util.List</code></li>
+          
+<li><b>Since</b>: <code>0.9.0</code></li>
+          
+<li><b>Required</b>: <code>Yes</code></li>
         </ul>
-      </div>
-    </div>
+      </section></section>
+    </section>
   
 
                         </article>
@@ -242,12 +312,12 @@
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2014
+                                                                            2012-2023
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
                     <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
                 </footer>
             </div>
-        </section>
+        </div>
     </body>
 </html>
