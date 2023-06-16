@@ -87,8 +87,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
                 <artifactItem>
                   <groupId>com.jcabi</groupId>
                   <artifactId>mysql-dist</artifactId>
-                  <version>8.0.33.1</version>
-                  <classifier>${mysql.classifier}</classifier>
+                  <version>5.6.14</version>
+                  <classifier>${mysql.first.classifier}</classifier>
                   <type>zip</type>
                   <overWrite>false</overWrite>
                   <outputDirectory>${project.build.directory}/mysql-5.6.14</outputDirectory>
@@ -97,7 +97,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
                   <groupId>com.jcabi</groupId>
                   <artifactId>mysql-dist</artifactId>
                   <version>8.0.33.1</version>
-                  <classifier>${mysql.classifier}</classifier>
+                  <classifier>${mysql.second.classifier}</classifier>
                   <type>zip</type>
                   <overWrite>false</overWrite>
                   <outputDirectory>${project.build.directory}/mysql-8.0.33.1</outputDirectory>
@@ -117,6 +117,32 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
         </configuration>
         <executions>
           <execution>
+            <goals>
+              <goal>classify-first</goal>
+            </goals>
+            <configuration>
+              <classifier>mysql.first.classifier</classifier>
+              <mappings>
+                <mapping>linux-amd64 linux-x86_64</mapping>
+                <mapping>windows-x86_64 windows-x86</mapping>
+                <mapping>windows-amd64 windows-x86</mapping>
+              </mappings>
+            </configuration>
+          </execution>
+          <execution>
+            <goals>
+              <goal>classify-second</goal>
+            </goals>
+            <configuration>
+              <classifier>mysql.second.classifier</classifier>
+              <mappings>
+                <mapping>linux-amd64 linux-x86_64</mapping>
+                <mapping>windows-x86_64 windows-x86</mapping>
+                <mapping>windows-amd64 windows-x86</mapping>
+              </mappings>
+            </configuration>
+          </execution>
+          <execution>
             <id>start-stop-first</id>
             <goals>
               <goal>start</goal>
@@ -124,7 +150,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             </goals>
             <configuration>
               <port>${mysql.first}</port>
-              <dist>${project.build.directory}/mysql-8.0.33.1</dist>
+              <dist>${project.build.directory}/mysql-5.6.14</dist>
               <data>${project.build.directory}/mysql-data-first</data>
             </configuration>
           </execution>
@@ -136,7 +162,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             </goals>
             <configuration>
               <port>${mysql.second}</port>
-              <dist>${project.build.directory}/mysql-5.6.14</dist>
+              <dist>${project.build.directory}/mysql-8.0.33.1</dist>
               <data>${project.build.directory}/mysql-data-second</data>
             </configuration>
           </execution>
