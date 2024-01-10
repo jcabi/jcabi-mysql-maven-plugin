@@ -139,7 +139,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       </plugin>
       <plugin>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.2.3</version>
+        <version>3.2.5</version>
         <executions>
           <execution>
             <goals>
