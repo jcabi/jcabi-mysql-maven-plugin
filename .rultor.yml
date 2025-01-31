@@ -6,7 +6,7 @@ assets:
   pubring.gpg: yegor256/home#assets/pubring.gpg
 install: |
   pdd --file=/dev/null
-  sudo apt-get install -y libnuma1 libaio1
+  sudo apt-get install --yes libnuma1 libaio1
 merge:
   script: |
     mvn clean install -Pqulice --errors --batch-mode
