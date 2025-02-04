@@ -57,6 +57,7 @@ final class ClassifyMojoTest {
         mojo.setClassifier(name);
         mojo.execute();
         MatcherAssert.assertThat(
+            "should be true",
             props.getProperty(name).matches("[a-z]+-[a-z0-9_]+"),
             Matchers.is(true)
         );
