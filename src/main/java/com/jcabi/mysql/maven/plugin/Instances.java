@@ -58,9 +58,9 @@ import org.apache.commons.lang3.StringUtils;
  * Running instances of MySQL.
  *
  * <p>The class is thread-safe.
+ * @since 0.1
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle MultipleStringLiterals (500 lines)
- * @since 0.1
  */
 @ToString
 @EqualsAndHashCode(of = "processes")
