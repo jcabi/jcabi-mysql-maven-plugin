@@ -459,7 +459,8 @@ final class InstancesTest {
         );
         MatcherAssert.assertThat(
             "Instance reusedExistingDatabase should be true.",
-            instances.reusedExistingDatabase()
+            instances.reusedExistingDatabase(),
+            Matchers.is(true)
         );
         do {
             TimeUnit.SECONDS.sleep(InstancesTest.SLEEP_SECONDS);
