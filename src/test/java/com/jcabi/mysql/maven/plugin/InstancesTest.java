@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import javax.sql.DataSource;
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -347,7 +348,8 @@ final class InstancesTest {
         );
         MatcherAssert.assertThat(
             "Instance reusedExistingDatabase should be false.",
-            !instances.reusedExistingDatabase()
+            !instances.reusedExistingDatabase(),
+            Matchers.is(true)
         );
         final DataSource source = new UrlSource(
             String.format(
@@ -399,7 +401,8 @@ final class InstancesTest {
         );
         MatcherAssert.assertThat(
             "Instance reusedExistingDatabase should be false.",
-            !instances.reusedExistingDatabase()
+            !instances.reusedExistingDatabase(),
+            Matchers.is(true)
         );
         final DataSource source = new UrlSource(
             String.format(
