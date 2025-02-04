@@ -43,9 +43,9 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link Instances}.
+ * @since 0.6
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle MultipleStringLiterals (500 lines)
- * @since 0.6
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 final class InstancesTest {
