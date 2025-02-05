@@ -59,6 +59,7 @@ jobs:
       - run: java -version
       - run: mvn -version
       - run: |
+          sudo apt-get update
           sudo add-apt-repository universe -y
           sudo apt-get update
           sudo apt-get install --yes libnuma1 libaio1
