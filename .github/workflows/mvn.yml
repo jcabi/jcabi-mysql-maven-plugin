@@ -59,7 +59,7 @@ jobs:
       - run: java -version
       - run: mvn -version
       - run: |
-          wget http://mirrors.kernel.org/ubuntu/pool/main/liba/libaio/libaio1_0.3.112-1_amd64.deb
+          wget http://mirrors.kernel.org/ubuntu/pool/main/liba/libaio/libaio-dev_0.3.113-8_amd64.deb
           sudo dpkg -i libaio1_0.3.112-1_amd64.deb
           sudo apt-get install -f
           sudo apt-get update
