@@ -59,7 +59,9 @@ jobs:
       - run: java -version
       - run: mvn -version
       - run: |
-          sudo add-apt-repository universe -y
+          wget http://mirrors.kernel.org/ubuntu/pool/main/liba/libaio/libaio1_0.3.112-1_amd64.deb
+          sudo dpkg -i libaio1_0.3.112-1_amd64.deb
+          sudo apt-get install -f
           sudo apt-get update
           sudo apt-get install --yes libnuma1 libaio1
         if: matrix.os == 'ubuntu-24.04'
