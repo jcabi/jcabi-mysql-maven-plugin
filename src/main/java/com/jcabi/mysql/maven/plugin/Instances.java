@@ -58,9 +58,9 @@ import org.apache.commons.lang3.StringUtils;
  * Running instances of MySQL.
  *
  * <p>The class is thread-safe.
+ * @since 0.1
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle MultipleStringLiterals (500 lines)
- * @since 0.1
  */
 @ToString
 @EqualsAndHashCode(of = "processes")
@@ -391,35 +391,35 @@ public final class Instances {
                 String.format("--password=%s", Instances.DEFAULT_PASSWORD),
                 String.format("--socket=%s", socket)
             ).start();
-        final PrintWriter writer = new PrintWriter(
+        try (PrintWriter writer = new PrintWriter(
             new OutputStreamWriter(
                 process.getOutputStream(),
                 StandardCharsets.UTF_8
             )
-        );
-        writer.print("CREATE DATABASE ");
-        writer.print(config.dbname());
-        writer.println(";");
-        if (!Instances.DEFAULT_USER.equals(config.user())) {
-            writer.println(
-                String.format(
-                    "CREATE USER '%s'@'%s' IDENTIFIED BY '%s';",
-                    config.user(),
-                    Instances.DEFAULT_HOST,
-                    config.password()
-                )
-            );
-            writer.println(
-                String.format(
-                    "GRANT ALL ON %s.* TO '%s'@'%s';",
-                    config.dbname(),
-                    config.user(),
-                    Instances.DEFAULT_HOST
-                )
-            );
-            writer.println("SHOW DATABASES;");
+        )) {
+            writer.print("CREATE DATABASE ");
+            writer.print(config.dbname());
+            writer.println(";");
+            if (!Instances.DEFAULT_USER.equals(config.user())) {
+                writer.println(
+                    String.format(
+                        "CREATE USER '%s'@'%s' IDENTIFIED BY '%s';",
+                        config.user(),
+                        Instances.DEFAULT_HOST,
+                        config.password()
+                    )
+                );
+                writer.println(
+                    String.format(
+                        "GRANT ALL ON %s.* TO '%s'@'%s';",
+                        config.dbname(),
+                        config.user(),
+                        Instances.DEFAULT_HOST
+                    )
+                );
+                writer.println("SHOW DATABASES;");
+            }
         }
-        writer.close();
         new VerboseProcess(process).stdout();
         Logger.info(
             this,
