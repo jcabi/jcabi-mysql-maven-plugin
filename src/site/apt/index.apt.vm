@@ -64,4 +64,4 @@ MySQL Maven Plugin for Integration Testing
   If you use it somewhere else and it works for you, please let us know
   and we'll add your platform to this list.
   If you have problems, please submit an issue to
-  {{{http://github.com/jcabi/jcabi-mysql-maven-plugin/issues}Github}}.
+  {{{https://github.com/jcabi/jcabi-mysql-maven-plugin/issues}Github}}.
