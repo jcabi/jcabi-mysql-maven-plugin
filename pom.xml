@@ -75,7 +75,6 @@
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-log</artifactId>
-      <version>0.24.1</version>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
@@ -299,7 +298,7 @@
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
-            <version>0.22.0</version>
+            <version>0.25.1</version>
             <configuration>
               <excludes>
                 <exclude>findbugs:.*</exclude>
