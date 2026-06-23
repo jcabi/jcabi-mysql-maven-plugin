@@ -1,6 +1,7 @@
-target/
-.idea/
-*.iml
 .DS_Store
+.idea/
 *.asc
+*.iml
 *.zip
+node_modules/
+target/
