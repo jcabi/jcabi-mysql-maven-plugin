@@ -89,6 +89,13 @@ public final class ClassifyMojo extends AbstractMojo {
     @SuppressWarnings("PMD.ImmutableField")
     private transient List<String> mappings;
 
+    /**
+     * Public ctor.
+     */
+    public ClassifyMojo() {
+        // nothing to initialize
+    }
+
     @Override
     public void execute() throws MojoFailureException {
         final String existing = this.project.getProperties()

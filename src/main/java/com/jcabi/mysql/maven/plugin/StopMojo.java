@@ -23,6 +23,13 @@ import org.apache.maven.plugins.annotations.Mojo;
 )
 public final class StopMojo extends AbstractMysqlMojo {
 
+    /**
+     * Public ctor.
+     */
+    public StopMojo() {
+        // nothing to initialize
+    }
+
     @Override
     public void run(final Instances instances) throws MojoFailureException {
         instances.stop(this.config().port());

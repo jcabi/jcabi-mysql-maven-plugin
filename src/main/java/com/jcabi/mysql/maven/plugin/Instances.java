@@ -88,6 +88,13 @@ public final class Instances {
     private transient boolean clean = true;
 
     /**
+     * Public ctor.
+     */
+    public Instances() {
+        // nothing to initialize
+    }
+
+    /**
      * Start a new one at this port.
      * @param config Instance configuration
      * @param dist Path to MySQL distribution
@@ -135,7 +142,7 @@ public final class Instances {
 
     /**
      * Returns if a clean database had to be created. Note that this must be
-     * called after {@link Instances#start(Config, File, File, boolean)}.
+     * called after {@link Instances#start(Config, File, File, boolean, File)}.
      * @return If this is a clean database or could have been reused
      */
     public boolean reusedExistingDatabase() {

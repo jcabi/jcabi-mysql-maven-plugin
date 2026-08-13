@@ -25,6 +25,13 @@ import org.apache.maven.plugins.annotations.Mojo;
 )
 public final class RunMojo extends AbstractMysqlMojo {
 
+    /**
+     * Public ctor.
+     */
+    public RunMojo() {
+        // nothing to initialize
+    }
+
     @Override
     public void run(final Instances instances) throws MojoFailureException {
         final Config config = this.config();

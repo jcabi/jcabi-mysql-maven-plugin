@@ -23,6 +23,13 @@ import org.apache.maven.plugins.annotations.Mojo;
 )
 public final class StartMojo extends AbstractMysqlMojo {
 
+    /**
+     * Public ctor.
+     */
+    public StartMojo() {
+        // nothing to initialize
+    }
+
     @Override
     public void run(final Instances instances) throws MojoFailureException {
         try {
