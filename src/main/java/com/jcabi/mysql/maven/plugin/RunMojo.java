@@ -63,5 +63,4 @@ public final class RunMojo extends AbstractMysqlMojo {
             }
         }
     }
-
 }

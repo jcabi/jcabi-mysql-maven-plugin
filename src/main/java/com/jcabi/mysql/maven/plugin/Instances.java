@@ -15,9 +15,9 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -34,9 +34,8 @@ import org.apache.commons.lang3.StringUtils;
  * Running instances of MySQL.
  *
  * <p>The class is thread-safe.
+ *
  * @since 0.1
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
- * @checkstyle MultipleStringLiterals (500 lines)
  */
 @ToString
 @EqualsAndHashCode(of = "processes")
@@ -171,7 +170,6 @@ public final class Instances {
      * @param socketfile Alternative socket location for mysql (may be null)
      * @return Process started
      * @throws IOException If fails to start
-     * @checkstyle ParameterNumberCheck (10 lines)
      */
     private Process process(@NotNull final Config config,
         final File dist, final File target, final File socketfile)
@@ -260,7 +258,7 @@ public final class Instances {
             );
             FileUtils.writeStringToFile(
                 cnf,
-                "[mysql]\n# no defaults...",
+                String.format("[mysql]%n# no defaults..."),
                 StandardCharsets.UTF_8
             );
             if (Files.exists(
@@ -330,7 +328,7 @@ public final class Instances {
                 throw new IllegalStateException(ex);
             }
             age = System.currentTimeMillis() - start;
-            if (age > TimeUnit.MINUTES.toMillis((long) 5)) {
+            if (age > TimeUnit.MINUTES.toMillis(5L)) {
                 throw new IOException(
                     Logger.format(
                         "Socket %s is not available after %[ms]s of waiting",
@@ -381,12 +379,14 @@ public final class Instances {
                 String.format("--password=%s", Instances.DEFAULT_PASSWORD),
                 String.format("--socket=%s", socket)
             ).start();
-        try (PrintWriter writer = new PrintWriter(
-            new OutputStreamWriter(
-                process.getOutputStream(),
-                StandardCharsets.UTF_8
+        try (
+            PrintWriter writer = new PrintWriter(
+                new OutputStreamWriter(
+                    process.getOutputStream(),
+                    StandardCharsets.UTF_8
+                )
             )
-        )) {
+        ) {
             writer.print("CREATE DATABASE ");
             writer.print(config.dbname());
             writer.println(";");
@@ -430,7 +430,7 @@ public final class Instances {
     private ProcessBuilder builder(final File dist, final String name,
         final String... cmds) {
         String label = name;
-        final Collection<String> commands = new LinkedList<>();
+        final Collection<String> commands = new ArrayList<>(0);
         final File exec = new File(dist, label);
         if (exec.exists()) {
             try {
@@ -471,7 +471,6 @@ public final class Instances {
 
     /**
      * Consumer of the standard output of one running MySQL.
-     *
      * @since 0.1
      */
     private static final class Tail implements Callable<Void> {
@@ -495,5 +494,4 @@ public final class Instances {
             return null;
         }
     }
-
 }

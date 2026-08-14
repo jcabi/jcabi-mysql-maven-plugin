@@ -22,5 +22,4 @@ final class StopMojoTest {
             "skipped execution cannot fail"
         );
     }
-
 }

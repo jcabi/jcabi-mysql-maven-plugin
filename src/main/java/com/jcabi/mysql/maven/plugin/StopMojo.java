@@ -12,7 +12,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 /**
  * Stops MySQL.
- *
  * @since 0.1
  */
 @ToString
@@ -34,5 +33,4 @@ public final class StopMojo extends AbstractMysqlMojo {
     public void run(final Instances instances) throws MojoFailureException {
         instances.stop(this.config().port());
     }
-
 }

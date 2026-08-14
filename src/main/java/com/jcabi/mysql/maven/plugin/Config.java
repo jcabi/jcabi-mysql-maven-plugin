@@ -4,6 +4,7 @@
  */
 package com.jcabi.mysql.maven.plugin;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -55,7 +56,6 @@ public final class Config {
      * @param password Db password
      * @param dbn Db name
      * @param opts Configuration options
-     * @checkstyle ParameterNumberCheck (15 lines)
      */
     public Config(
         final int port,
@@ -68,7 +68,7 @@ public final class Config {
         this.dbuser = usr;
         this.dbpassword = password;
         this.name = dbn;
-        this.dbopts = Collections.unmodifiableList(opts);
+        this.dbopts = new ArrayList<>(opts);
     }
 
     /**
@@ -108,6 +108,6 @@ public final class Config {
      * @return Options
      */
     public List<String> options() {
-        return this.dbopts;
+        return Collections.unmodifiableList(this.dbopts);
     }
 }

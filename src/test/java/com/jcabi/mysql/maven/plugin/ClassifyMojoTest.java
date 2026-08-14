@@ -36,5 +36,4 @@ final class ClassifyMojoTest {
             Matchers.is(true)
         );
     }
-
 }

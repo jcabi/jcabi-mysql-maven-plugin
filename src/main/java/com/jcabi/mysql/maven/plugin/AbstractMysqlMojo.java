@@ -127,14 +127,6 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     )
     private transient List<String> options;
 
-    /**
-     * Set skip option.
-     * @param skp Shall we skip execution?
-     */
-    public void setSkip(final boolean skp) {
-        this.skip = skp;
-    }
-
     @Override
     public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
@@ -166,11 +158,26 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     }
 
     /**
+     * Run custom functionality.
+     * @param instances Instances to work with
+     * @throws MojoFailureException If fails
+     */
+    protected abstract void run(Instances instances) throws MojoFailureException;
+
+    /**
+     * Set skip option.
+     * @param skp Shall we skip execution?
+     */
+    void setSkip(final boolean skp) {
+        this.skip = skp;
+    }
+
+    /**
      * Get directory with MySQL dist.
      * @return Directory
      * @throws MojoFailureException If fails
      */
-    public File distDir() throws MojoFailureException {
+    File distDir() throws MojoFailureException {
         if (!this.dist.exists()) {
             throw new MojoFailureException(
                 String.format(
@@ -185,7 +192,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      * Get directory with MySQL data.
      * @return Directory
      */
-    public File dataDir() {
+    File dataDir() {
         return this.data;
     }
 
@@ -193,16 +200,16 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      * Get MySQL socket location.
      * @return Overridden socket location (null for default)
      */
-    public File socketFile() {
+    File socketFile() {
         return this.socket;
     }
 
     /**
      * If true, always delete existing database files and create a new instance
      * from scratch. If false, try to reuse existing files.
-     * @return If existing database files should be deleted.
+     * @return If existing database files should be deleted
      */
-    public boolean clear() {
+    boolean clear() {
         return this.erase;
     }
 
@@ -210,7 +217,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
      * Get configuration.
      * @return Configuration
      */
-    public Config config() {
+    Config config() {
         if (this.options == null) {
             this.options = Collections.emptyList();
         }
@@ -221,13 +228,6 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     }
 
     /**
-     * Run custom functionality.
-     * @param instances Instances to work with
-     * @throws MojoFailureException If fails
-     */
-    protected abstract void run(Instances instances) throws MojoFailureException;
-
-    /**
      * Get instances.
      * @return Instances
      */
@@ -235,5 +235,4 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     private static Instances instances() {
         return new Instances();
     }
-
 }

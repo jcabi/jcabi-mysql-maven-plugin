@@ -20,26 +20,23 @@ import org.junit.jupiter.api.Test;
 /**
  * Test case for {@link Instances}.
  * @since 0.6
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
- * @checkstyle MultipleStringLiterals (500 lines)
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 final class InstancesTest {
 
     /**
      * User.
      */
-    public static final String USER = "u13";
+    static final String USER = "u13";
 
     /**
      * Password.
      */
-    public static final String PASSWORD = "swordfish";
+    static final String PASSWORD = "swordfish";
 
     /**
      * Database name.
      */
-    public static final String DBNAME = "papamama";
+    static final String DBNAME = "papamama";
 
     /**
      * Time to sleep in between instances.

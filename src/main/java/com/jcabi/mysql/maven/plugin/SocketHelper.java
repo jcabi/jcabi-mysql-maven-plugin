@@ -12,6 +12,7 @@ import java.net.Socket;
  * complexity of Instances (TooManyMethods).
  *
  * <p>The class is thread-safe.
+ *
  * @since 0.6
  */
 final class SocketHelper {
@@ -36,5 +37,4 @@ final class SocketHelper {
         }
         return open;
     }
-
 }

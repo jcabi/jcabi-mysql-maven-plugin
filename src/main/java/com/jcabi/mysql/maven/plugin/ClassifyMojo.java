@@ -5,7 +5,7 @@
 package com.jcabi.mysql.maven.plugin;
 
 import com.jcabi.log.Logger;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import lombok.EqualsAndHashCode;
@@ -19,7 +19,6 @@ import org.apache.maven.project.MavenProject;
 
 /**
  * Classify current platform.
- *
  * @since 0.1
  */
 @ToString
@@ -83,7 +82,6 @@ public final class ClassifyMojo extends AbstractMojo {
      * changed to "x86".
      *
      * @since 0.9.0
-     * @checkstyle MemberNameCheck (5 lines)
      */
     @Parameter(required = true)
     private transient List<String> mappings;
@@ -111,7 +109,6 @@ public final class ClassifyMojo extends AbstractMojo {
         } else {
             throw new MojoFailureException(
                 String.format(
-                    // @checkstyle LineLength (1 line)
                     "Maven property ${%s} already set to \"%s\", can't change to \"%s\"",
                     this.classifier, existing, this.arch()
                 )
@@ -142,18 +139,18 @@ public final class ClassifyMojo extends AbstractMojo {
      */
     private String arch() throws MojoFailureException {
         if (this.mappings == null) {
-            this.mappings = new LinkedList<>();
+            this.mappings = new ArrayList<>(1);
             this.mappings.add("linux-i386 linux-x86_64");
         }
         String value = String.format(
             "%s-%s",
-            System.getProperty("os.name").split(" ")[0]
+            ClassifyMojo.first(System.getProperty("os.name"))
                 .toLowerCase(Locale.ENGLISH),
             System.getProperty("os.arch").toLowerCase(Locale.ENGLISH)
         );
         for (final String mapping : this.mappings) {
-            final String[] pair = mapping.split(" ");
-            if (pair.length != 2) {
+            final String[] pair = mapping.split(" ", -1);
+            if (pair.length != 2 || pair[1].isEmpty()) {
                 throw new MojoFailureException(
                     String.format(
                         "Invalid mapping \"%s\" (should be \"from to\")",
@@ -172,4 +169,19 @@ public final class ClassifyMojo extends AbstractMojo {
         return value;
     }
 
+    /**
+     * First word of the text.
+     * @param text The text to cut
+     * @return The text before the first space
+     */
+    private static String first(final String text) {
+        final int space = text.indexOf(' ');
+        final String word;
+        if (space < 0) {
+            word = text;
+        } else {
+            word = text.substring(0, space);
+        }
+        return word;
+    }
 }
