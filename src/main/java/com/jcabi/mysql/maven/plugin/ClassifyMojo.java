@@ -86,7 +86,6 @@ public final class ClassifyMojo extends AbstractMojo {
      * @checkstyle MemberNameCheck (5 lines)
      */
     @Parameter(required = true)
-    @SuppressWarnings("PMD.ImmutableField")
     private transient List<String> mappings;
 
     /**
@@ -146,10 +145,11 @@ public final class ClassifyMojo extends AbstractMojo {
             this.mappings = new LinkedList<>();
             this.mappings.add("linux-i386 linux-x86_64");
         }
-        final String arch = System.getProperty("os.arch").toLowerCase(Locale.ENGLISH);
-        final String[] words = System.getProperty("os.name").split(" ");
         String value = String.format(
-            "%s-%s", words[0].toLowerCase(Locale.ENGLISH), arch
+            "%s-%s",
+            System.getProperty("os.name").split(" ")[0]
+                .toLowerCase(Locale.ENGLISH),
+            System.getProperty("os.arch").toLowerCase(Locale.ENGLISH)
         );
         for (final String mapping : this.mappings) {
             final String[] pair = mapping.split(" ");

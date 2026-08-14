@@ -5,22 +5,23 @@
 package com.jcabi.mysql.maven.plugin;
 
 import com.jcabi.jdbc.JdbcSession;
+import com.jcabi.jdbc.SingleOutcome;
 import com.jcabi.jdbc.UrlSource;
 import java.io.File;
 import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
-import javax.sql.DataSource;
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link Instances}.
+ * @since 0.6
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle MultipleStringLiterals (500 lines)
- * @since 0.6
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 final class InstancesTest {
@@ -77,26 +78,28 @@ final class InstancesTest {
             true,
             null
         );
-        final DataSource source = new UrlSource(
-            String.format(
-                InstancesTest.CONNECTION_STRING,
-                port,
-                InstancesTest.DBNAME,
-                InstancesTest.USER,
-                InstancesTest.PASSWORD
-            )
-        );
         try {
-            new JdbcSession(source)
-                .autocommit(false)
-                .sql("CREATE TABLE foo (id INT)")
-                .execute()
-                .sql("INSERT INTO foo VALUES (1)")
-                .execute()
-                .sql("SELECT COUNT(*) FROM foo")
-                .execute()
-                .sql("DROP TABLE foo")
-                .execute();
+            MatcherAssert.assertThat(
+                "the inserted row cannot go missing",
+                new JdbcSession(
+                    new UrlSource(
+                        String.format(
+                            InstancesTest.CONNECTION_STRING,
+                            port,
+                            InstancesTest.DBNAME,
+                            InstancesTest.USER,
+                            InstancesTest.PASSWORD
+                        )
+                    )
+                ).autocommit(false)
+                    .sql("CREATE TABLE foo (id INT)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES (1)")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .select(new SingleOutcome<>(Long.class)),
+                Matchers.equalTo(1L)
+            );
         } finally {
             instances.stop(port);
         }
@@ -127,25 +130,27 @@ final class InstancesTest {
             null
         );
         try {
-            final DataSource source = new UrlSource(
-                String.format(
-                    InstancesTest.CONNECTION_STRING,
-                    port,
-                    InstancesTest.DBNAME,
-                    InstancesTest.USER,
-                    InstancesTest.PASSWORD
-                )
+            MatcherAssert.assertThat(
+                "the invalid date cannot be rejected",
+                new JdbcSession(
+                    new UrlSource(
+                        String.format(
+                            InstancesTest.CONNECTION_STRING,
+                            port,
+                            InstancesTest.DBNAME,
+                            InstancesTest.USER,
+                            InstancesTest.PASSWORD
+                        )
+                    )
+                ).autocommit(false)
+                    .sql("CREATE TABLE foo (date DATE)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES ('2004-04-31')")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .select(new SingleOutcome<>(Long.class)),
+                Matchers.equalTo(1L)
             );
-            new JdbcSession(source)
-                .autocommit(false)
-                .sql("CREATE TABLE foo (date DATE)")
-                .execute()
-                .sql("INSERT INTO foo VALUES ('2004-04-31')")
-                .execute()
-                .sql("SELECT * FROM foo")
-                .execute()
-                .sql("DROP TABLE foo")
-                .execute();
         } finally {
             instances.stop(port);
         }
@@ -177,26 +182,28 @@ final class InstancesTest {
             true,
             null
         );
-        final DataSource source = new UrlSource(
-            String.format(
-                InstancesTest.CONNECTION_STRING,
-                port,
-                InstancesTest.DBNAME,
-                user,
-                InstancesTest.PASSWORD
-            )
-        );
         try {
-            new JdbcSession(source)
-                .autocommit(false)
-                .sql("CREATE TABLE foo (id INT)")
-                .execute()
-                .sql("INSERT INTO foo VALUES (1)")
-                .execute()
-                .sql("SELECT COUNT(*) FROM foo")
-                .execute()
-                .sql("DROP TABLE foo")
-                .execute();
+            MatcherAssert.assertThat(
+                "the custom user cannot be refused by the database",
+                new JdbcSession(
+                    new UrlSource(
+                        String.format(
+                            InstancesTest.CONNECTION_STRING,
+                            port,
+                            InstancesTest.DBNAME,
+                            user,
+                            InstancesTest.PASSWORD
+                        )
+                    )
+                ).autocommit(false)
+                    .sql("CREATE TABLE foo (id INT)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES (1)")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .select(new SingleOutcome<>(Long.class)),
+                Matchers.equalTo(1L)
+            );
         } finally {
             instances.stop(port);
         }
@@ -227,26 +234,28 @@ final class InstancesTest {
             true,
             null
         );
-        final DataSource source = new UrlSource(
-            String.format(
-                InstancesTest.CONNECTION_STRING,
-                port,
-                InstancesTest.DBNAME,
-                user,
-                password
-            )
-        );
         try {
-            new JdbcSession(source)
-                .autocommit(false)
-                .sql("CREATE TABLE foo (id INT)")
-                .execute()
-                .sql("INSERT INTO foo VALUES (1)")
-                .execute()
-                .sql("SELECT COUNT(*) FROM foo")
-                .execute()
-                .sql("DROP TABLE foo")
-                .execute();
+            MatcherAssert.assertThat(
+                "the custom password cannot be refused by the database",
+                new JdbcSession(
+                    new UrlSource(
+                        String.format(
+                            InstancesTest.CONNECTION_STRING,
+                            port,
+                            InstancesTest.DBNAME,
+                            user,
+                            password
+                        )
+                    )
+                ).autocommit(false)
+                    .sql("CREATE TABLE foo (id INT)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES (1)")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .select(new SingleOutcome<>(Long.class)),
+                Matchers.equalTo(1L)
+            );
         } finally {
             instances.stop(port);
         }
@@ -274,26 +283,28 @@ final class InstancesTest {
             true,
             null
         );
-        final DataSource source = new UrlSource(
-            String.format(
-                InstancesTest.CONNECTION_STRING,
-                port,
-                dbname,
-                InstancesTest.USER,
-                InstancesTest.PASSWORD
-            )
-        );
         try {
-            new JdbcSession(source)
-                .autocommit(false)
-                .sql("CREATE TABLE foo (id INT)")
-                .execute()
-                .sql("INSERT INTO foo VALUES (1)")
-                .execute()
-                .sql("SELECT COUNT(*) FROM foo")
-                .execute()
-                .sql("DROP TABLE foo")
-                .execute();
+            MatcherAssert.assertThat(
+                "the custom database name cannot be ignored",
+                new JdbcSession(
+                    new UrlSource(
+                        String.format(
+                            InstancesTest.CONNECTION_STRING,
+                            port,
+                            dbname,
+                            InstancesTest.USER,
+                            InstancesTest.PASSWORD
+                        )
+                    )
+                ).autocommit(false)
+                    .sql("CREATE TABLE foo (id INT)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES (1)")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .select(new SingleOutcome<>(Long.class)),
+                Matchers.equalTo(1L)
+            );
         } finally {
             instances.stop(port);
         }
@@ -320,30 +331,28 @@ final class InstancesTest {
             false,
             null
         );
-        MatcherAssert.assertThat(
-            "Instance reusedExistingDatabase should be false.",
-            !instances.reusedExistingDatabase()
-        );
-        final DataSource source = new UrlSource(
-            String.format(
-                InstancesTest.CONNECTION_STRING,
-                port,
-                InstancesTest.DBNAME,
-                InstancesTest.USER,
-                InstancesTest.PASSWORD
-            )
-        );
         try {
-            new JdbcSession(source)
-                .autocommit(false)
+            new JdbcSession(
+                new UrlSource(
+                    String.format(
+                        InstancesTest.CONNECTION_STRING,
+                        port,
+                        InstancesTest.DBNAME,
+                        InstancesTest.USER,
+                        InstancesTest.PASSWORD
+                    )
+                )
+            ).autocommit(false)
                 .sql("CREATE TABLE foo (id INT)")
                 .execute()
                 .sql("INSERT INTO foo VALUES (1)")
                 .execute()
-                .sql("SELECT COUNT(*) FROM foo")
-                .execute()
                 .sql("DROP TABLE foo")
                 .execute();
+            MatcherAssert.assertThat(
+                "a missing database cannot be reported as reused",
+                !instances.reusedExistingDatabase()
+            );
         } finally {
             instances.stop(port);
         }
@@ -372,44 +381,44 @@ final class InstancesTest {
             true,
             null
         );
-        MatcherAssert.assertThat(
-            "Instance reusedExistingDatabase should be false.",
-            !instances.reusedExistingDatabase()
-        );
-        final DataSource source = new UrlSource(
-            String.format(
-                InstancesTest.CONNECTION_STRING,
-                port,
-                InstancesTest.DBNAME,
-                InstancesTest.USER,
-                InstancesTest.PASSWORD
-            )
-        );
         try {
-            new JdbcSession(source)
-                .autocommit(false)
-                .sql("START TRANSACTION")
-                .execute()
-                .sql("CREATE TABLE foo (id INT)")
-                .execute()
-                .sql("INSERT INTO foo VALUES (1)")
-                .execute()
-                .sql("SELECT COUNT(*) FROM foo")
-                .execute()
-                .sql("COMMIT")
-                .execute();
+            MatcherAssert.assertThat(
+                "the committed row cannot go missing",
+                new JdbcSession(
+                    new UrlSource(
+                        String.format(
+                            InstancesTest.CONNECTION_STRING,
+                            port,
+                            InstancesTest.DBNAME,
+                            InstancesTest.USER,
+                            InstancesTest.PASSWORD
+                        )
+                    )
+                ).autocommit(false)
+                    .sql("START TRANSACTION")
+                    .execute()
+                    .sql("CREATE TABLE foo (id INT)")
+                    .execute()
+                    .sql("INSERT INTO foo VALUES (1)")
+                    .execute()
+                    .sql("COMMIT")
+                    .execute()
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .select(new SingleOutcome<>(Long.class)),
+                Matchers.equalTo(1L)
+            );
         } finally {
             instances.stop(port);
         }
-        this.checkExistingDatabase(target);
+        this.reuse(target);
     }
 
     /**
-     * Helper for canReuseExistingDatabse test.
+     * Start one more instance on top of an existing database.
      * @param target Directory of existing database
      * @throws Exception If something is wrong
      */
-    private void checkExistingDatabase(final File target) throws Exception {
+    private void reuse(final File target) throws Exception {
         final File socket = new File(target, "mysql.sock");
         while (socket.exists()) {
             TimeUnit.SECONDS.sleep(InstancesTest.SLEEP_SECONDS);
@@ -429,29 +438,27 @@ final class InstancesTest {
             false,
             null
         );
-        MatcherAssert.assertThat(
-            "Instance reusedExistingDatabase should be true.",
-            instances.reusedExistingDatabase()
-        );
         do {
             TimeUnit.SECONDS.sleep(InstancesTest.SLEEP_SECONDS);
         } while (!socket.exists());
         try {
-            final DataSource source = new UrlSource(
-                String.format(
-                    InstancesTest.CONNECTION_STRING,
-                    port,
-                    InstancesTest.DBNAME,
-                    InstancesTest.USER,
-                    InstancesTest.PASSWORD
-                )
+            MatcherAssert.assertThat(
+                "the row committed by the previous instance cannot be lost",
+                new JdbcSession(
+                    new UrlSource(
+                        String.format(
+                            InstancesTest.CONNECTION_STRING,
+                            port,
+                            InstancesTest.DBNAME,
+                            InstancesTest.USER,
+                            InstancesTest.PASSWORD
+                        )
+                    )
+                ).autocommit(false)
+                    .sql("SELECT COUNT(*) FROM foo")
+                    .select(new SingleOutcome<>(Long.class)),
+                Matchers.equalTo(1L)
             );
-            new JdbcSession(source)
-                .autocommit(false)
-                .sql("SELECT COUNT(*) FROM foo")
-                .execute()
-                .sql("DROP TABLE foo")
-                .execute();
         } finally {
             instances.stop(port);
         }
@@ -463,9 +470,11 @@ final class InstancesTest {
      * @throws Exception If fails
      */
     private int reserve() throws Exception {
+        final int port;
         try (ServerSocket socket = new ServerSocket(0)) {
-            return socket.getLocalPort();
+            port = socket.getLocalPort();
         }
+        return port;
     }
 
     /**

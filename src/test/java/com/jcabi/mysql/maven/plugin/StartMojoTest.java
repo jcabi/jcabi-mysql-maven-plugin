@@ -4,6 +4,7 @@
  */
 package com.jcabi.mysql.maven.plugin;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -13,15 +14,14 @@ import org.junit.jupiter.api.Test;
  */
 final class StartMojoTest {
 
-    /**
-     * StartMojo can skip execution when flag is set.
-     * @throws Exception If something is wrong
-     */
     @Test
-    void skipsExecutionWhenRequired() throws Exception {
+    void skipsExecutionWhenRequired() {
         final StartMojo mojo = new StartMojo();
         mojo.setSkip(true);
-        mojo.execute();
+        Assertions.assertDoesNotThrow(
+            mojo::execute,
+            "skipped execution cannot fail"
+        );
     }
 
 }

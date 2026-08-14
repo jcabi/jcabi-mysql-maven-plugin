@@ -14,7 +14,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,6 +22,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -33,14 +34,13 @@ import org.apache.commons.lang3.StringUtils;
  * Running instances of MySQL.
  *
  * <p>The class is thread-safe.
+ * @since 0.1
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle MultipleStringLiterals (500 lines)
- * @since 0.1
  */
 @ToString
 @EqualsAndHashCode(of = "processes")
 @Loggable(Loggable.INFO)
-@SuppressWarnings({ "PMD.DoNotUseThreads", "PMD.TooManyMethods" })
 public final class Instances {
 
     /**
@@ -77,21 +77,27 @@ public final class Instances {
     /**
      * Running processes.
      */
-    private final transient ConcurrentMap<Integer, Process> processes =
-        new ConcurrentHashMap<>(0);
+    private final transient ConcurrentMap<Integer, Process> processes;
+
+    /**
+     * Guard of the running processes.
+     */
+    private final transient Lock lock;
 
     /**
      * If true, always create a new database. If false, check if there is an
      * existing database at the target location and try to use that if
      * possible, otherwise create a new one anyway.
      */
-    private transient boolean clean = true;
+    private transient boolean clean;
 
     /**
      * Public ctor.
      */
     public Instances() {
-        // nothing to initialize
+        this.processes = new ConcurrentHashMap<>(0);
+        this.lock = new ReentrantLock();
+        this.clean = true;
     }
 
     /**
@@ -108,17 +114,22 @@ public final class Instances {
         @NotNull final File target, final boolean deldir, final File socket)
         throws IOException {
         this.setClean(target, deldir);
-        synchronized (this.processes) {
+        this.lock.lock();
+        try {
             if (this.processes.containsKey(config.port())) {
                 throw new IllegalArgumentException(
                     String.format("Port %d is already busy", config.port())
                 );
             }
-            final Process proc = this.process(config, dist, target, socket);
-            this.processes.put(config.port(), proc);
+            this.processes.put(
+                config.port(),
+                this.process(config, dist, target, socket)
+            );
             Runtime.getRuntime().addShutdownHook(
                 new Thread(() -> this.stop(config.port()))
             );
+        } finally {
+            this.lock.unlock();
         }
         Logger.info(
             this,
@@ -132,11 +143,14 @@ public final class Instances {
      * @param port The port to stop at
      */
     public void stop(final int port) {
-        synchronized (this.processes) {
+        this.lock.lock();
+        try {
             final Process proc = this.processes.remove(port);
             if (proc != null) {
                 proc.destroy();
             }
+        } finally {
+            this.lock.unlock();
         }
     }
 
@@ -162,7 +176,7 @@ public final class Instances {
     private Process process(@NotNull final Config config,
         final File dist, final File target, final File socketfile)
         throws IOException {
-        final File temp = this.prepareFolders(target);
+        this.prepareFolders(target);
         final File socket;
         if (socketfile == null) {
             socket = new File(target, "mysql.sock");
@@ -183,7 +197,7 @@ public final class Instances {
             String.format("--basedir=%s", dist),
             String.format("--lc-messages-dir=%s", new File(dist, "share")),
             String.format("--datadir=%s", this.data(dist, target)),
-            String.format("--tmpdir=%s", temp),
+            String.format("--tmpdir=%s", new File(target, "temp")),
             String.format("--socket=%s", socket),
             String.format("--log-error=%s", new File(target, "errors.log")),
             String.format("--general-log-file=%s", new File(target, "mysql.log")),
@@ -198,12 +212,7 @@ public final class Instances {
         }
         final Process proc = builder.start();
         final Thread thread = new Thread(
-            new VerboseRunnable(
-                (Callable<Void>) () -> {
-                    new VerboseProcess(proc).stdoutQuietly();
-                    return null;
-                }
-            )
+            new VerboseRunnable(new Instances.Tail(proc))
         );
         thread.setDaemon(true);
         thread.start();
@@ -217,10 +226,9 @@ public final class Instances {
     /**
      * Prepare the folder structure for the database if necessary.
      * @param target Location of the database
-     * @return The location of the temp directory
      * @throws IOException If fails to create temp directory
      */
-    private File prepareFolders(final File target) throws IOException {
+    private void prepareFolders(final File target) throws IOException {
         if (this.clean && target.exists()) {
             FileUtils.deleteDirectory(target);
             Logger.info(this, "deleted %s directory", target);
@@ -234,7 +242,6 @@ public final class Instances {
                 "Error during temporary folder creation"
             );
         }
-        return temp;
     }
 
     /**
@@ -256,9 +263,10 @@ public final class Instances {
                 "[mysql]\n# no defaults...",
                 StandardCharsets.UTF_8
             );
-            final Path installer = Paths.get(dist.getAbsolutePath())
-                .resolve("scripts/mysql_install_db");
-            if (Files.exists(installer)) {
+            if (Files.exists(
+                Paths.get(dist.getAbsolutePath())
+                    .resolve("scripts/mysql_install_db")
+            )) {
                 new VerboseProcess(
                     this.builder(
                         dist,
@@ -373,35 +381,35 @@ public final class Instances {
                 String.format("--password=%s", Instances.DEFAULT_PASSWORD),
                 String.format("--socket=%s", socket)
             ).start();
-        final PrintWriter writer = new PrintWriter(
+        try (PrintWriter writer = new PrintWriter(
             new OutputStreamWriter(
                 process.getOutputStream(),
                 StandardCharsets.UTF_8
             )
-        );
-        writer.print("CREATE DATABASE ");
-        writer.print(config.dbname());
-        writer.println(";");
-        if (!Instances.DEFAULT_USER.equals(config.user())) {
-            writer.println(
-                String.format(
-                    "CREATE USER '%s'@'%s' IDENTIFIED BY '%s';",
-                    config.user(),
-                    Instances.DEFAULT_HOST,
-                    config.password()
-                )
-            );
-            writer.println(
-                String.format(
-                    "GRANT ALL ON %s.* TO '%s'@'%s';",
-                    config.dbname(),
-                    config.user(),
-                    Instances.DEFAULT_HOST
-                )
-            );
-            writer.println("SHOW DATABASES;");
+        )) {
+            writer.print("CREATE DATABASE ");
+            writer.print(config.dbname());
+            writer.println(";");
+            if (!Instances.DEFAULT_USER.equals(config.user())) {
+                writer.println(
+                    String.format(
+                        "CREATE USER '%s'@'%s' IDENTIFIED BY '%s';",
+                        config.user(),
+                        Instances.DEFAULT_HOST,
+                        config.password()
+                    )
+                );
+                writer.println(
+                    String.format(
+                        "GRANT ALL ON %s.* TO '%s'@'%s';",
+                        config.dbname(),
+                        config.user(),
+                        Instances.DEFAULT_HOST
+                    )
+                );
+                writer.println("SHOW DATABASES;");
+            }
         }
-        writer.close();
         new VerboseProcess(process).stdout();
         Logger.info(
             this,
@@ -459,6 +467,33 @@ public final class Instances {
             this.clean = true;
         }
         Logger.info(this, "reuse existing database %s", !this.clean);
+    }
+
+    /**
+     * Consumer of the standard output of one running MySQL.
+     *
+     * @since 0.1
+     */
+    private static final class Tail implements Callable<Void> {
+
+        /**
+         * Process to read from.
+         */
+        private final transient Process proc;
+
+        /**
+         * Ctor.
+         * @param process The process to read from
+         */
+        Tail(final Process process) {
+            this.proc = process;
+        }
+
+        @Override
+        public Void call() {
+            new VerboseProcess(this.proc).stdoutQuietly();
+            return null;
+        }
     }
 
 }
