@@ -1,4 +1,4 @@
-<img src="https://www.jcabi.com/logo-square.svg" width="64px" height="64px" />
+# [![logo](https://www.jcabi.com/logo-square.svg)](https://www.jcabi.com/logo-square.svg)
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![DevOps By Rultor.com](https://www.rultor.com/b/jcabi/jcabi-mysql-maven-plugin)](https://www.rultor.com/p/jcabi/jcabi-mysql-maven-plugin)
@@ -14,10 +14,10 @@ More details are here: [mysql.jcabi.com](http://mysql.jcabi.com/index.html)
 Read [this article](http://www.yegor256.com/2014/05/21/mysql-maven-plugin.html),
 it explains what this plugin is for.
 
-On Linux, don't forget to install `libaio1` and `libnuma1`:
+On Linux, don't forget to install `libaio1t64` and `libnuma1`:
 
-```
-$ sudo apt-get install libaio1 libnuma1
+```bash
+sudo apt-get install libaio1t64 libnuma1
 ```
 
 ## How to contribute?
@@ -28,8 +28,8 @@ the `master` branch, if they look correct.
 
 Please run Maven build before submitting a pull request:
 
-```
-$ mvn clean install -Pqulice
+```bash
+mvn clean install -Pqulice
 ```
 
 Make sure you're using JDK 6+ and Maven 3.2+. Older versions won't work.

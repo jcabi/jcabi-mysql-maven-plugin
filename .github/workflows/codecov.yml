@@ -23,6 +23,9 @@ jobs:
           key: maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             maven-
+      - run: |
+          sudo apt-get install --yes libnuma1 libaio1t64
+          sudo ln -sf libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1
       - run: mvn install -Pjacoco
       - uses: codecov/codecov-action@v5
         with:

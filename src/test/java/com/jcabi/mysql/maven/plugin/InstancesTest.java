@@ -361,7 +361,7 @@ final class InstancesTest {
      */
     @Test
     @Disabled
-    void canReuseExistingDatabse() throws Exception {
+    void canReuseExistingDatabase() throws Exception {
         final int port = this.reserve();
         final File target = Files.createTempDirectory("").toFile();
         final Instances instances = new Instances();
