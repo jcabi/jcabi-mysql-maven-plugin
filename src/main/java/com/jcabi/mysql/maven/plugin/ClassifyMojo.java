@@ -132,11 +132,6 @@ public final class ClassifyMojo extends AbstractMojo {
         this.classifier = name;
     }
 
-    /**
-     * Calculate value.
-     * @return Value to set
-     * @throws MojoFailureException If fails
-     */
     private String arch() throws MojoFailureException {
         if (this.mappings == null) {
             this.mappings = new ArrayList<>(1);
@@ -169,11 +164,6 @@ public final class ClassifyMojo extends AbstractMojo {
         return value;
     }
 
-    /**
-     * First word of the text.
-     * @param text The text to cut
-     * @return The text before the first space
-     */
     private static String first(final String text) {
         final int space = text.indexOf(' ');
         final String word;

@@ -227,10 +227,6 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
         );
     }
 
-    /**
-     * Get instances.
-     * @return Instances
-     */
     @Cacheable(forever = true)
     private static Instances instances() {
         return new Instances();

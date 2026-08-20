@@ -410,11 +410,6 @@ final class InstancesTest {
         this.reuse(target);
     }
 
-    /**
-     * Start one more instance on top of an existing database.
-     * @param target Directory of existing database
-     * @throws Exception If something is wrong
-     */
     private void reuse(final File target) throws Exception {
         final File socket = new File(target, "mysql.sock");
         while (socket.exists()) {
@@ -461,11 +456,6 @@ final class InstancesTest {
         }
     }
 
-    /**
-     * Find and return the first available port.
-     * @return The port number
-     * @throws Exception If fails
-     */
     private int reserve() throws Exception {
         final int port;
         try (ServerSocket socket = new ServerSocket(0)) {
@@ -474,11 +464,6 @@ final class InstancesTest {
         return port;
     }
 
-    /**
-     * This will be taken from the surefire.dist system property
-     * or defaulted to the target.
-     * @return The MySQL distribution location
-     */
     private static String getDist() {
         String dist = System.getProperty("surefire.dist");
         if (dist == null) {

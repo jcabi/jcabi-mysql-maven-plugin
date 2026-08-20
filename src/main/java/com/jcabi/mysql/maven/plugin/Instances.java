@@ -18,7 +18,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
@@ -162,15 +161,6 @@ public final class Instances {
         return !this.clean;
     }
 
-    /**
-     * Start a new process.
-     * @param config Instance configuration
-     * @param dist Path to MySQL distribution
-     * @param target Where to keep temp data
-     * @param socketfile Alternative socket location for mysql (may be null)
-     * @return Process started
-     * @throws IOException If fails to start
-     */
     private Process process(@NotNull final Config config,
         final File dist, final File target, final File socketfile)
         throws IOException {
@@ -210,7 +200,7 @@ public final class Instances {
         }
         final Process proc = builder.start();
         final Thread thread = new Thread(
-            new VerboseRunnable(new Instances.Tail(proc))
+            new VerboseRunnable(new Tail(proc))
         );
         thread.setDaemon(true);
         thread.start();
@@ -221,11 +211,6 @@ public final class Instances {
         return proc;
     }
 
-    /**
-     * Prepare the folder structure for the database if necessary.
-     * @param target Location of the database
-     * @throws IOException If fails to create temp directory
-     */
     private void prepareFolders(final File target) throws IOException {
         if (this.clean && target.exists()) {
             FileUtils.deleteDirectory(target);
@@ -242,13 +227,6 @@ public final class Instances {
         }
     }
 
-    /**
-     * Prepare and return data directory.
-     * @param dist Path to MySQL distribution
-     * @param target Where to create it
-     * @return Directory created
-     * @throws IOException If fails
-     */
     private File data(final File dist, final File target) throws IOException {
         final File dir = new File(target, Instances.DATA_SUB_DIR);
         if (!dir.exists()) {
@@ -294,13 +272,6 @@ public final class Instances {
         return dir;
     }
 
-    /**
-     * Wait for this file to become available.
-     * @param socket The file to wait for
-     * @param port Port to wait for
-     * @return The same socket, but ready for usage
-     * @throws IOException If fails
-     */
     private File waitFor(final File socket, final int port) throws IOException {
         final long start = System.currentTimeMillis();
         long age = 0L;
@@ -340,13 +311,6 @@ public final class Instances {
         return socket;
     }
 
-    /**
-     * Configure the running MySQL server.
-     * @param config Instance configuration
-     * @param dist Directory with MySQL distribution
-     * @param socket Socket of it
-     * @throws IOException If fails
-     */
     private void configure(@NotNull final Config config,
         final File dist, final File socket)
         throws IOException {
@@ -420,13 +384,6 @@ public final class Instances {
         );
     }
 
-    /**
-     * Make process builder with this commands.
-     * @param dist Distribution directory
-     * @param name Name of the cmd to run
-     * @param cmds Commands
-     * @return Process builder
-     */
     private ProcessBuilder builder(final File dist, final String name,
         final String... cmds) {
         String label = name;
@@ -453,12 +410,6 @@ public final class Instances {
             .directory(dist);
     }
 
-    /**
-     * Will set the {@link Instances#clean} flag, indicating if the database
-     * can be reused or if it should be deleted and recreated.
-     * @param target Location of database
-     * @param deldir Should database always be cleared
-     */
     private void setClean(final File target, final boolean deldir) {
         if (new File(target, Instances.DATA_SUB_DIR).exists() && !deldir) {
             Logger.info(this, "reuse existing database %s", target);
@@ -467,31 +418,5 @@ public final class Instances {
             this.clean = true;
         }
         Logger.info(this, "reuse existing database %s", !this.clean);
-    }
-
-    /**
-     * Consumer of the standard output of one running MySQL.
-     * @since 0.1
-     */
-    private static final class Tail implements Callable<Void> {
-
-        /**
-         * Process to read from.
-         */
-        private final transient Process proc;
-
-        /**
-         * Ctor.
-         * @param process The process to read from
-         */
-        Tail(final Process process) {
-            this.proc = process;
-        }
-
-        @Override
-        public Void call() {
-            new VerboseProcess(this.proc).stdoutQuietly();
-            return null;
-        }
     }
 }
