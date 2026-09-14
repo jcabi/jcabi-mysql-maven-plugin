@@ -33,7 +33,8 @@ jobs:
       - run: java -version
       - run: mvn -version
       - run: |
-          sudo apt-get install --yes libnuma1 libaio1t64
+          sudo apt-get install --yes libnuma1
+          sudo apt-get install --yes libaio1t64
           sudo ln -sf libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1
         if: matrix.os == 'ubuntu-24.04'
       - run: mvn --errors --batch-mode clean install -Pqulice
