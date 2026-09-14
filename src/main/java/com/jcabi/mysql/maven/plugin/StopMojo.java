@@ -12,6 +12,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 /**
  * Stops MySQL.
+ *
  * @since 0.1
  */
 @ToString

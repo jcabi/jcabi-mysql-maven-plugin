@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 
 /**
  * Consumer of the standard output of one running MySQL.
+ *
  * @since 0.1
  */
 final class Tail implements Callable<Void> {
@@ -20,6 +21,7 @@ final class Tail implements Callable<Void> {
 
     /**
      * Ctor.
+     *
      * @param process The process to read from
      */
     Tail(final Process process) {
@@ -28,7 +30,9 @@ final class Tail implements Callable<Void> {
 
     @Override
     public Void call() {
-        new VerboseProcess(this.proc).stdoutQuietly();
+        try (VerboseProcess verbose = new VerboseProcess(this.proc)) {
+            verbose.stdoutQuietly();
+        }
         return null;
     }
 }

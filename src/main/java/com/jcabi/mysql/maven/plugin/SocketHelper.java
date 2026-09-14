@@ -11,7 +11,7 @@ import java.net.Socket;
  * Extracted static helper function into its own class to reduce class
  * complexity of Instances (TooManyMethods).
  *
- * <p>The class is thread-safe.
+ * <p>The class is thread-safe.</p>
  *
  * @since 0.6
  */
@@ -24,14 +24,14 @@ final class SocketHelper {
 
     /**
      * Port is open.
+     *
      * @param port The port to check
      * @return TRUE if it's open
      */
     static boolean isOpen(final int port) {
         boolean open;
-        try {
-            new Socket((String) null, port);
-            open = true;
+        try (Socket socket = new Socket((String) null, port)) {
+            open = socket.isConnected();
         } catch (final IOException ex) {
             open = false;
         }

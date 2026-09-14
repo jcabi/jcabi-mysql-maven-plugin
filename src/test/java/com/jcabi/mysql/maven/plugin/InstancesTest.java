@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link Instances}.
+ *
  * @since 0.6
  */
 final class InstancesTest {
@@ -56,6 +57,7 @@ final class InstancesTest {
 
     /**
      * Instances can start and stop.
+     *
      * @throws Exception If something is wrong
      */
     @Test
@@ -107,6 +109,7 @@ final class InstancesTest {
      * Test creates and inserts incorrect date in it
      * Without option "--sql-mode=ALLOW_INVALID_DATES" it produces
      * invalid date error.
+     *
      * @throws Exception If something is wrong
      */
     @Test
@@ -155,6 +158,7 @@ final class InstancesTest {
 
     /**
      * Instances can use custom db user name.
+     *
      * @throws Exception If something is wrong
      * @todo #8 Create integration tests for Config.
      *  Integration tests 'WithConfigITCase' should be created to test
@@ -210,6 +214,7 @@ final class InstancesTest {
      * Instances can use custom db password.
      * Password changed with username, because we don't support
      * changing password for existing user
+     *
      * @throws Exception If something is wrong
      */
     @Test
@@ -260,6 +265,7 @@ final class InstancesTest {
 
     /**
      * Instances can use custom db name.
+     *
      * @throws Exception If something is wrong
      */
     @Test
@@ -309,6 +315,7 @@ final class InstancesTest {
 
     /**
      * If no database exists, it will create one even if clear = false.
+     *
      * @throws Exception If something is wrong
      */
     @Test
@@ -357,6 +364,7 @@ final class InstancesTest {
 
     /**
      * Is able to reuse a previously created database.
+     *
      * @throws Exception If something is wrong
      */
     @Test

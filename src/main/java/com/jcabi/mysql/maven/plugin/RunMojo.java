@@ -15,6 +15,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 /**
  * Run MySQL in background and don't stop it when Maven is finished.
+ *
  * @since 0.4
  */
 @ToString

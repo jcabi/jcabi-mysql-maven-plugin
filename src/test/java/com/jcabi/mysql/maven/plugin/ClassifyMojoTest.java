@@ -13,12 +13,14 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link ClassifyMojo} (more detailed test is in maven invoker).
+ *
  * @since 0.6
  */
 final class ClassifyMojoTest {
 
     /**
      * ClassifyMojo can detect current platform.
+     *
      * @throws Exception If something is wrong
      */
     @Test

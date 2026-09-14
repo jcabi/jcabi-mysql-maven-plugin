@@ -32,7 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Running instances of MySQL.
  *
- * <p>The class is thread-safe.
+ * <p>The class is thread-safe.</p>
  *
  * @since 0.1
  */
@@ -50,11 +50,6 @@ public final class Instances {
      * No defaults.
      */
     private static final String NO_DEFAULTS = "--no-defaults";
-
-    /**
-     * Default retry count.
-     */
-    private static final int RETRY_COUNT = 5;
 
     /**
      * Default user.
@@ -100,6 +95,7 @@ public final class Instances {
 
     /**
      * Start a new one at this port.
+     *
      * @param config Instance configuration
      * @param dist Path to MySQL distribution
      * @param target Where to keep temp data
@@ -138,6 +134,7 @@ public final class Instances {
 
     /**
      * Stop a running one at this port.
+     *
      * @param port The port to stop at
      */
     public void stop(final int port) {
@@ -155,6 +152,7 @@ public final class Instances {
     /**
      * Returns if a clean database had to be created. Note that this must be
      * called after {@link Instances#start(Config, File, File, boolean, File)}.
+     *
      * @return If this is a clean database or could have been reused
      */
     public boolean reusedExistingDatabase() {
@@ -243,30 +241,38 @@ public final class Instances {
                 Paths.get(dist.getAbsolutePath())
                     .resolve("scripts/mysql_install_db")
             )) {
-                new VerboseProcess(
-                    this.builder(
-                        dist,
-                        "scripts/mysql_install_db",
-                        String.format("--defaults-file=%s", cnf),
-                        "--force",
-                        "--innodb_use_native_aio=0",
-                        String.format("--datadir=%s", dir),
-                        String.format("--basedir=%s", dist)
+                try (
+                    VerboseProcess process = new VerboseProcess(
+                        this.builder(
+                            dist,
+                            "scripts/mysql_install_db",
+                            String.format("--defaults-file=%s", cnf),
+                            "--force",
+                            "--innodb_use_native_aio=0",
+                            String.format("--datadir=%s", dir),
+                            String.format("--basedir=%s", dist)
+                        )
                     )
-                ).stdout();
+                ) {
+                    process.stdout();
+                }
             } else {
-                new VerboseProcess(
-                    this.builder(
-                        dist,
-                        "bin/mysqld",
-                        "--initialize-insecure",
-                        String.format("--user=%s", Instances.DEFAULT_USER),
-                        String.format("--datadir=%s", dir),
-                        String.format("--basedir=%s", dist),
-                        String.format("--log-error=%s", new File(target, "errors.log")),
-                        String.format("--general-log-file=%s", new File(target, "mysql.log"))
+                try (
+                    VerboseProcess process = new VerboseProcess(
+                        this.builder(
+                            dist,
+                            "bin/mysqld",
+                            "--initialize-insecure",
+                            String.format("--user=%s", Instances.DEFAULT_USER),
+                            String.format("--datadir=%s", dir),
+                            String.format("--basedir=%s", dist),
+                            String.format("--log-error=%s", new File(target, "errors.log")),
+                            String.format("--general-log-file=%s", new File(target, "mysql.log"))
+                        )
                     )
-                ).stdout();
+                ) {
+                    process.stdout();
+                }
             }
         }
         return dir;
@@ -314,20 +320,24 @@ public final class Instances {
     private void configure(@NotNull final Config config,
         final File dist, final File socket)
         throws IOException {
-        new VerboseProcess(
-            this.builder(
-                dist,
-                "bin/mysqladmin",
-                Instances.NO_DEFAULTS,
-                String.format("--wait=%d", Instances.RETRY_COUNT),
-                String.format("--port=%d", config.port()),
-                String.format("--user=%s", Instances.DEFAULT_USER),
-                String.format("--socket=%s", socket),
-                String.format("--host=%s", Instances.DEFAULT_HOST),
-                "password",
-                Instances.DEFAULT_PASSWORD
+        try (
+            VerboseProcess process = new VerboseProcess(
+                this.builder(
+                    dist,
+                    "bin/mysqladmin",
+                    Instances.NO_DEFAULTS,
+                    String.format("--wait=%d", 5),
+                    String.format("--port=%d", config.port()),
+                    String.format("--user=%s", Instances.DEFAULT_USER),
+                    String.format("--socket=%s", socket),
+                    String.format("--host=%s", Instances.DEFAULT_HOST),
+                    "password",
+                    Instances.DEFAULT_PASSWORD
+                )
             )
-        ).stdout();
+        ) {
+            process.stdout();
+        }
         Logger.info(
             this,
             "Root password '%s' set for the '%s' user",
@@ -374,7 +384,9 @@ public final class Instances {
                 writer.println("SHOW DATABASES;");
             }
         }
-        new VerboseProcess(process).stdout();
+        try (VerboseProcess verbose = new VerboseProcess(process)) {
+            verbose.stdout();
+        }
         Logger.info(
             this,
             "The '%s' user created in the '%s' database with the '%s' password",

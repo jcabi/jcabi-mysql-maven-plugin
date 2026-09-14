@@ -13,6 +13,7 @@ import org.junit.Test;
 
 /**
  * Test case for {@link Foo}.
+ *
  * @since 1.0
  */
 public final class WithOptionsITCase {
@@ -25,6 +26,7 @@ public final class WithOptionsITCase {
 
     /**
      * Can use configuration options.
+     *
      * @throws Exception If something is wrong
      */
     @Test

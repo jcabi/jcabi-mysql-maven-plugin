@@ -19,6 +19,7 @@ import org.apache.maven.project.MavenProject;
 
 /**
  * Classify current platform.
+ *
  * @since 0.1
  */
 @ToString
@@ -68,7 +69,7 @@ public final class ClassifyMojo extends AbstractMojo {
      * &lt;/configuration&gt;
      * </pre>
      *
-     * <p>By default, the following mapping is used:
+     * <p>By default, the following mapping is used:</p>
      *
      * <pre>
      * &lt;configuration&gt;
@@ -79,7 +80,7 @@ public final class ClassifyMojo extends AbstractMojo {
      * </pre>
      *
      * <p>It means that if your platform is detected as "i386", it will be
-     * changed to "x86".
+     * changed to "x86".</p>
      *
      * @since 0.9.0
      */
@@ -118,6 +119,7 @@ public final class ClassifyMojo extends AbstractMojo {
 
     /**
      * Set project.
+     *
      * @param prj Project to set
      */
     public void setProject(final MavenProject prj) {
@@ -126,6 +128,7 @@ public final class ClassifyMojo extends AbstractMojo {
 
     /**
      * Set classifier.
+     *
      * @param name Name of property
      */
     public void setClassifier(final String name) {

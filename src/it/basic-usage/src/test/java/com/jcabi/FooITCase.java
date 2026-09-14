@@ -15,6 +15,7 @@ import org.junit.Test;
 
 /**
  * Test case for {@link Foo}.
+ *
  * @since 1.0
  */
 public final class FooITCase {
@@ -27,6 +28,7 @@ public final class FooITCase {
 
     /**
      * It is not a default MySQL port.
+     *
      * @throws Exception If something is wrong
      */
     @Test
@@ -39,6 +41,7 @@ public final class FooITCase {
 
     /**
      * MySQL works.
+     *
      * @throws Exception If something is wrong
      */
     @Test

@@ -51,6 +51,7 @@ public final class Config {
 
     /**
      * Creates new configuration.
+     *
      * @param port TCP port
      * @param usr Db user name
      * @param password Db password
@@ -73,6 +74,7 @@ public final class Config {
 
     /**
      * Get TCP port we're on.
+     *
      * @return Port number
      */
     public int port() {
@@ -81,6 +83,7 @@ public final class Config {
 
     /**
      * Get Db user name.
+     *
      * @return User name
      */
     public String user() {
@@ -89,6 +92,7 @@ public final class Config {
 
     /**
      * Get Db password.
+     *
      * @return Password
      */
     public String password() {
@@ -97,6 +101,7 @@ public final class Config {
 
     /**
      * Get Db name.
+     *
      * @return Database name
      */
     public String dbname() {
@@ -105,6 +110,7 @@ public final class Config {
 
     /**
      * Get configuration options.
+     *
      * @return Options
      */
     public List<String> options() {

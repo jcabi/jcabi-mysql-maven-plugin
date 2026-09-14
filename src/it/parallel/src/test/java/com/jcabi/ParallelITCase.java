@@ -11,6 +11,7 @@ import org.junit.Test;
 
 /**
  * Test case for {@link Parallel}.
+ *
  * @since 1.0
  */
 public final class ParallelITCase {
@@ -23,6 +24,7 @@ public final class ParallelITCase {
 
     /**
      * MySQL works.
+     *
      * @throws Exception If something is wrong
      */
     @Test
@@ -33,6 +35,7 @@ public final class ParallelITCase {
 
     /**
      * Process on this port.
+     *
      * @param port Port to process
      * @throws Exception If fails
      */

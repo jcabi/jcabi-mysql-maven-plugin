@@ -13,6 +13,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 /**
  * Starts MySQL.
+ *
  * @since 0.1
  */
 @ToString

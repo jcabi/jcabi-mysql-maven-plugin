@@ -19,6 +19,7 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * Abstract MOJO.
+ *
  * @since 0.1
  */
 @ToString
@@ -159,6 +160,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
 
     /**
      * Run custom functionality.
+     *
      * @param instances Instances to work with
      * @throws MojoFailureException If fails
      */
@@ -166,6 +168,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
 
     /**
      * Set skip option.
+     *
      * @param skp Shall we skip execution?
      */
     void setSkip(final boolean skp) {
@@ -174,6 +177,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
 
     /**
      * Get directory with MySQL dist.
+     *
      * @return Directory
      * @throws MojoFailureException If fails
      */
@@ -190,6 +194,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
 
     /**
      * Get directory with MySQL data.
+     *
      * @return Directory
      */
     File dataDir() {
@@ -198,6 +203,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
 
     /**
      * Get MySQL socket location.
+     *
      * @return Overridden socket location (null for default)
      */
     File socketFile() {
@@ -207,6 +213,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
     /**
      * If true, always delete existing database files and create a new instance
      * from scratch. If false, try to reuse existing files.
+     *
      * @return If existing database files should be deleted
      */
     boolean clear() {
@@ -215,6 +222,7 @@ abstract class AbstractMysqlMojo extends AbstractMojo {
 
     /**
      * Get configuration.
+     *
      * @return Configuration
      */
     Config config() {
