@@ -68,6 +68,14 @@ public final class Instances {
     private static final String DEFAULT_HOST = "127.0.0.1";
 
     /**
+     * Hosts that the custom user is allowed to connect from.
+     */
+    private static final String[] HOSTS = {
+        Instances.DEFAULT_HOST,
+        "localhost",
+    };
+
+    /**
      * Running processes.
      */
     private final transient ConcurrentMap<Integer, Process> processes;
@@ -365,22 +373,24 @@ public final class Instances {
             writer.print(config.dbname());
             writer.println(";");
             if (!Instances.DEFAULT_USER.equals(config.user())) {
-                writer.println(
-                    String.format(
-                        "CREATE USER '%s'@'%s' IDENTIFIED BY '%s';",
-                        config.user(),
-                        Instances.DEFAULT_HOST,
-                        config.password()
-                    )
-                );
-                writer.println(
-                    String.format(
-                        "GRANT ALL ON %s.* TO '%s'@'%s';",
-                        config.dbname(),
-                        config.user(),
-                        Instances.DEFAULT_HOST
-                    )
-                );
+                for (final String host : Instances.HOSTS) {
+                    writer.println(
+                        String.format(
+                            "CREATE USER '%s'@'%s' IDENTIFIED BY '%s';",
+                            config.user(),
+                            host,
+                            config.password()
+                        )
+                    );
+                    writer.println(
+                        String.format(
+                            "GRANT ALL ON %s.* TO '%s'@'%s';",
+                            config.dbname(),
+                            config.user(),
+                            host
+                        )
+                    );
+                }
                 writer.println("SHOW DATABASES;");
             }
         }
