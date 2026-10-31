@@ -10,7 +10,9 @@ assets:
   pubring.gpg: yegor256/home#assets/pubring.gpg
 install: |
   pdd --file=/dev/null
-  sudo apt-get install --yes libnuma1 libaio1
+  sudo apt-get update --yes
+  sudo apt-get install --yes libnuma1 libaio1t64
+  sudo ln -sf libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1
 merge:
   script: |
     mvn clean install -ntp -Pqulice --errors --batch-mode
