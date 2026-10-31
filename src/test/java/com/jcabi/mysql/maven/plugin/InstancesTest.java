@@ -211,6 +211,50 @@ final class InstancesTest {
     }
 
     /**
+     * Instances can let the custom user connect through the localhost name.
+     *
+     * @throws Exception If something is wrong
+     */
+    @Test
+    void letsCustomUserConnectThroughLocalhostName() throws Exception {
+        final int port = this.reserve();
+        final String user = "localUser";
+        final Instances instances = new Instances();
+        instances.start(
+            new Config(
+                port,
+                user,
+                InstancesTest.PASSWORD,
+                InstancesTest.DBNAME,
+                Collections.<String>emptyList()
+            ),
+            new File(InstancesTest.DIST),
+            Files.createTempDirectory("").toFile(),
+            true,
+            null
+        );
+        try {
+            MatcherAssert.assertThat(
+                "the custom user cannot be refused over the IPv6 loopback",
+                new JdbcSession(
+                    new UrlSource(
+                        String.format(
+                            "jdbc:mysql://[::1]:%d/%s?user=%s&password=%s",
+                            port,
+                            InstancesTest.DBNAME,
+                            user,
+                            InstancesTest.PASSWORD
+                        )
+                    )
+                ).sql("SELECT 1").select(new SingleOutcome<>(Long.class)),
+                Matchers.equalTo(1L)
+            );
+        } finally {
+            instances.stop(port);
+        }
+    }
+
+    /**
      * Instances can use custom db password.
      * Password changed with username, because we don't support
      * changing password for existing user
